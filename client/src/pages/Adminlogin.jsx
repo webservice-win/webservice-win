@@ -1,19 +1,23 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
-import image2 from "../assets/image2.png"
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
+import image2 from "../assets/image2.png";
 const Adminlogin = () => {
-    const pathname=useLocation();
-      useEffect(()=>{
-        window.scrollTo(0,0)
-  },[pathname])
+  const pathname = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-   const base_url="https://admin-api.oraclesoft.org";
+  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -52,30 +56,35 @@ const Adminlogin = () => {
         text: "Password must be at least 6 characters long.",
       });
       return;
-    }else if(!email=="" || !password==""){
-            axios.post(`${base_url}/auth/login`,{email,password})
-            .then((res)=>{
-              if(res.data.success==true){
-                Swal.fire({
-        icon: "success",
-        title: "Successful",
-        text: `${res.data.message}`,
-      });
-                 localStorage.setItem('token', res.data.jwtToken);
-                 localStorage.setItem('admin_data',JSON.stringify(res.data.admin_data));
-                setTimeout(() => {
-                    navigate('/dashboard')
-                }, 1000)
-              }else{
-                           Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: `${res.data.message}`,
-      });
-              }
-            }).catch((err)=>{
-              console.log(err)
-            })
+    } else if (!email == "" || !password == "") {
+      axios
+        .post(`${base_url}/auth/login`, { email, password })
+        .then((res) => {
+          if (res.data.success == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful",
+              text: `${res.data.message}`,
+            });
+            localStorage.setItem("token", res.data.jwtToken);
+            localStorage.setItem(
+              "admin_data",
+              JSON.stringify(res.data.admin_data)
+            );
+            setTimeout(() => {
+              navigate("/dashboard");
+            }, 1000);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: `${res.data.message}`,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -105,10 +114,14 @@ const Adminlogin = () => {
               </div>
               <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="mb-8">
-                  <h3 className="text-gray-800 text-3xl font-bold">Admin Log in</h3>
+                  <h3 className="text-gray-800 text-3xl font-bold">
+                    Admin Log in
+                  </h3>
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Email</label>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Email
+                  </label>
                   <div className="relative flex items-center">
                     <input
                       name="email"
@@ -121,7 +134,9 @@ const Adminlogin = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Password</label>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Password
+                  </label>
                   <div className="relative flex items-center">
                     <input
                       name="password"
@@ -154,7 +169,11 @@ const Adminlogin = () => {
               </form>
             </div>
             <div className="max-md:mt-8 lg:block hidden">
-              <img src={image2} className="w-full block" alt="Dining Experience" />
+              <img
+                src={image2}
+                className="w-full block"
+                alt="Dining Experience"
+              />
             </div>
           </div>
         </div>
