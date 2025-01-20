@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import { FaTrophy, FaUserFriends, FaChartBar, FaMoneyBillWave, FaHeadset } from "react-icons/fa";
+import { IoCloseOutline } from "react-icons/io5";
 const Achievementmodel = ({data}) => {
     const base_url="http://localhost:8080";
     const [isPopupVisible, setPopupVisible] = useState(false);
@@ -21,8 +22,11 @@ const Achievementmodel = ({data}) => {
               <FaTrophy />
             </span>
             <div className="space-y-2">
-              <h3 className="font-bold text-[20px] lg:text-[25px] text-white mt-[15px]">{data.title}</h3>
-              <p className="text-sm text-muted-foreground text-white">{data.description}</p>
+
+                   <h3 className="text-lg font-bold mb-4 text-white">{data.title}</h3>
+{
+                data.description.length > 150 ?<p className="text-[14px] font-[400] mb-4 text-white">{data.description.slice(0,150)}...</p>:<p className="text-[14px] font-[400] mb-4 text-white">{data.description}</p>
+              }
               <button
                 onClick={handleViewClick}
                 className="px-[30px] py-[12px] bg-[#2563EB] mt-[30px] text-white rounded-[5px]"
@@ -34,7 +38,7 @@ const Achievementmodel = ({data}) => {
           {isPopupVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-[#010053] border-white border-[3px] p-6 rounded-lg h-auto shadow-lg w-[90%] md:w-[80%] lg:w-[60%] xl:w-[50%]">  
-            <h3 className="text-lg font-bold mb-4 text-white">{data.title}</h3>
+<h3 className="text-lg font-bold mb-4 text-white">{data.title}</h3>
             <img
             src={`${base_url}/images/${data.image}`} 
               alt="Gallery"
@@ -42,9 +46,9 @@ const Achievementmodel = ({data}) => {
             />
             <button
               onClick={handleCloseClick}
-              className="mt-4 px-[20px] py-[10px] bg-indigo-700 text-white rounded-md"
+              className="mt-4 px-[20px] text-[22px] absolute top-[10%] right-[20%] py-[10px] bg-indigo-700 text-white rounded-md"
             >
-              Close
+              <IoCloseOutline/>
             </button>
           </div>
         </div>

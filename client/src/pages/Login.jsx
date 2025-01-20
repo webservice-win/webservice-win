@@ -1,10 +1,9 @@
 import React, { useState,useEffect} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
-
 const Login = () => {
     const pathname=useLocation();
       useEffect(()=>{
@@ -61,10 +60,17 @@ const Login = () => {
         title: "Successful",
         text: `${res.data.message}`,
       });
-                 localStorage.setItem('token', res.data.jwtToken);
-                 localStorage.setItem('admin_data',JSON.stringify(res.data.admin_data));
+
                 setTimeout(() => {
+                  if(res.data.admin_data.role=="user"){
+                    navigate('/user-dashboard')
+                    localStorage.setItem('user_token', res.data.jwtToken);
+                    localStorage.setItem('user_data',JSON.stringify(res.data.admin_data));
+                  }else if(res.data.admin_data.role=="admin"){
                     navigate('/dashboard')
+                    localStorage.setItem('token', res.data.jwtToken);
+                    localStorage.setItem('admin_data',JSON.stringify(res.data.admin_data));
+                  }
                 }, 1000)
               }else{
                            Swal.fire({
@@ -104,54 +110,73 @@ const Login = () => {
                 </button>
               </div>
               <form className="space-y-4" onSubmit={handleSubmit}>
-                <div className="mb-8">
-                  <h3 className="text-gray-800 text-3xl font-bold">Sign in</h3>
-                </div>
-                <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Email</label>
-                  <div className="relative flex items-center">
-                    <input
-                      name="email"
-                      type="text"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-                      placeholder="Enter email"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Password</label>
-                  <div className="relative flex items-center">
-                    <input
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-                      placeholder="Enter password"
-                    />
-                    <div
-                      className="absolute right-4 cursor-pointer"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? (
-                        <AiOutlineEyeInvisible className="text-gray-500 w-5 h-5" />
-                      ) : (
-                        <AiOutlineEye className="text-gray-500 w-5 h-5" />
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="!mt-8">
-                  <button
-                    type="submit"
-                    className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
-                  >
-                    Sign in
-                  </button>
-                </div>
-              </form>
+  <div className="mb-8">
+    <h3 className="text-gray-800 text-3xl font-bold">Sign in</h3>
+  </div>
+  {/* Email Field */}
+  <div>
+    <label className="text-gray-800 text-sm mb-2 block">Email</label>
+    <div className="relative flex items-center">
+      <input
+        name="email"
+        type="text"
+        value={formData.email}
+        onChange={handleInputChange}
+        className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+        placeholder="Enter email"
+      />
+    </div>
+  </div>
+  {/* Password Field */}
+  <div>
+    <label className="text-gray-800 text-sm mb-2 block">Password</label>
+    <div className="relative flex items-center">
+      <input
+        name="password"
+        type={showPassword ? "text" : "password"}
+        value={formData.password}
+        onChange={handleInputChange}
+        className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+        placeholder="Enter password"
+      />
+      <div
+        className="absolute right-4 cursor-pointer"
+        onClick={togglePasswordVisibility}
+      >
+        {showPassword ? (
+          <AiOutlineEyeInvisible className="text-gray-500 w-5 h-5" />
+        ) : (
+          <AiOutlineEye className="text-gray-500 w-5 h-5" />
+        )}
+      </div>
+    </div>
+  </div>
+  {/* Sign In Button */}
+  <div className="!mt-8">
+    <button
+      type="submit"
+      className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
+    >
+      Sign in
+    </button>
+  </div>
+  {/* Links */}
+  <div className="flex justify-between mt-4 text-sm">
+    {/* <a
+      href="/forgot-password"
+      className="text-blue-600 hover:underline"
+    >
+      Forgot Password?
+    </a> */}
+    <NavLink
+      to="/registration"
+      className="text-blue-600 hover:underline"
+    >
+      Do not have an acocunt? Register
+    </NavLink>
+  </div>
+</form>
+
             </div>
             <div className="max-md:mt-8 lg:block hidden">
               <img src={login_img} className="w-full block" alt="Dining Experience" />

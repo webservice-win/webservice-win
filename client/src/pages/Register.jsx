@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
-
+import { NavLink } from "react-router-dom";
 const Register = () => {
     const pathname=useLocation();
       useEffect(()=>{
         window.scrollTo(0,0)
   },[pathname])
       const navigate = useNavigate();
-      const base_url="https://admin-api.oraclesoft.org";
+      const base_url="http://localhost:8080";
         const handleGoBack = () => {
     navigate(-1); // Navigate to the previous page
   };
@@ -69,22 +69,74 @@ const Register = () => {
     e.preventDefault();
     const errors = validateForm();
     setFormErrors(errors);
-
+  
     if (Object.keys(errors).length === 0) {
       const formDataToSend = new FormData();
-      formDataToSend.append('username', formData.username);
+      formDataToSend.append('name', formData.username);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('password', formData.password);
       if (formData.profilePicture) {
         formDataToSend.append('file', formData.profilePicture);
       }
-      console.log(formDataToSend)
-        axios.post(`${base_url}/auth/signup`,formDataToSend)
-        .then((res)=>{
-          console.log(res)
-        }).catch((err)=>{
-          console.log(err)
-        })
+  
+      // Show the progress bar with SweetAlert2
+      const swalWithProgress = Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we submit your data.',
+        icon: 'info',
+        showCancelButton: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          // You can use Swal.showLoading to show the loading spinner
+          Swal.showLoading();
+        },
+        html: `
+          <div>Uploading...</div>
+          <progress id="progress-bar" value="0" max="100" style="width: 100%;"></progress>
+          <span id="progress-text">0%</span>
+        `,
+      });
+  
+      // Axios request with progress tracking
+      axios.post(`${base_url}/auth/signup`, formDataToSend, {
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          document.getElementById('progress-bar').value = progress;
+          document.getElementById('progress-text').innerText = `${progress}%`;
+        }
+      })
+      .then((res) => {
+        if(res.data.success){
+          Swal.close(); // Close progress bar
+          Swal.fire({
+            title: 'Success!',
+            text: 'Your data has been submitted successfully.',
+            icon: 'success',
+          });
+         setTimeout(() => {
+           navigate("/login")
+         }, 1000);
+        }else{
+          Swal.close(); // Close progress bar on error
+          Swal.fire({
+            title: 'Error!',
+            text: `${res.data.message}`,
+            icon: 'error',
+          });
+        }
+
+        console.log(res);
+      })
+      .catch((err) => {
+        Swal.close(); // Close progress bar on error
+        Swal.fire({
+          title: 'Error!',
+          text: `${err.name}`,
+          icon: 'error',
+        });
+        console.log(err);
+      });
+  
     } else {
       Swal.fire({
         title: 'Validation Error',
@@ -96,7 +148,7 @@ const Register = () => {
   return (
     <section>
       <div className="font-poppins">
-        <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
+        <div className="min-h-screen flex fle-col items-center justify-center py-6 px-[10px] lg:px-4">
           <div className="grid md:grid-cols-2 items-center gap-6 max-w-6xl w-full">
             <div className="border border-[#eee] rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
               {/* Go Back Button */}
@@ -188,9 +240,23 @@ const Register = () => {
           Create Account
         </button>
       </div>
+      <div className="flex justify-between mt-4 text-sm">
+    {/* <a
+      href="/forgot-password"
+      className="text-blue-600 hover:underline"
+    >
+      Forgot Password?
+    </a> */}
+    <NavLink
+      to="/login"
+      className="text-blue-600 hover:underline"
+    >
+     Already have an acocunt? Log In
+    </NavLink>
+  </div>
     </form>
             </div>
-            <div className="max-md:mt-8">
+            <div className="max-md:mt-8 lg:flex hidden">
               <img src={login_img} className="w-full block" alt="Dining Experience" />
             </div>
           </div>

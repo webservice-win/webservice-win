@@ -15,7 +15,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    is_admin:{
+    role:{
         type:String,
         default:"user"
     },
