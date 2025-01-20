@@ -3,22 +3,26 @@ import { useLocation, useNavigate } from "react-router-dom";
 import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
 
 const Register = () => {
-    const pathname=useLocation();
-      useEffect(()=>{
-        window.scrollTo(0,0)
-  },[pathname])
-      const navigate = useNavigate();
-      const base_url="https://admin-api.oraclesoft.org";
-        const handleGoBack = () => {
+  const pathname = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  const navigate = useNavigate();
+  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
+  const handleGoBack = () => {
     navigate(-1); // Navigate to the previous page
   };
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
     profilePicture: null, // New state for the profile picture
   });
 
@@ -51,15 +55,15 @@ const Register = () => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!formData.username) errors.username = 'Username is required';
+    if (!formData.username) errors.username = "Username is required";
     if (!formData.email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     } else if (!emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email';
+      errors.email = "Please enter a valid email";
     }
-    if (!formData.password) errors.password = 'Password is required';
+    if (!formData.password) errors.password = "Password is required";
     else if (formData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters long';
+      errors.password = "Password must be at least 6 characters long";
     }
 
     return errors;
@@ -72,24 +76,26 @@ const Register = () => {
 
     if (Object.keys(errors).length === 0) {
       const formDataToSend = new FormData();
-      formDataToSend.append('username', formData.username);
-      formDataToSend.append('email', formData.email);
-      formDataToSend.append('password', formData.password);
+      formDataToSend.append("username", formData.username);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
       if (formData.profilePicture) {
-        formDataToSend.append('file', formData.profilePicture);
+        formDataToSend.append("file", formData.profilePicture);
       }
-      console.log(formDataToSend)
-        axios.post(`${base_url}/auth/signup`,formDataToSend)
-        .then((res)=>{
-          console.log(res)
-        }).catch((err)=>{
-          console.log(err)
+      console.log(formDataToSend);
+      axios
+        .post(`${base_url}/auth/signup`, formDataToSend)
+        .then((res) => {
+          console.log(res);
         })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       Swal.fire({
-        title: 'Validation Error',
-        text: 'Please fill in all required fields correctly.',
-        icon: 'warning',
+        title: "Validation Error",
+        text: "Please fill in all required fields correctly.",
+        icon: "warning",
       });
     }
   };
@@ -109,89 +115,102 @@ const Register = () => {
                   Go Back
                 </button>
               </div>
-         <form className="space-y-4" onSubmit={handleSubmit}>
-      <div className="mb-8">
-        <h3 className="text-gray-800 text-3xl font-bold">Create Account</h3>
-      </div>
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div className="mb-8">
+                  <h3 className="text-gray-800 text-3xl font-bold">
+                    Create Account
+                  </h3>
+                </div>
 
-      <div>
-        <label className="text-gray-800 text-sm mb-2 block">Username</label>
-        <div className="relative flex items-center">
-          <input
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleInputChange}
-            className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-            placeholder="Enter your username"
-          />
-        </div>
-      </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Username
+                  </label>
+                  <div className="relative flex items-center">
+                    <input
+                      name="username"
+                      type="text"
+                      value={formData.username}
+                      onChange={handleInputChange}
+                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+                      placeholder="Enter your username"
+                    />
+                  </div>
+                </div>
 
-      <div>
-        <label className="text-gray-800 text-sm mb-2 block">Email</label>
-        <div className="relative flex items-center">
-          <input
-            name="email"
-            type="text"
-            value={formData.email}
-            onChange={handleInputChange}
-            className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-            placeholder="Enter your email"
-          />
-        </div>
-      </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Email
+                  </label>
+                  <div className="relative flex items-center">
+                    <input
+                      name="email"
+                      type="text"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                </div>
 
-      <div>
-        <label className="text-gray-800 text-sm mb-2 block">Password</label>
-        <div className="relative flex items-center">
-          <input
-            name="password"
-            type={showPassword ? 'text' : 'password'}
-            value={formData.password}
-            onChange={handleInputChange}
-            className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-            placeholder="Enter your password"
-          />
-          <div
-            className="absolute right-4 cursor-pointer"
-            onClick={togglePasswordVisibility}
-          >
-            {showPassword ? (
-              <AiOutlineEyeInvisible className="text-gray-500 w-5 h-5" />
-            ) : (
-              <AiOutlineEye className="text-gray-500 w-5 h-5" />
-            )}
-          </div>
-        </div>
-      </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Password
+                  </label>
+                  <div className="relative flex items-center">
+                    <input
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+                      placeholder="Enter your password"
+                    />
+                    <div
+                      className="absolute right-4 cursor-pointer"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? (
+                        <AiOutlineEyeInvisible className="text-gray-500 w-5 h-5" />
+                      ) : (
+                        <AiOutlineEye className="text-gray-500 w-5 h-5" />
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-      <div>
-        <label className="text-gray-800 text-sm mb-2 block">Profile Picture</label>
-        <div className="relative flex items-center">
-          <input
-            type="file"
-            name="profilePicture"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
-          />
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">
+                    Profile Picture
+                  </label>
+                  <div className="relative flex items-center">
+                    <input
+                      type="file"
+                      name="profilePicture"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="w-full text-sm text-gray-800 border border-gray-300 pl-4 pr-10 py-3 rounded-[5px] outline-blue-600"
+                    />
+                  </div>
+                </div>
 
-        </div>
-      </div>
-
-      <div className="!mt-8">
-        <button
-          type="submit"
-          className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
-        >
-          Create Account
-        </button>
-      </div>
-    </form>
+                <div className="!mt-8">
+                  <button
+                    type="submit"
+                    className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
+                  >
+                    Create Account
+                  </button>
+                </div>
+              </form>
             </div>
             <div className="max-md:mt-8">
-              <img src={login_img} className="w-full block" alt="Dining Experience" />
+              <img
+                src={login_img}
+                className="w-full block"
+                alt="Dining Experience"
+              />
             </div>
           </div>
         </div>
