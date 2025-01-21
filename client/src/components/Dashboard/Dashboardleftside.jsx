@@ -3,7 +3,6 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import { Contextapi } from "../../context/Appcontext";
 import logo from "../../assets/logo.png";
-import { IoPricetagsOutline } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 import { FaRegUser } from "react-icons/fa";
 import { LuSettings } from "react-icons/lu";
