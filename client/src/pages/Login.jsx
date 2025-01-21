@@ -4,15 +4,17 @@ import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
+
+
 const Login = () => {
-    const pathname=useLocation();
-      useEffect(()=>{
-        window.scrollTo(0,0)
-  },[pathname])
+  const pathname = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-   const base_url="https://admin-api.oraclesoft.org";
+  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -82,6 +84,35 @@ const Login = () => {
             }).catch((err)=>{
               console.log(err)
             })
+    } else if (!email == "" || !password == "") {
+      axios
+        .post(`${base_url}/auth/login`, { email, password })
+        .then((res) => {
+          if (res.data.success == true) {
+            Swal.fire({
+              icon: "success",
+              title: "Successful",
+              text: `${res.data.message}`,
+            });
+            localStorage.setItem("token", res.data.jwtToken);
+            localStorage.setItem(
+              "admin_data",
+              JSON.stringify(res.data.admin_data)
+            );
+            setTimeout(() => {
+              navigate("/dashboard");
+            }, 1000);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: `${res.data.message}`,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -175,15 +206,21 @@ const Login = () => {
       Do not have an acocunt? Register
     </NavLink>
   </div>
-</form>
 
+
+                
+              </form>
             </div>
             <div className="max-md:mt-8 lg:block hidden">
-              <img src={login_img} className="w-full block" alt="Dining Experience" />
+              <img
+                src={login_img}
+                className="w-full block"
+                alt="Dining Experience"
+              />
             </div>
           </div>
         </div>
-      </div>
+        </div>
     </section>
   );
 };

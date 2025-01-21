@@ -57,7 +57,8 @@ const Userdashboardleftside = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("user_info");
+        localStorage.removeItem("user_data");
+        localStorage.removeItem("token");
         navigate("/");
       }
     });

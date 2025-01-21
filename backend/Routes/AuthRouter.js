@@ -1,4 +1,3 @@
-
 const { signup, login, profile_update } = require('../Controllers/AuthController');
 const ensureAuthenticated = require('../Middlewares/Auth');
 const { signupValidation, loginValidation } = require('../Middlewares/AuthValidation');
@@ -20,14 +19,14 @@ const storage=multer.diskStorage({
 const uploadimage=multer({storage:storage});
 
 router.post('/login', loginValidation, login);
-router.post('/signup',uploadimage.single("file"),async(req,res)=>{
+router.post('/signup',async(req,res)=>{
     try {
         const { name, email, password } = req.body;
         const user = await UserModel.findOne({ email });
         if (user) {
             return res.json({ message: 'User is already exist, you can login', success: false });
         }
-        const userModel = new UserModel({ name, email, password,image:req.file.filename});
+        const userModel = new UserModel({ name, email, password});
         userModel.password = await bcrypt.hash(password, 10);
         await userModel.save();
         res.json({
