@@ -210,6 +210,18 @@ const Addacievement = () => {
                 </div>
               </div>
 
+      <div className="w-[100%] mt-[15px]">
+        <label htmlFor="reviews" className="text-[15px] font-[500] text-gray-600">
+         Description <span className="text-red-500">*</span>
+        </label>
+        <textarea  name="description"
+          value={description}
+            onChange={(e)=>{setdescription(e.target.value)}}
+          placeholder="Description"
+          className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[200px] border-[1px] border-[#eee] p-[15px]"
+        ></textarea>
+      </div>
+
               <div className="w-[100%] mt-[15px]">
                 <label
                   htmlFor="reviews"

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { IoIosCall } from "react-icons/io";
 import { HiOutlineMail } from "react-icons/hi";
 import { IoLocationSharp } from "react-icons/io5";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { HiMenuAlt3 } from "react-icons/hi";
 import logo from "../assets/logo.png"
 import { IoClose } from "react-icons/io5";
@@ -36,12 +36,20 @@ const Header = () => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
   };
    const admin_info=JSON.parse(localStorage.getItem("admin_data"));
+   const user_info=JSON.parse(localStorage.getItem("user_data"));
  const [openDropdown, setOpenDropdown] = useState(null); // Track the open dropdown (null means none open)
-
+  const navigate=useNavigate();
     const toggleDropdown = (menu) => {
         setOpenDropdown(openDropdown === menu ? null : menu); // Toggle open/close
     };
-
+// -------------------checking role
+   const check_login=()=>{
+      if(admin_info){
+        navigate("/dashboard") 
+      }else if(user_info){
+        navigate("/user-dashboard") 
+      }
+   }
   return (
     <section className='font-poppins h-[11vh] lg:h-[18vh]'>
         <NavLink to="https://wa.me/+447723840957"target="_blank">
@@ -150,18 +158,18 @@ const Header = () => {
                 <NavLink to="/contact">Contact</NavLink>
             </li>
             {
-                admin_info? "":   <li className="text-[17px] px-[10px] text-white hover:text-theme_color transition-all duration-300 py-[5px] relative cursor-pointer">
+                admin_info || user_info? "":   <li className="text-[17px] px-[10px] text-white hover:text-theme_color transition-all duration-300 py-[5px] relative cursor-pointer">
                 <NavLink to="/login">Log In</NavLink>
             </li>
             }
          
             <li className='ml-[30px]'>
                 {
-                    admin_info ? <NavLink to="/dashboard">
-                    <button className='px-[30px] py-[14px] border-[2px] border-[#FFC727] hover:bg-transparent hover:text-[#FFC727] transition-all duration-100 bg-[#FFC727] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]'>
+                    admin_info || user_info ?
+                    <button onClick={check_login} className='px-[30px] py-[14px] border-[2px] border-[#FFC727] hover:bg-transparent hover:text-[#FFC727] transition-all duration-100 bg-[#FFC727] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]'>
                         Dashboard <GoArrowUpRight className='text-[22px] font-bold' />
                     </button>
-                </NavLink>:<NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target='_blank'>
+            :<NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target='_blank'>
                     <button className='px-[30px] py-[14px] border-[2px] border-btncolor1 hover:bg-transparent hover:text-btncolor1 transition-all duration-100 bg-btncolor1 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]'>
                       LiveChat <RiSendPlaneFill className='text-[22px] font-bold' />
                     </button>
