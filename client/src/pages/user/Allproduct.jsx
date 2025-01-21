@@ -17,7 +17,7 @@ import empty_img from "../../assets/empty.png"
 import axios from "axios"
 const Allproduct = () => {
    const navigate=useNavigate();
-     const base_url="https://admin-api.oraclesoft.org";
+   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
         useEffect(()=>{
      window.addEventListener("scroll",()=>{
