@@ -41,6 +41,18 @@ import Whoareyou from './pages/Whoareyou'
 import Ourachievement from './pages/Ourachievement'
 import Addacievement from './pages/admin/Addacievement'
 import Achievementlist from './pages/admin/Achievementlist'
+import AffiliatesHome from './pages/affiliates-dashboard/AffiliatesHome'
+import Userdashboard from './pages/affiliates-dashboard/Userdashboard'
+import Userprofile from './pages/user/Userprofile'
+import Myorder from './pages/user/Myorder'
+import Myinvoice from './pages/user/Myinvoice'
+import Deposit from './pages/user/Deposit'
+import Trackingorder from './pages/user/Trackingorder'
+import Transiction from './pages/user/Transiction'
+import Wallet from './pages/user/Wallet'
+import Allcourse from './pages/user/Allcourse'
+import Allproduct from './pages/user/Allproduct'
+import Tutorial from './pages/user/Tutorial'
 const App = () => {
   return (
     <BrowserRouter>
@@ -93,7 +105,23 @@ const App = () => {
         <Route exact path="/reviews/add-video-review"element={<Addvideoreview/>}/>
         <Route exact path="/reviews/feedback-list"element={<Feedbacklist/>}/>
         <Route exact path="/reviews/video-reviews-list"element={<Videoreviewlist/>}/>
+        
         {/* ----------------admin pages------------------- */}
+        {/* ------------------user dashboard-------------------------------- */}
+        <Route exact path="/user-dashboard"element={<Userdashboard/>}/>
+        <Route exact path="/user-profile"element={<Userprofile/>}/>
+        <Route exact path="/my-order"element={<Myorder/>}/>
+        <Route exact path="/my-invoice"element={<Myinvoice/>}/>
+        <Route exact path="/deposit"element={<Deposit/>}/>
+        <Route exact path="/tracking-order"element={<Trackingorder/>}/>
+        <Route exact path="/transictions"element={<Transiction/>}/>
+        <Route exact path="/wallet"element={<Wallet/>}/>
+        <Route exact path="/all-course"element={<Allcourse/>}/>
+        <Route exact path="/all-product"element={<Allproduct/>}/>
+        <Route exact path="/tutorial"element={<Tutorial/>}/>
+
+
+        {/* ------------------user dashboard-------------------------------- */}
       </Routes>
     </BrowserRouter>
   )

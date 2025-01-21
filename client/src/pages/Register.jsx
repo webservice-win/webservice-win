@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import login_img from "../assets/login.png";
 import Swal from "sweetalert2";
 import axios from "axios";
-import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineArrowLeft,
-} from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineArrowLeft } from "react-icons/ai";
 
 const Register = () => {
-  const pathname = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  const navigate = useNavigate();
-  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-  const handleGoBack = () => {
+    const pathname=useLocation();
+      useEffect(()=>{
+        window.scrollTo(0,0)
+  },[pathname])
+      const navigate = useNavigate();
+      const base_url=import.meta.env.VITE_API_KEY_Base_URL;
+        const handleGoBack = () => {
     navigate(-1); // Navigate to the previous page
   };
   const [formData, setFormData] = useState({
@@ -73,24 +69,29 @@ const Register = () => {
     e.preventDefault();
     const errors = validateForm();
     setFormErrors(errors);
-
+  
     if (Object.keys(errors).length === 0) {
       const formDataToSend = new FormData();
-      formDataToSend.append("username", formData.username);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
+      formDataToSend.append('name', formData.username);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('password', formData.password);
       if (formData.profilePicture) {
         formDataToSend.append("file", formData.profilePicture);
       }
-      console.log(formDataToSend);
-      axios
-        .post(`${base_url}/auth/signup`, formDataToSend)
-        .then((res) => {
-          console.log(res);
+      console.log(formDataToSend)
+        axios.post(`${base_url}/auth/signup`,{name:formData.username,email:formData.email,password:formData.password})
+        .then((res)=>{
+          if(res.data.success){
+              Swal.fire({
+                          icon: "success",
+                          title: "Registration Successful!",
+                          text: `${res.data.message}`,
+                        });
+          navigate("/login")
+          }
+        }).catch((err)=>{
+          console.log(err)
         })
-        .catch((err) => {
-          console.log(err);
-        });
     } else {
       Swal.fire({
         title: "Validation Error",
@@ -102,7 +103,7 @@ const Register = () => {
   return (
     <section>
       <div className="font-poppins">
-        <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
+        <div className="min-h-screen flex fle-col items-center justify-center py-6 px-[10px] lg:px-4">
           <div className="grid md:grid-cols-2 items-center gap-6 max-w-6xl w-full">
             <div className="border border-[#eee] rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
               {/* Go Back Button */}
@@ -195,22 +196,18 @@ const Register = () => {
                   </div>
                 </div>
 
-                <div className="!mt-8">
-                  <button
-                    type="submit"
-                    className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
-                  >
-                    Create Account
-                  </button>
-                </div>
-              </form>
+      <div className="!mt-8">
+        <button
+          type="submit"
+          className="w-full shadow-md py-[12px] px-4 text-sm tracking-wide rounded-lg text-white bg-btncolor1 focus:outline-none"
+        >
+          Create Account
+        </button>
+      </div>
+    </form>
             </div>
             <div className="max-md:mt-8">
-              <img
-                src={login_img}
-                className="w-full block"
-                alt="Dining Experience"
-              />
+              <img src={login_img} className="w-full block" alt="Dining Experience" />
             </div>
           </div>
         </div>

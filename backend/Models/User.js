@@ -15,14 +15,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    is_admin:{
+    role:{
         type:String,
         default:"user"
     },
-    image:{
-                type: String,
-        required: true,
-    }
 });
 
 const UserModel = mongoose.model('users', UserSchema);
