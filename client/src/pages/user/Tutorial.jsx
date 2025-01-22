@@ -29,49 +29,22 @@ const Tutorial = () => {
      })
    },[]);
         // ---------------all-websites--------------
-const [websites,set_websites]=useState([]);
-const get_website=()=>{
-    axios.get(`${base_url}/admin/all-websites`)
-    .then((res)=>{
-        if(res.data.success){
-            set_websites(res.data.data);
-        }
-    }).catch((err)=>{
-        console.log(err.name)
-    })
-};
-useEffect(()=>{
-    get_website()
-},[]);
-// ----------course searching system
- const [searchQuery, setSearchQuery] = useState("");
-  const filteredCourses = websites.filter(websites =>
-websites.category.toString().includes(searchQuery) ||
-websites.technology.toString().includes(searchQuery) ||
-websites.title.toString().includes(searchQuery) ||
-websites.singleLicense.toString().includes(searchQuery) || 
-websites.unlimitedLicense.toString().includes(searchQuery) 
-);
-  // ------------delete course-------------
-        const delete_Website=(id)=>{
-  const confirm_box=confirm("Are you sure?");
-   if(confirm_box){
-   axios.delete(`${base_url}/admin/delete-website/${id}`, {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        })
-    .then((res)=>{
-        if(res.data.success){
-            Swal.fire("Success", `${res.data.message}`, "success");
-             get_website();
-        }
-    }).catch((err)=>{
-       console.log(err.name)
-    })
-   }
-
-}
+        const [video_reviews, set_video_reviews] = useState([]);
+        const get_video_review = () => {
+          axios
+            .get(`${base_url}/admin/all-video-review`)
+            .then((res) => {
+              if (res.data.success) {
+                set_video_reviews(res.data.data);
+              }
+            })
+            .catch((err) => {
+              console.log(err.name);
+            });
+        };
+        useEffect(() => {
+          get_video_review();
+        }, []);
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -92,92 +65,89 @@ websites.unlimitedLicense.toString().includes(searchQuery)
             </ul>
           </div>
           {/* -------------search-box------------------ */}
-     {
-      websites.length > 0 ?       <div className="w-[30%]">
-          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-            Search
-          </label>
-          <div className="relative w-[100%]">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full outline-none px-4 py-[12px] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Search website"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-  :""
-     }
-  
-  
+
           {/* -------------search-box------------------ */}
          </div>
          {/* ------------------new customer table----------------- */}
   
      <section className="pt-[40px] pb-[30px]">
-         {
-          websites.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700">
-              <thead className="text-xs text-white uppercase bg-indigo-500 dark:bg-gray-700 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Image</th>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Categry</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Technology</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Demo</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Action</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((data, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700">
-                      <img src={`${base_url}/images/${data.thumbnail}`} alt="Baji Live" className="w-32 h-[80px] rounded-md" />
-                    </td>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.category}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.demoFrontend}
-                    </th>
-                    <td className="px-6 py-2 flex justify-center items-center gap-[8px]">
-                      <NavLink to={`/websites/edit-website/${data._id}`} className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
-                        <FiEdit />
-                      </NavLink>
-                      <div onClick={()=>{delete_Website(data._id)}} className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]">
-                        <MdDeleteOutline />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>:<section className='w-full flex justify-center items-center'>
+         
+            {video_reviews.length > 0 ? 
+                 <section className="w-full bg-gradient-to-r from-blue-500 to-purple-500 h-auto px-[20px] md:px-[30px] lg:px-[50px] xl:px-[100px] py-[40px] lg:py-[70px] ">
+                   <div className="flex justify-center items-center">
+                     <h1 className="px-[20px] lg:px-[25px] rounded-full font-bangla_font text-center w-auto text-[16px] lg:text-[30px] py-[8px] lg:py-[10px] bg-color2 border-[3px] border-white text-white">
+                       আমাদের গ্রাহকদের ভিডিও রিভিউ
+                     </h1>
+                   </div>
+                   {/* ---------------review----------------- */}
+                   <section className="pt-[30px] lg:pt-[50px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-[20px]">
+                     {video_reviews?.slice(0, 9).map((data, i) => {
+                       return (
+                         <div
+                           key={i}
+                           className="w-full overflow-hidden  rounded-[10px] p-[7px] bg-white"
+                         >
+                           <iframe
+                             className="w-full h-[180px] lg:h-[250px] rounded-[10px]"
+                             src={`${data.video_link}`}
+                             title="YouTube video player"
+                             frameborder="0"
+                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                             referrerpolicy="strict-origin-when-cross-origin"
+                             allowfullscreen
+                           ></iframe>
+                         </div>
+                       );
+                     })}
+                   </section>
+                   {/* -------------box----------------- */}
+                   {video_reviews?.length > 9 ? (
+                     <div className="flex w-full items-center justify-center mt-[50px] z-[100]">
+                       <NavLink to="/video-reviews">
+                         <button className="px-[30px] py-[12px] text-white rounded-[5px] bg-indigo-800 border-[2px] border-white font-poppins text-[16px]">
+                           Load more
+                         </button>
+                       </NavLink>
+                     </div>
+                   ) : (
+                     ""
+                   )}
+         
+                   <div className="flex items-center justify-center mt-[50px] lg:mt-[80px]">
+                     {/* Left Line */}
+                     <div className="flex-grow border-t-[1px] border-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600 sm:border-t-[1px]" />
+         
+                     {/* Left Dots */}
+                     <div className="flex items-center space-x-1 mx-3 sm:space-x-2 md:space-x-3 lg:space-x-4">
+                       <span className="h-[3px] w-[3px] bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[6px] w-[6px] bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[8px] w-[8px] bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[10px] w-[10px] bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[12px] w-[12px] bg-gradient-to-r from-indigo-700 to-indigo-900 rounded-full transition-all duration-300 transform hover:scale-125" />
+                     </div>
+         
+                     {/* Center Diamond */}
+                     <div className="relative flex items-center justify-center mx-3 sm:mx-5 md:mx-7">
+                       {/* Outer Diamond */}
+                       <div className="w-8 h-8 border-[1px] border-gradient-to-r from-indigo-500 to-indigo-700 transform rotate-45 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16" />
+                       {/* Inner Indigo Diamond */}
+                       <div className="absolute w-4 h-4 bg-gradient-to-r from-indigo-600 to-indigo-800 transform rotate-45 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+                     </div>
+         
+                     {/* Right Dots */}
+                     <div className="flex items-center space-x-1 mx-3 sm:space-x-2 md:space-x-3 lg:space-x-4">
+                       <span className="h-[12px] w-[12px] bg-gradient-to-r from-indigo-700 to-indigo-900 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[10px] w-[10px] bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[8px] w-[8px] bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[6px] w-[6px] bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 transform hover:scale-125" />
+                       <span className="h-[3px] w-[3px] bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full transition-all duration-300 transform hover:scale-125" />
+                     </div>
+         
+                     {/* Right Line */}
+                     <div className="flex-grow border-t-[1px] border-gradient-to-l from-indigo-400 via-indigo-500 to-indigo-600 sm:border-t-[1px]" />
+                   </div>
+                 </section>
+                :<section className='w-full flex justify-center items-center'>
                <div>
                 <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />
                 <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Websites are empty!</h2>

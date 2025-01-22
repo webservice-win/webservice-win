@@ -13,6 +13,7 @@ import Userheader from '../../components/Dashboard/Userheader';
 const Userprofile = () => {
    const navigate=useNavigate();
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
+     const user_info = JSON.parse(localStorage.getItem("user_data"));
         useEffect(()=>{
      window.addEventListener("scroll",()=>{
       if(window.scrollY > 100){
@@ -22,6 +23,13 @@ const Userprofile = () => {
       }
      })
    },[]);
+   const [name,set_name]=useState("");
+   const [email,set_email]=useState("");
+   const [password,set_password]=useState("");
+   useEffect(()=>{
+         set_name(user_info.name);
+         set_email(user_info.email)
+   },[])
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -36,11 +44,11 @@ const Userprofile = () => {
                     <h1 className='text-[20px] lg:text-[25px] text-white'>Your Information</h1>
                  <div className='w-full mt-[30px]'>
                     <label htmlFor=""className='text-[17px] text-white'>Name</label>
-                    <input type="text"placeholder='Enter your name'className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
+                    <input type="text"placeholder='Enter your name'value={name} className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
                   </div>
                   <div className='w-full mt-[10px]'>
                     <label htmlFor=""className='text-[17px] text-white'>Email</label>
-                    <input type="email"placeholder='Enter your email'className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
+                    <input type="email"placeholder='Enter your email'value={email} className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
                   </div>
                   <div className='w-full mt-[10px]'>
                     <label htmlFor=""className='text-[17px] text-white'>Passoword</label>

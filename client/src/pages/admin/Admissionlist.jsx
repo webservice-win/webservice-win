@@ -253,14 +253,14 @@ const Admissionlist = () => {
                           {data?.schedule}
                         </th>
                         <td className="px-6 py-2 flex justify-start items-center gap-[8px]">
-                          <NavLink className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
+                          <NavLink className="font-medium text-white  p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
                             <FiEdit />
                           </NavLink>
                           <div
                             onClick={() => {
                               delete_admission(data._id);
                             }}
-                            className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]"
+                            className="font-medium text-white hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]"
                           >
                             <MdDeleteOutline />
                           </div>

@@ -278,7 +278,7 @@ const Addbrand = () => {
                       id="table-search"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="block w-full lg:w-auto ps-10 h-[45px] text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="block lg:w-auto ps-10 h-[45px] text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Search for provider"
                     />
                   </div>
@@ -337,7 +337,7 @@ const Addbrand = () => {
                           <td className="px-6 py-4 text-nowrap border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                             {moment(data?.createdAt).fromNow()}
                           </td>
-                          <td className="px-6 py-4 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                          <td className="px-6 py-4 border-b border-gray-200  ">
                             <button
                               onClick={() => delete_category(data._id)}
                               className="p-[10px] rounded-[5px] bg-red-500 text-white text-[20px]"

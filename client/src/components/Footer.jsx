@@ -1,6 +1,12 @@
 import React from 'react'
 import { FaWhatsapp } from "react-icons/fa";
 import logo from "../assets/logo.png"
+import img1 from "../assets/img1.webp"
+import img2 from "../assets/img2.png"
+import img3 from "../assets/img3.png"
+import img4 from "../assets/img4.png"
+import img5 from "../assets/img5.png"
+
 import { NavLink } from 'react-router-dom';
 const Footer = () => {
   return (
@@ -71,17 +77,17 @@ const Footer = () => {
           <h2 className="text-lg font-semibold mb-4 text-yellow-400">Official Partner</h2>
           <div>
           <img
-              src="https://i.ibb.co.com/jDmPsNV/Screenshot-2025-01-11-145708.png"
+              src={img2}
               alt="HeyVIP Logo"
               className="h-10 mb-[10px]"
             />
       <img
-              src="https://i.ibb.co.com/CWzk93Y/Screenshot-2025-01-11-145724.png"
+              src={img4}
               alt="HeyVIP Logo"
               className="h-10 mb-[10px]"
             />
               <img
-              src="https://i.ibb.co.com/yyfDP4x/Screenshot-2025-01-11-212818.png"
+              src={img5}
               alt="HeyVIP Logo"
               className="h-10 mb-[10px]"
             />
@@ -92,17 +98,12 @@ const Footer = () => {
           <h2 className="text-[15px] lg:text-lg font-semibold mb-4 text-yellow-400">Secured & Certified by:</h2>
       <div>
           <img
-              src="https://i.ibb.co.com/yyp6zCc/Screenshot-2025-01-11-145739.png"
+              src={img3}
               alt="HeyVIP Logo"
               className="h-10 mb-[10px]"
             />
        <img
-              src="https://i.ibb.co.com/RQKkWLx/Screenshot-2025-01-11-212926.png"
-              alt="HeyVIP Logo"
-              className="h-10 mb-[10px]"
-            />
-             <img
-              src="https://i.ibb.co.com/kBzPT1v/Screenshot-2025-01-11-212939.png"
+              src={img1}
               alt="HeyVIP Logo"
               className="h-10 mb-[10px]"
             />
