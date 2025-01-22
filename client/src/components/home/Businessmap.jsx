@@ -75,7 +75,7 @@ const Businessmap = () => {
       {/* ------------------bg1-------------- */}
       <div className="flex justify-center items-center ">
         <h1 className="px-[20px] lg:px-[25px] rounded-full font-bangla_font text-center w-auto text-[16px] lg:text-[30px] py-[8px] lg:py-[10px] bg-color2 border-[3px] border-white text-white">
-          বেটিং বিজনেস রোড ম্যাপ
+          আপনার ডিজিটাল বিজনেস রোড ম্যাপ
         </h1>
       </div>
       {/* -------------------box------------------- */}

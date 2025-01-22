@@ -157,11 +157,11 @@ websites.unlimitedLicense.toString().includes(searchQuery)
                          </h2>
                        </div>
                        <div className="flex justify-between items-center mt-[20px]">
-                         <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                         <h2 className="text-[15px] lg:text-[17px] font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
                            <FaHeart className="text-[15px] lg:text-[18px] text-red-600" />
                            <p>({data?.love}+)</p>
                          </h2>
-                         <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                         <h2 className="text-[15px] lg:text-[17px]  font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
                            <AiOutlineLike className="text-[20px] text-indigo-300" />
                            <p>({data?.like}+)</p>
                          </h2>
@@ -172,7 +172,7 @@ websites.unlimitedLicense.toString().includes(searchQuery)
                            className="w-[50%]"
                            target="_blank"
                          >
-                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] font-[800] hover:bg-red-400 hover:text-white transition-all duration-150 font-bangla_font">
+                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] rounded-full text-[14px] lg:text-[19px] font-[800] hover:bg-red-400 hover:text-white transition-all duration-150 font-bangla_font">
                              লাইভ ডেমো
                            </button>
                          </NavLink>
@@ -180,7 +180,7 @@ websites.unlimitedLicense.toString().includes(searchQuery)
                            to={`/single-website-details/${data._id}`}
                            className="w-[50%]"
                          >
-                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] hover:bg-red-400 hover:text-white font-[800] transition-all duration-150 flex font-bangla_font justify-center items-center gap-[8px]">
+                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] rounded-full text-[14px] lg:text-[19px] hover:bg-red-400 hover:text-white font-[800] transition-all duration-150 flex font-bangla_font justify-center items-center gap-[8px]">
                              বিস্তারিত দেখুন
                              <FaArrowUpRightFromSquare />
                            </button>
