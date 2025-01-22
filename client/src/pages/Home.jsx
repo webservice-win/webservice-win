@@ -25,10 +25,17 @@ const Home = () => {
   }, [pathname]);
   const el = React.useRef(null);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-  
+
   React.useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ["Website Development","App Development","Software Development"],
+      strings:
+        import.meta.env.VITE_SITE_NAME === "oraclescript"
+          ? ["Website Development", "App Development", "Software Development"]
+          : [
+              "Website Development",
+              "App Development",
+              "Betting Site Development",
+            ],
       typeSpeed: 50,
       loop: true,
       backSpeed: 50,
@@ -82,10 +89,10 @@ const Home = () => {
             />
           </div>
           {/* --------------animation---------------- */}
-          <div class="absolute w-4 h-4 bg-white rounded-full animate-bubble left-10 bottom-10"></div>
-          <div class="absolute w-6 h-6 bg-white rounded-full animate-bubble left-20 bottom-20 delay-200"></div>
-          <div class="absolute w-3 h-3 bg-white rounded-full animate-bubble left-30 bottom-5 delay-500"></div>
-          <div class="absolute w-5 h-5 bg-white rounded-full animate-bubble left-40 bottom-15 delay-1000"></div>
+          <div className="absolute w-4 h-4 bg-white rounded-full animate-bubble left-10 bottom-10"></div>
+          <div className="absolute w-6 h-6 bg-white rounded-full animate-bubble left-20 bottom-20 delay-200"></div>
+          <div className="absolute w-3 h-3 bg-white rounded-full animate-bubble left-30 bottom-5 delay-500"></div>
+          <div className="absolute w-5 h-5 bg-white rounded-full animate-bubble left-40 bottom-15 delay-1000"></div>
           {/* Hero Text */}
           <div className="w-[100%] md:w-[80%] lg:w-[45%] z-[1]">
             <h2 className="text-[16px] lg:text-[35px] font-[600] text-white mb-[10px] lg:mb-[15px]">
@@ -95,12 +102,11 @@ const Home = () => {
               A Leading Remote Software Development Company In The World.
             </h1>
             <h2 className="text-[20px] lg:text-[40px] font-medium lg:font-semibold text-white mt-5">
-  <span
-    ref={el}
-    className="inline-block border-r-2 border-white min-w-[1em] whitespace-nowrap animate-typing"
-  >
-  </span>
-</h2>
+              <span
+                ref={el}
+                className="inline-block border-r-2 border-white min-w-[1em] whitespace-nowrap animate-typing"
+              ></span>
+            </h2>
 
             <div className="btn mt-[20px] flex justify-start items-center gap-[10px]">
               <button className="px-[25px] lg:px-[38px] flex justify-center items-center gap-[8px] py-[8px] lg:py-[12px] border-[2px] border-white font-[500] bg-btncolor1 text-white rounded-full text-[14px] lg:text-[16px]">
