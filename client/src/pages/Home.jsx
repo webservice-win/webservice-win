@@ -25,7 +25,7 @@ const Home = () => {
   }, [pathname]);
   const el = React.useRef(null);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-
+  
   React.useEffect(() => {
     const typed = new Typed(el.current, {
       strings: ["Website Development","App Development","Software Development"],
@@ -94,9 +94,14 @@ const Home = () => {
             <h1 className="text-[17px] lg:text-[25px] font-[600]  text-white">
               A Leading Remote Software Development Company In The World.
             </h1>
-            <h2 className="text-[20px] lg:text-[40px] font-[500] lg:font-[600] text-white mt-[20px]">
-              <span ref={el}></span>
-            </h2>
+            <h2 className="text-[20px] lg:text-[40px] font-medium lg:font-semibold text-white mt-5">
+  <span
+    ref={el}
+    className="inline-block border-r-2 border-white min-w-[1em] whitespace-nowrap animate-typing"
+  >
+  </span>
+</h2>
+
             <div className="btn mt-[20px] flex justify-start items-center gap-[10px]">
               <button className="px-[25px] lg:px-[38px] flex justify-center items-center gap-[8px] py-[8px] lg:py-[12px] border-[2px] border-white font-[500] bg-btncolor1 text-white rounded-full text-[14px] lg:text-[16px]">
                 Project{" "}
