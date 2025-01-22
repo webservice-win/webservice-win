@@ -239,7 +239,7 @@ const Achievementlist = () => {
                             onClick={() => {
                               delete_member(data._id);
                             }}
-                            className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]"
+                            className="font-medium text-white hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]"
                           >
                             <MdDeleteOutline />
                           </div>
