@@ -217,7 +217,7 @@ const Feedbacklist = () => {
                             )
                           )}
                         </td>
-                        <td className="px-6 py-4 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4 border-b border-gray-200">
                           <button
                             onClick={() => delete_category(data._id)}
                             className="p-[10px] rounded-[5px] bg-red-500 text-white text-[20px]"

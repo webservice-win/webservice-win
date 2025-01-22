@@ -223,7 +223,7 @@ const Accordionlist = () => {
                         <td className="px-6 py-2 flex justify-start items-center gap-[8px]">
                           <NavLink
                             to={`/accordion/edit-accordion/${data._id}`}
-                            className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]"
+                            className="font-medium text-white  hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]"
                           >
                             <FiEdit />
                           </NavLink>
