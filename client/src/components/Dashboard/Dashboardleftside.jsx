@@ -476,7 +476,7 @@ const Dashboardleftside = () => {
         <div className="logo w-full h-[10vh] flex justify-center items-center">
           <img
             className="w-[100px] lg:w-[120px] xl:w-[130px] 2xl:w-[150px] "
-            src="http://localhost:5174/src/assets/logo.png"
+            src={logo}
             alt=""
           />
         </div>
