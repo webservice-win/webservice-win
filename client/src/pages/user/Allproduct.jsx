@@ -14,6 +14,9 @@ import { FiEdit } from "react-icons/fi";
 import Userdashboardleftside from '../../components/Dashboard/Userdashboardleftside';
 import Userheader from '../../components/Dashboard/Userheader';
 import empty_img from "../../assets/empty.png"
+import { FaHeart } from "react-icons/fa";
+import { AiOutlineLike } from "react-icons/ai";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import axios from "axios"
 const Allproduct = () => {
    const navigate=useNavigate();
@@ -28,21 +31,24 @@ const Allproduct = () => {
       }
      })
    },[]);
-        // ---------------all-websites--------------
-const [websites,set_websites]=useState([]);
-const get_website=()=>{
-    axios.get(`${base_url}/admin/all-websites`)
-    .then((res)=>{
-        if(res.data.success){
-            set_websites(res.data.data);
+      // ---------------all-websites--------------
+  const [websites, set_websites] = useState([]);
+
+  const get_website = () => {
+    axios
+      .get(`${base_url}/admin/all-websites`)
+      .then((res) => {
+        if (res.data.success) {
+          set_websites(res.data.data);
         }
-    }).catch((err)=>{
-        console.log(err.name)
-    })
-};
-useEffect(()=>{
-    get_website()
-},[]);
+      })
+      .catch((err) => {
+        console.log(err.name);
+      });
+  };
+  useEffect(() => {
+    get_website();
+  }, []);
 // ----------course searching system
  const [searchQuery, setSearchQuery] = useState("");
   const filteredCourses = websites.filter(websites =>
@@ -92,41 +98,6 @@ websites.unlimitedLicense.toString().includes(searchQuery)
             </ul>
           </div>
           {/* -------------search-box------------------ */}
-     {
-      websites.length > 0 ?       <div className="w-[30%]">
-          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-            Search
-          </label>
-          <div className="relative w-[100%]">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full outline-none px-4 py-[12px] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Search website"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-  :""
-     }
   
   
           {/* -------------search-box------------------ */}
@@ -134,56 +105,140 @@ websites.unlimitedLicense.toString().includes(searchQuery)
          {/* ------------------new customer table----------------- */}
   
      <section className="pt-[40px] pb-[30px]">
-         {
-          websites.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700">
-              <thead className="text-xs text-white uppercase bg-indigo-500 dark:bg-gray-700 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Image</th>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Categry</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Technology</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Demo</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Action</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((data, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700">
-                      <img src={`${base_url}/images/${data.thumbnail}`} alt="Baji Live" className="w-32 h-[80px] rounded-md" />
-                    </td>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.category}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.demoFrontend}
-                    </th>
-                    <td className="px-6 py-2 flex justify-center items-center gap-[8px]">
-                      <NavLink to={`/websites/edit-website/${data._id}`} className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
-                        <FiEdit />
-                      </NavLink>
-                      <div onClick={()=>{delete_Website(data._id)}} className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]">
-                        <MdDeleteOutline />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>:<section className='w-full flex justify-center items-center'>
-               <div>
-                <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />
-                <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Websites are empty!</h2>
-               </div>
-          </section>
-         }
+     {websites.length > 0 ? (
+         <section className="w-full h-auto relative  ">
+           {/* -----------------------bg1-------------- */}
+           {/* <div className='absolute top-0 right-[-80%] '>
+                         <img className='w-[100%] z-[1] rotate-[190deg]' src={bg2} alt="" />
+                        </div> */}
+           {/* ------------------bg1-------------- */}
+           <div className="flex justify-center items-center">
+             <h1 className="px-[20px] lg:px-[25px] rounded-full font-bangla_font text-center w-auto text-[16px] lg:text-[30px] py-[8px] lg:py-[10px] bg-color2 border-[3px] border-white text-white">
+               আমাদের প্রজেক্ট সমূহ
+             </h1>
+           </div>
+           {/* -------------------box------------------- */}
+           <section className="pt-[30px] lg:pt-[50px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-[25px]">
+             {websites.map((data, i) => {
+               return (
+                 <div className="p-[5px] bg-white rounded-[10px]">
+                   <div
+                     key={i}
+                     className="p-[7px] h-[100%] rounded-[10px]  font-poppins group bg-[#010053] overflow-hidden "
+                   >
+                     <div className="w-full h-[200px] lg:h-[300px] rounded-[10px] overflow-hidden ">
+                       <img
+                         className="w-full h-full group-hover:scale-[1.1] group-hover:rotate-[2deg] transition-all duration-200"
+                         src={`${base_url}/images/${data.thumbnail}`}
+                         alt=""
+                       />
+                     </div>
+                     <div className="px-[6px] py-[10px] lg:p-[15px] font-rubik w-full">
+                       {data.title.length > 60 ? (
+                         <NavLink to={`/single-website-details/${data._id}`}>
+                           <h2 className="text-white font-noto-sans text-[16px] hover:underline hover:text-orange-400 cursor-pointer  lg:text-[22px] mb-[15px] font-[600] ">
+                             {data.title.slice(0, 60)}...
+                           </h2>
+                         </NavLink>
+                       ) : (
+                         <NavLink to={`/single-website-details/${data._id}`}>
+                           {" "}
+                           <h2 className="text-[16px] lg:text-[22px] mb-[5px] lg:mb-[15px] hover:underline hover:text-orange-400 font-[600] font-noto-sans text-white">
+                             {data.title}
+                           </h2>
+                         </NavLink>
+                       )}
+                       <div className="mb-[8px] flex gap-[10px] justify-between items-center ">
+                         <h2 className="text-[12px] lg:text-[13px] p-[10px] rounded-full  bg-indigo-800 font-[500] text-white">
+                           Single License:${data.singleLicense}
+                         </h2>
+                         <h2 className="text-[12px] lg:text-[13px] p-[10px] rounded-full bg-indigo-800 font-[500] text-white">
+                           Unlimited License: ${data.unlimitedLicense}
+                         </h2>
+                       </div>
+                       <div className="flex justify-between items-center mt-[20px]">
+                         <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                           <FaHeart className="text-[15px] lg:text-[18px] text-red-600" />
+                           <p>({data?.love}+)</p>
+                         </h2>
+                         <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                           <AiOutlineLike className="text-[20px] text-indigo-300" />
+                           <p>({data?.like}+)</p>
+                         </h2>
+                       </div>
+                       <div className="flex justify-center items-center gap-[15px] mt-[10px] lg:mt-[15px]">
+                         <NavLink
+                           to={`${data.demoFrontend}`}
+                           className="w-[50%]"
+                           target="_blank"
+                         >
+                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] font-[800] hover:bg-red-400 hover:text-white transition-all duration-150 font-bangla_font">
+                             লাইভ ডেমো
+                           </button>
+                         </NavLink>
+                         <NavLink
+                           to={`/single-website-details/${data._id}`}
+                           className="w-[50%]"
+                         >
+                           <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] hover:bg-red-400 hover:text-white font-[800] transition-all duration-150 flex font-bangla_font justify-center items-center gap-[8px]">
+                             বিস্তারিত দেখুন
+                             <FaArrowUpRightFromSquare />
+                           </button>
+                         </NavLink>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               );
+             })}
+           </section>
+           {/* -------------box----------------- */}
+           {/* -------------box----------------- */}
+           <div className="flex w-full items-center justify-center mt-[50px] z-[100]">
+             <button className="px-[30px] py-[12px] rounded-full text-white bg-indigo-800 border-[2px] border-white font-poppins text-[16px]">
+               Load more
+             </button>
+           </div>
+ 
+           {/* -----------line---------------- */}
+           <div className="flex items-center justify-center mt-[50px] lg:mt-[80px]">
+             {/* Left Line */}
+             <div className="flex-grow border-t-[1px] border-gradient-to-r from-indigo-400 via-indigo-500 to-indigo-600 sm:border-t-[1px]" />
+ 
+             {/* Left Dots */}
+             <div className="flex items-center space-x-1 mx-3 sm:space-x-2 md:space-x-3 lg:space-x-4">
+               <span className="h-[3px] w-[3px] bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[6px] w-[6px] bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[8px] w-[8px] bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[10px] w-[10px] bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[12px] w-[12px] bg-gradient-to-r from-indigo-700 to-indigo-900 rounded-full transition-all duration-300 transform hover:scale-125" />
+             </div>
+ 
+             {/* Center Diamond */}
+             <div className="relative flex items-center justify-center mx-3 sm:mx-5 md:mx-7">
+               {/* Outer Diamond */}
+               <div className="w-8 h-8 border-[1px] border-gradient-to-r from-indigo-500 to-indigo-700 transform rotate-45 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16" />
+               {/* Inner Indigo Diamond */}
+               <div className="absolute w-4 h-4 bg-gradient-to-r from-indigo-600 to-indigo-800 transform rotate-45 sm:w-6 sm:h-6 md:w-8 md:h-8 lg:w-10 lg:h-10" />
+             </div>
+ 
+             {/* Right Dots */}
+             <div className="flex items-center space-x-1 mx-3 sm:space-x-2 md:space-x-3 lg:space-x-4">
+               <span className="h-[12px] w-[12px] bg-gradient-to-r from-indigo-700 to-indigo-900 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[10px] w-[10px] bg-gradient-to-r from-indigo-600 to-indigo-800 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[8px] w-[8px] bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[6px] w-[6px] bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full transition-all duration-300 transform hover:scale-125" />
+               <span className="h-[3px] w-[3px] bg-gradient-to-r from-indigo-300 to-indigo-500 rounded-full transition-all duration-300 transform hover:scale-125" />
+             </div>
+ 
+             {/* Right Line */}
+             <div className="flex-grow border-t-[1px] border-gradient-to-l from-indigo-400 via-indigo-500 to-indigo-600 sm:border-t-[1px]" />
+           </div>
+         </section>
+       ) : (
+         ""
+       )}
+  
         </section>
          {/* ------------------------new customer table-------------------- */}
          </section>

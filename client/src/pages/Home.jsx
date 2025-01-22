@@ -28,7 +28,7 @@ const Home = () => {
 
   React.useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ["Betting Web Development"],
+      strings: ["Website Development","App Development","Software Development"],
       typeSpeed: 50,
       loop: true,
       backSpeed: 50,
