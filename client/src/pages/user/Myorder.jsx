@@ -133,7 +133,7 @@ useEffect(()=>{
      <section className="pt-[40px] pb-[30px]">
          {
           orders.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700 overflow-hidden">
   <thead className="text-xs text-white uppercase bg-indigo-600 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
     <tr>
       <th
@@ -165,9 +165,6 @@ useEffect(()=>{
         className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
       >
         Download
-      </th>
-      <th scope="col" className="px-6 py-[15px] text-[15px] font-semibold">
-        Action
       </th>
     </tr>
   </thead>
@@ -203,12 +200,15 @@ useEffect(()=>{
         >
           {data.status}
         </td>
-        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+        {
+          data.status=="completed"?      <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
           {/* Download link or button */}
-        </td>
-        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white">
-          {/* Action buttons like edit/delete */}
-        </td>
+          <a href={`https://i.imgur.com/pScFoho.png`} download className='text-indigo-400 underline'>
+            Download Zip File
+          </a>
+        </td>:""
+        }
+   
       </tr>
     ))}
   </tbody>

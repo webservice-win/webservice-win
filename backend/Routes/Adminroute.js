@@ -18,6 +18,9 @@ const accordion_model = require("../Models/Accordion");
 const fs=require("fs");
 const member_model = require("../Models/Memebermodel");
 const achievement_model = require("../Models/Addachievement");
+const payment_method_model = require("../Models/paymentMethodSchema ");
+const tutorial_model = require("../Models/Tutorial");
+const order_model = require("../Models/Ordermodel");
 
 
 // ------------file-upload----------
@@ -335,6 +338,47 @@ admin_route.delete("/delete-video-review/:id",ensureAuthenticated,async(req,res)
 admin_route.get("/all-video-review",async(req,res)=>{
     try {
        const video_review=await video_review_model.find();
+       res.send({success:true,data:video_review})
+    } catch (error) {
+        console.log(error)
+    }
+});
+// ------------------add-tutorial-----------------
+admin_route.post("/add-tutorial",uploadimage.single("file"),ensureAuthenticated,async(req,res)=>{
+    try {
+         const {videoUrl,category,title}=req.body;
+         console.log(req.body)
+         if(!videoUrl){
+               return res.send({success:false,message:"Please enter information!"})
+         }
+         const create_tutorial=new tutorial_model({
+            thumbnail:req.file.filename,tutorial_link:videoUrl,category,title
+         });
+         if(create_tutorial){
+            create_tutorial.save();
+               return res.send({success:true,message:"Video Review has been created!"})
+
+         }
+               return res.send({success:false,message:"Something went wrong!"})
+       
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.delete("/delete-tutorial/:id",ensureAuthenticated,async(req,res)=>{
+        try{
+          const delete_video_review=await tutorial_model.findByIdAndDelete({_id:req.params.id});
+          if(!delete_video_review){
+           return  res.send({success:false,message:"Video review  did not find!"})
+          };
+          res.send({success:true,message:"Review has been deleted!"})
+        }catch(err){
+            console.log(err)
+        }
+});
+admin_route.get("/all-tutorials",async(req,res)=>{
+    try {
+       const video_review=await tutorial_model.find();
        res.send({success:true,data:video_review})
     } catch (error) {
         console.log(error)
@@ -704,6 +748,106 @@ admin_route.get("/all-achievement",async(req,res)=>{
     try {
        const achievement_data=await achievement_model.find();
        res.send({success:true,data:achievement_data})
+    } catch (error) {
+        console.log(error)
+    }
+});
+// -----------------add payment method------------------
+// Add a new payment method
+admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res) => {
+    try {
+        console.log(req.file)
+      const {
+        gatewayName,
+        currencyName,
+        rate,
+        minAmount,
+        maxAmount,
+        fixedCharge,
+        percentCharge,
+        depositInstruction,
+        userData,
+      } = req.body;
+      
+      console.log(userData)
+      const newPaymentMethod = new payment_method_model({
+        gatewayName,
+        currency:currencyName,
+        rate,
+        minAmount,
+        maxAmount,
+        fixedCharge,
+        percentCharge,
+        depositInstruction,
+        userData:"sdfsdf",
+        image: req.file.filename,
+      });
+  
+      await newPaymentMethod.save();
+      res.status(201).json({ message: 'Payment method added successfully!' });
+    } catch (error) {
+        console.log(error)
+      res.send({ message: 'Error adding payment method', error });
+    }
+  });
+  
+  // Fetch all payment methods
+  admin_route.get('/payment-methods', async (req, res) => {
+    try {
+      const paymentMethods = await payment_method_model.find();
+      res.status(200).json(paymentMethods);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching payment methods', error });
+    }
+  });
+  
+  // Delete a payment method
+  admin_route.delete('/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await payment_method_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Payment method deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+//   ------------------orders--------------
+admin_route.get("/all-orders",async(req,res)=>{
+    try {
+        const order_data=await order_model.find();
+        if(order_data){
+               res.send({success:true,data:order_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.put("/update-order-status/:id",async(req,res)=>{
+    try {
+        console.log(req.body.status)
+        const order_data=await order_model.findByIdAndUpdate({_id:req.params.id},{$set:{status:req.body.status}});
+        if(order_data){
+               res.send({success:true,message:"Status has been updated",data:order_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+admin_route.delete('/delete-order/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await order_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Order deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+  admin_route.get("/single-order/:id",async(req,res)=>{
+    try {
+        const order_data=await order_model.findById({_id:req.params.id});
+        if(order_data){
+               res.send({success:true,data:order_data})
+        }
     } catch (error) {
         console.log(error)
     }

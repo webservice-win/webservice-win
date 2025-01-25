@@ -1,6 +1,10 @@
 const mongoose=require("mongoose");
 
 const order_schema=new mongoose.Schema({
+  invoice_id:{
+    type:String,
+    required:true,
+  },
   product_name:{
     type:String,
     required:true,
@@ -31,7 +35,13 @@ const order_schema=new mongoose.Schema({
    },
    status:{
     type:String,
-    default:"pending"
+    enum: [
+      "pending",
+      "processing",
+      "hold",
+      "completed",
+      "suspended",
+    ],
    }
 },{timestamps:true});
 
