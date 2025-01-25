@@ -18,6 +18,8 @@ import axios from "axios"
 const Myorder = () => {
    const navigate=useNavigate();
      const base_url=import.meta.env.VITE_API_KEY_Base_URL;
+   const user_info=JSON.parse(localStorage.getItem("user_data"));
+
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
         useEffect(()=>{
      window.addEventListener("scroll",()=>{
@@ -29,12 +31,12 @@ const Myorder = () => {
      })
    },[]);
         // ---------------all-websites--------------
-const [websites,set_websites]=useState([]);
+const [orders,set_orders]=useState([]);
 const get_website=()=>{
-    axios.get(`${base_url}/admin/all-websites`)
+    axios.get(`${base_url}/user-order/${user_info._id}`)
     .then((res)=>{
         if(res.data.success){
-            set_websites(res.data.data);
+          set_orders(res.data.data);
         }
     }).catch((err)=>{
         console.log(err.name)
@@ -45,12 +47,12 @@ useEffect(()=>{
 },[]);
 // ----------course searching system
  const [searchQuery, setSearchQuery] = useState("");
-  const filteredCourses = websites.filter(websites =>
-websites.category.toString().includes(searchQuery) ||
-websites.technology.toString().includes(searchQuery) ||
-websites.title.toString().includes(searchQuery) ||
-websites.singleLicense.toString().includes(searchQuery) || 
-websites.unlimitedLicense.toString().includes(searchQuery) 
+  const filteredCourses = orders.filter(orders =>
+    orders.product_price.toString().includes(searchQuery) ||
+    orders.provider_name.toString().includes(searchQuery) ||
+    orders.payeer_number.toString().includes(searchQuery) ||
+    orders.transiction.toString().includes(searchQuery) || 
+    orders.status.toString().includes(searchQuery) 
 );
   // ------------delete course-------------
         const delete_Website=(id)=>{
@@ -88,7 +90,7 @@ websites.unlimitedLicense.toString().includes(searchQuery)
           </div>
           {/* -------------search-box------------------ */}
      {
-      websites.length > 0 ?       <div className="w-[30%]">
+      orders.length > 0 ?       <div className="w-[30%]">
           <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
             Search
           </label>
@@ -130,48 +132,88 @@ websites.unlimitedLicense.toString().includes(searchQuery)
   
      <section className="pt-[40px] pb-[30px]">
          {
-          websites.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700">
-              <thead className="text-xs text-white uppercase bg-indigo-500 dark:bg-gray-700 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Image</th>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Categry</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Technology</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Demo</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Action</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((data, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700">
-                      <img src={`${base_url}/images/${data.thumbnail}`} alt="Baji Live" className="w-32 h-[80px] rounded-md" />
-                    </td>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.category}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.demoFrontend}
-                    </th>
-                    <td className="px-6 py-2 flex justify-center items-center gap-[8px]">
-                      <NavLink to={`/websites/edit-website/${data._id}`} className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
-                        <FiEdit />
-                      </NavLink>
-                      <div onClick={()=>{delete_Website(data._id)}} className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]">
-                        <MdDeleteOutline />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          orders.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
+           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+  <thead className="text-xs text-white uppercase bg-indigo-600 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
+    <tr>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Product Name
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Price
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Sender Number
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Status
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Download
+      </th>
+      <th scope="col" className="px-6 py-[15px] text-[15px] font-semibold">
+        Action
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredCourses.map((data, index) => (
+      <tr
+        key={index}
+        className={`${
+          index % 2 === 0
+            ? "bg-white dark:bg-gray-800"
+            : "bg-gray-50 dark:bg-gray-900"
+        } border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700`}
+      >
+        <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700 font-bangla_font text-[17px]">
+          {data.product_name}
+        </td>
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+          {data.product_price}
+        </td>
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+          {data.payeer_number}
+        </td>
+        <td
+          className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 rounded-lg text-center ${
+            data.status === "pending"
+              ? "text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
+              : data.status === "completed"
+              ? "text-green-600  dark:bg-green-900 dark:text-green-300"
+              : data.status === "failed"
+              ? "text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300"
+              : "text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400"
+          }`}
+        >
+          {data.status}
+        </td>
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+          {/* Download link or button */}
+        </td>
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white">
+          {/* Action buttons like edit/delete */}
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           </div>:<section className='w-full flex justify-center items-center'>
                <div>
                 <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />

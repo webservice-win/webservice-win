@@ -79,11 +79,11 @@ const Hproject2 = () => {
                         </h2>
                       </div>
                       <div className="flex justify-between items-center mt-[20px]">
-                        <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                        <h2 className="text-[15px] lg:text-[17px] font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
                           <FaHeart className="text-[15px] lg:text-[18px] text-red-600" />
                           <p>({data?.love}+)</p>
                         </h2>
-                        <h2 className="text-[15px] lg:text-[17px] text-white font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
+                        <h2 className="text-[15px] lg:text-[17px] font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
                           <AiOutlineLike className="text-[20px] text-indigo-300" />
                           <p>({data?.like}+)</p>
                         </h2>

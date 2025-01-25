@@ -53,6 +53,8 @@ import Wallet from './pages/user/Wallet'
 import Allcourse from './pages/user/Allcourse'
 import Allproduct from './pages/user/Allproduct'
 import Tutorial from './pages/user/Tutorial'
+import Checkout from './pages/Checkout'
+import Confirmorder from './pages/Confirmorder'
 const App = () => {
   return (
     <BrowserRouter>
@@ -119,6 +121,8 @@ const App = () => {
         <Route exact path="/all-course"element={<Allcourse/>}/>
         <Route exact path="/all-product"element={<Allproduct/>}/>
         <Route exact path="/tutorial"element={<Tutorial/>}/>
+        <Route exact path="/checkout/:id"element={<Checkout/>}/>
+        <Route exact path="/confirm-order/:provider"element={<Confirmorder/>}/>
 
 
         {/* ------------------user dashboard-------------------------------- */}

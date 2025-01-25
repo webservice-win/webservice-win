@@ -1,13 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Contextapi } from '../../context/Appcontext';
-import Dashboardleftside from '../../components/Dashboard/Dashboardleftside';
-import Dashboradheader from '../../components/Dashboard/Dashboardheader';
-import { GrLineChart } from "react-icons/gr";
-import { FaTrophy } from "react-icons/fa";
-import { SiSololearn } from "react-icons/si";
-import { CgWebsite } from "react-icons/cg";
-import { FaRegAddressCard } from "react-icons/fa";
+import { FaWallet, FaMoneyBillWave, FaHistory, FaExchangeAlt } from "react-icons/fa";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
@@ -15,6 +10,7 @@ import Userdashboardleftside from '../../components/Dashboard/Userdashboardlefts
 import Userheader from '../../components/Dashboard/Userheader';
 import empty_img from "../../assets/empty.png"
 import axios from "axios"
+
 const Wallet = () => {
    const navigate=useNavigate();
      const base_url=import.meta.env.VITE_API_KEY_Base_URL;
@@ -28,6 +24,24 @@ const Wallet = () => {
       }
      })
    },[]);
+   const [showModal, setShowModal] = useState(false); // State to control modal visibility
+   const [depositAmount, setDepositAmount] = useState(''); // State to store deposit amount
+ 
+   // Toggle modal visibility
+   const handleDepositClick = () => {
+     setShowModal(true);
+   };
+ 
+   // Close modal
+   const handleCloseModal = () => {
+     setShowModal(false);
+   };
+ 
+   // Handle deposit form submission
+   const handleDepositSubmit = () => {
+     console.log('Deposit amount:', depositAmount);
+     setShowModal(false); // Close modal after submission
+   };
         // ---------------all-websites--------------
 const [websites,set_websites]=useState([]);
 const get_website=()=>{
@@ -92,41 +106,7 @@ websites.unlimitedLicense.toString().includes(searchQuery)
             </ul>
           </div>
           {/* -------------search-box------------------ */}
-     {
-      websites.length > 0 ?       <div className="w-[30%]">
-          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-            Search
-          </label>
-          <div className="relative w-[100%]">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full outline-none px-4 py-[12px] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Search website"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-        </div>
-  :""
-     }
+
   
   
           {/* -------------search-box------------------ */}
@@ -134,56 +114,80 @@ websites.unlimitedLicense.toString().includes(searchQuery)
          {/* ------------------new customer table----------------- */}
   
      <section className="pt-[40px] pb-[30px]">
-         {
-          websites.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700">
-              <thead className="text-xs text-white uppercase bg-indigo-500 dark:bg-gray-700 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Image</th>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Categry</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Technology</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Demo</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Action</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((data, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700">
-                      <img src={`${base_url}/images/${data.thumbnail}`} alt="Baji Live" className="w-32 h-[80px] rounded-md" />
-                    </td>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.category}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.demoFrontend}
-                    </th>
-                    <td className="px-6 py-2 flex justify-center items-center gap-[8px]">
-                      <NavLink to={`/websites/edit-website/${data._id}`} className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
-                        <FiEdit />
-                      </NavLink>
-                      <div onClick={()=>{delete_Website(data._id)}} className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]">
-                        <MdDeleteOutline />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>:<section className='w-full flex justify-center items-center'>
-               <div>
-                <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />
-                <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Websites are empty!</h2>
-               </div>
-          </section>
-         }
+     <div>
+      <div className="w-full bg-white shadow-2xl rounded-2xl p-8">
+        {/* Wallet Overview */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 flex items-center">
+            <FaWallet className="mr-3 text-purple-500" /> My Wallet
+          </h1>
+          <button
+            className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold rounded-xl hover:opacity-90"
+            onClick={handleDepositClick}
+          >
+            Add Funds
+          </button>
+        </div>
+
+        {/* Wallet Balance */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="p-6 bg-gradient-to-r from-blue-100 to-blue-200 rounded-xl shadow-md">
+            <p className="text-sm text-gray-600">Current Balance</p>
+            <h2 className="text-4xl font-bold text-blue-700">$1,250.00</h2>
+          </div>
+          <div className="p-6 bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-md">
+            <p className="text-sm text-gray-600">Withdrawable Balance</p>
+            <h2 className="text-4xl font-bold text-green-700">$950.00</h2>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <button className="flex items-center justify-center p-5 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-xl hover:opacity-90 shadow-lg">
+            <FaMoneyBillWave className="mr-2 text-xl" /> Deposit
+          </button>
+          <button className="flex items-center justify-center p-5 bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold rounded-xl hover:opacity-90 shadow-lg">
+            <AiOutlinePlus className="mr-2 text-xl" /> Add Funds
+          </button>
+          <button className="flex items-center justify-center p-5 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-xl hover:opacity-90 shadow-lg">
+            <AiOutlineMinus className="mr-2 text-xl" /> Withdraw
+          </button>
+          <button className="flex items-center justify-center p-5 bg-gradient-to-r from-gray-500 to-gray-700 text-white font-semibold rounded-xl hover:opacity-90 shadow-lg">
+            Settings
+          </button>
+        </div>
+      </div>
+
+      {/* Modal for Deposit */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-xl shadow-xl w-96">
+            <h2 className="text-2xl font-bold mb-4">Deposit Funds</h2>
+            <input
+              type="number"
+              value={depositAmount}
+              onChange={(e) => setDepositAmount(e.target.value)}
+              placeholder="Enter amount"
+              className="w-full p-3 mb-4 border rounded-md"
+            />
+            <div className="flex justify-between">
+              <button
+                onClick={handleCloseModal}
+                className="px-6 py-2 bg-gray-500 text-white rounded-xl hover:opacity-90"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDepositSubmit}
+                className="px-6 py-2 bg-blue-500 text-white rounded-xl hover:opacity-90"
+              >
+                Deposit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
         </section>
          {/* ------------------------new customer table-------------------- */}
          </section>
