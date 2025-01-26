@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import { FaCheck } from "react-icons/fa";
 import { FaCheckCircle, FaWhatsapp } from "react-icons/fa";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import DOMPurify from "dompurify";
@@ -24,6 +24,8 @@ const Details = () => {
   }, [pathname]);
   const { id } = useParams();
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
+  const user_info = JSON.parse(localStorage.getItem("user_data"));
+  const navigate=useNavigate();
   // ---------------all-payment--------------
   const [features, set_features] = useState([]);
   const [oursite, set_oursite] = useState([]);
@@ -90,7 +92,6 @@ const Details = () => {
     get_websites();
   }, []);
   const [items, set_item] = useState([]);
-
   const get_website = () => {
     axios
       .get(`${base_url}/admin/all-websites`)
@@ -106,6 +107,28 @@ const Details = () => {
   useEffect(() => {
     get_website();
   }, []);
+  // --------------------------buy1------------
+  const handle_buy1=(id2)=>{
+    if(user_info){
+         navigate(`/checkout/${id2}?product_id=${id}`)
+    }else{
+      navigate("/login")
+    }
+  }
+  const handle_buy2=()=>{
+    if(user_info){
+      alert("hello")
+ }else{
+   navigate("/login")
+ }
+  }
+  const handle_buy3=()=>{
+    if(user_info){
+      alert("hello")
+ }else{
+   navigate("/login")
+ }
+  }
   return (
     <section className="w-full overflow-hidden font-poppins">
       <section className="w-full h-[40vh] lg:h-[65vh] overflow-hidden">
@@ -190,7 +213,7 @@ const Details = () => {
                     </li>
                   ))}
                 </ul>
-                <button className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
+                <button onClick={()=>{handle_buy1(1)}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
                   Buy Now
                 </button>
               </div>
@@ -221,7 +244,7 @@ const Details = () => {
                     </li>
                   ))}
                 </ul>
-                <button className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
+                <button onClick={()=>{handle_buy2()}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
                   Buy Now
                 </button>
               </div>
@@ -253,7 +276,7 @@ const Details = () => {
                     </li>
                   ))}
                 </ul>
-                <button className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
+                <button onClick={()=>{handle_buy3()}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
                   Buy Now
                 </button>
               </div>

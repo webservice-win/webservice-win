@@ -35,11 +35,17 @@ export default {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
+        jump: {
+          '0%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
+          '100%': { transform: 'translateY(0)' },
+        },
       },
       animation: {
         bubble: 'bubble 3s ease-in-out infinite',
         'shimmer': 'shimmer 2s infinite',
        'spin-slow': 'spin 1s linear infinite', // Slow down the spin
+       jump: 'jump 0.8s infinite',
       },
       animationDelay: {
         '100': '100ms',

@@ -23,6 +23,7 @@ router.post('/signup',async(req,res)=>{
     try {
         const { name, email, password } = req.body;
         const user = await UserModel.findOne({ email });
+        console.log(name,email,password)
         if (user) {
             return res.json({ message: 'User is already exist, you can login', success: false });
         }
@@ -33,7 +34,7 @@ router.post('/signup',async(req,res)=>{
                 message: "Signup successfully",
                 success: true
             })
-        console.log(name)
+        console.log(userModel)
     } catch (err) {
         res.status(500)
             .json({

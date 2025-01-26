@@ -1,13 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Contextapi } from '../../context/Appcontext';
-import Dashboardleftside from '../../components/Dashboard/Dashboardleftside';
-import Dashboradheader from '../../components/Dashboard/Dashboardheader';
-import { GrLineChart } from "react-icons/gr";
-import { FaTrophy } from "react-icons/fa";
-import { SiSololearn } from "react-icons/si";
-import { CgWebsite } from "react-icons/cg";
-import { FaRegAddressCard } from "react-icons/fa";
+import { FaWallet, FaMoneyBillWave, FaHistory, FaExchangeAlt } from "react-icons/fa";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
@@ -15,185 +10,315 @@ import Userdashboardleftside from '../../components/Dashboard/Userdashboardlefts
 import Userheader from '../../components/Dashboard/Userheader';
 import empty_img from "../../assets/empty.png"
 import axios from "axios"
-const Wallet = () => {
-   const navigate=useNavigate();
-     const base_url=import.meta.env.VITE_API_KEY_Base_URL;
-     const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
-        useEffect(()=>{
-     window.addEventListener("scroll",()=>{
-      if(window.scrollY > 100){
-             setactivetopbar(true)
-      }else{
-             setactivetopbar(false)
-      }
-     })
-   },[]);
-        // ---------------all-websites--------------
-const [websites,set_websites]=useState([]);
-const get_website=()=>{
-    axios.get(`${base_url}/admin/all-websites`)
-    .then((res)=>{
-        if(res.data.success){
-            set_websites(res.data.data);
-        }
-    }).catch((err)=>{
-        console.log(err.name)
-    })
-};
-useEffect(()=>{
-    get_website()
-},[]);
-// ----------course searching system
- const [searchQuery, setSearchQuery] = useState("");
-  const filteredCourses = websites.filter(websites =>
-websites.category.toString().includes(searchQuery) ||
-websites.technology.toString().includes(searchQuery) ||
-websites.title.toString().includes(searchQuery) ||
-websites.singleLicense.toString().includes(searchQuery) || 
-websites.unlimitedLicense.toString().includes(searchQuery) 
-);
-  // ------------delete course-------------
-        const delete_Website=(id)=>{
-  const confirm_box=confirm("Are you sure?");
-   if(confirm_box){
-   axios.delete(`${base_url}/admin/delete-website/${id}`, {
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        })
-    .then((res)=>{
-        if(res.data.success){
-            Swal.fire("Success", `${res.data.message}`, "success");
-             get_website();
-        }
-    }).catch((err)=>{
-       console.log(err.name)
-    })
-   }
+import { FaArrowRight } from "react-icons/fa";
+import { FaImage } from "react-icons/fa";
 
-}
+// DepositTab component for switching between BKash, Nagad, and Rocket
+const DepositTab = ({ name, isActive, onClick }) => {
   return (
-    <section className='w-full h-[100vh] flex font-poppins'>
-  <section className='w-full h-[100vh] flex font-poppins'>
-        <section className={activesidebar ? 'w-0 h-[100vh] transition-all duration-300 overflow-hidden':'w-0 xl:w-[20%] transition-all duration-300 h-[100vh]'}>
-            <Userdashboardleftside/>
-        </section>
-        <section className={activesidebar ? 'w-[100%] h-[100vh] overflow-y-auto transition-all duration-300':' transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
-        <Userheader/> 
-       {/* ----------------box-------------- */}
-     <section className='w-[100%] m-auto py-[20px] xl:py-[40px] px-[30px]'>
-         <div className='w-full flex justify-between items-center'>
-          <div>
-                <h1 className='text-[20px] lg:text-[20px] font-[600] mb-[8px]'>My Wallet</h1>
-            <ul className='flex justify-center items-center gap-[10px] text-neutral-500 text-[14px] font-[500]'>
-               <li>Dashboard</li>
-              <li><IoIosArrowForward/></li>
-              <li>My Wallet</li>
-            </ul>
-          </div>
-          {/* -------------search-box------------------ */}
-     {
-      websites.length > 0 ?       <div className="w-[30%]">
-          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-            Search
+    <button
+      onClick={onClick}
+      className={`w-full px-4 py-2 rounded-md border-2 ${
+        isActive ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'
+      }`}
+    >
+      {name.charAt(0).toUpperCase() + name.slice(1)}
+    </button>
+  );
+};
+
+// DepositForm for BKash
+const DepositFormBKash = () => {
+  const [senderNumber, setSenderNumber] = useState('');
+  const [trxId, setTrxId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const searchParams = new URLSearchParams(window.location.search); // For extracting price or other query params
+
+  const handlePayNow = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const validationErrors = {};
+    if (!senderNumber) validationErrors.senderNumber = "Sender's Bkash number is required.";
+    if (!trxId) validationErrors.trxId = 'Transaction ID is required.';
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post('/api/pay', {
+        senderNumber,
+        trxId,
+        method: 'bkash',
+      });
+      console.log(response.data); // Handle success
+      setLoading(false);
+    } catch (error) {
+      console.error('Payment error', error);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form
+      className="w-full bg-white rounded-lg shadow-lg p-6"
+      onSubmit={handlePayNow}
+    >
+
+      {/* Payment Instructions */}
+      <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-lg mb-6">
+        <p className="text-center mb-2 font-semibold">
+          এই বিকাশ নাম্বারে টাকা পাঠানোর পর মানি সেন্ডার নাম্বার এবং ইনভয়েস
+          নম্বর লিখে সাবমিট করুন
+        </p>
+        <img
+          src="https://i.imgur.com/pScFoho.png"
+          alt="Bkash Steps"
+          className="rounded-lg h-[350px] w-full"
+        />
+      </div>
+
+      {/* Sender Input */}
+      <div className="w-full flex justify-center items-center gap-[6px]">
+        <div className="mb-4 w-[50%]">
+          <label
+            htmlFor="senderNumber"
+            className="block text-gray-700 font-medium mb-2"
+          >
+            Sender's Bkash Number
           </label>
-          <div className="relative w-[100%]">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg
-                className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              </svg>
-            </div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full outline-none px-4 py-[12px] ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:placeholder-gray-400 dark:text-white"
-              placeholder="Search website"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+          <input
+            type="text"
+            id="senderNumber"
+            value={senderNumber}
+            onChange={(e) => setSenderNumber(e.target.value)}
+            placeholder="Enter your Bkash number"
+            className="w-full p-3 border border-gray-300 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.senderNumber && (
+            <p className="text-red-500 text-sm mt-1">{errors.senderNumber}</p>
+          )}
         </div>
-  :""
-     }
-  
-  
-          {/* -------------search-box------------------ */}
-         </div>
-         {/* ------------------new customer table----------------- */}
-  
-     <section className="pt-[40px] pb-[30px]">
-         {
-          websites.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700">
-              <thead className="text-xs text-white uppercase bg-indigo-500 dark:bg-gray-700 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-                <tr>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Image</th>
-                  <th scope="col" className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Categry</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Technology</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Demo</th>
-                  <th scope="col" className="px-6 py-3 border-r border-gray-200 dark:border-gray-700 text-[15px] font-[500] text-nowrap">Action</th>
-                  <th scope="col" className="px-6 py-3">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCourses.map((data, index) => (
-                  <tr key={index} className="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700">
-                      <img src={`${base_url}/images/${data.thumbnail}`} alt="Baji Live" className="w-32 h-[80px] rounded-md" />
-                    </td>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.category}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.technology}
-                    </th>
-                    <th scope="row" className="px-6 py-2 text-[16px]  font-[500] whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-                      {data.demoFrontend}
-                    </th>
-                    <td className="px-6 py-2 flex justify-center items-center gap-[8px]">
-                      <NavLink to={`/websites/edit-website/${data._id}`} className="font-medium text-white dark:text-blue-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
-                        <FiEdit />
-                      </NavLink>
-                      <div onClick={()=>{delete_Website(data._id)}} className="font-medium text-white dark:text-red-500 hover:underline p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]">
-                        <MdDeleteOutline />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>:<section className='w-full flex justify-center items-center'>
-               <div>
-                <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />
-                <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Websites are empty!</h2>
-               </div>
-          </section>
-         }
-        </section>
-         {/* ------------------------new customer table-------------------- */}
-         </section>
-       {/* ----------------box-------------- */}
+        <div className="mb-4 w-[50%]">
+          <label htmlFor="trxId" className="block text-gray-700 font-medium mb-2">
+            TRXID
+          </label>
+          <input
+            type="text"
+            id="trxId"
+            value={trxId}
+            onChange={(e) => setTrxId(e.target.value)}
+            placeholder="Enter your Transaction ID"
+            className="w-full p-3 border border-gray-300 rounded-[5px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {errors.trxId && (
+            <p className="text-red-500 text-sm mt-1">{errors.trxId}</p>
+          )}
+        </div>
+      </div>
 
-        </section>
-        </section>
+      {/* Pay Now Button */}
+      <button
+        type="submit"
+        className={`w-full ${
+          loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+        } text-white font-semibold py-3 rounded-lg transition`}
+        disabled={loading}
+      >
+        {loading ? 'Processing...' : 'Pay Now'}
+      </button>
+    </form>
+  );
+};
 
-     </section>
-  )
-}
 
-export default Wallet
+// DepositForm for Nagad
+const DepositFormNagad = () => {
+  const [agentNumber, setAgentNumber] = useState('');
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/deposit', {
+        agentNumber,
+        amount,
+        description,
+        method: 'nagad',
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error in deposit transaction', error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+      <h2 className="text-xl font-semibold mb-4">Deposit via Nagad</h2>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Agent Number</label>
+        <input
+          type="text"
+          value={agentNumber}
+          onChange={(e) => setAgentNumber(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter agent number"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Amount</label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter amount"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter description"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white py-2 rounded-md flex justify-between items-center"
+      >
+        Submit <FaArrowRight />
+      </button>
+    </form>
+  );
+};
+
+// DepositForm for Rocket
+const DepositFormRocket = () => {
+  const [agentNumber, setAgentNumber] = useState('');
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/deposit', {
+        agentNumber,
+        amount,
+        description,
+        method: 'rocket',
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error in deposit transaction', error);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
+      <h2 className="text-xl font-semibold mb-4">Deposit via Rocket</h2>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Agent Number</label>
+        <input
+          type="text"
+          value={agentNumber}
+          onChange={(e) => setAgentNumber(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter agent number"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Amount</label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter amount"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2">Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+          placeholder="Enter description"
+        />
+      </div>
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white py-2 rounded-md flex justify-between items-center"
+      >
+        Submit <FaArrowRight />
+      </button>
+    </form>
+  );
+};
+
+const Wallet = () => {
+  const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
+  const [activeTab, setActiveTab] = useState('bkash');
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <section className="w-full h-[100vh] flex font-poppins">
+      <section className={activesidebar ? 'w-0 h-[100vh] transition-all duration-300 overflow-hidden' : 'w-0 xl:w-[20%] transition-all duration-300 h-[100vh]'}>
+        <Userdashboardleftside />
+      </section>
+      <section className={activesidebar ? 'w-[100%] h-[100vh] overflow-y-auto transition-all duration-300' : ' transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
+        <Userheader />
+        <section className="w-[100%] m-auto py-[20px] xl:py-[40px] px-[30px]">
+          <div className="w-full flex justify-between items-center">
+            <div>
+              <h1 className="text-[20px] lg:text-[20px] font-[600] mb-[8px]">My Wallet</h1>
+              <ul className="flex justify-center items-center gap-[10px] text-neutral-500 text-[14px] font-[500]">
+                <li>Dashboard</li>
+                <li><FaArrowRight /></li>
+                <li>My Wallet</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Deposit Balance Box at the top */}
+          <div className="bg-blue-500 text-white p-6 rounded-lg shadow-md mb-6">
+            <h1 className="text-2xl font-semibold">Wallet</h1>
+            <div className="text-lg mt-4">
+              Deposit Amount: <span className="font-bold">$100</span>
+            </div>
+          </div>
+
+          {/* Main layout: Left - Deposit tabs, Right - Deposit Form */}
+          <div className="flex space-x-6">
+            {/* Left side: Deposit Tabs */}
+            <div className="w-1/4">
+              <div className="space-y-4">
+                <DepositTab name="bkash" isActive={activeTab === 'bkash'} onClick={() => handleTabClick('bkash')} />
+                <DepositTab name="nagad" isActive={activeTab === 'nagad'} onClick={() => handleTabClick('nagad')} />
+                <DepositTab name="rocket" isActive={activeTab === 'rocket'} onClick={() => handleTabClick('rocket')} />
+              </div>
+            </div>
+
+            {/* Right side: Deposit Form */}
+            <div className="w-3/4 flex flex-col space-y-6">
+              {activeTab === 'bkash' && <DepositFormBKash />}
+              {activeTab === 'nagad' && <DepositFormNagad />}
+              {activeTab === 'rocket' && <DepositFormRocket />}
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+  );
+};
+
+export default Wallet;
