@@ -3,7 +3,19 @@ const { model } = require("mongoose");
 const order_model = require("../Models/Ordermodel");
 const tutorial_model = require("../Models/Tutorial");
 const user_route=express();
+const multer=require("multer")
+// ------------file-upload----------
+const storage=multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,"./public/images")
+    },
+    filename:function(req,file,cb){
+        cb(null,`${Date.now()}_${file.originalname}`)
+    }
 
+
+});
+const uploadimage=multer({storage:storage});
 // -----------------------user dashboard--------------------
 user_route.get("/dashboard",(req,res)=>{
     try {
@@ -15,6 +27,7 @@ user_route.get("/dashboard",(req,res)=>{
 // -=-------------------order-----------------------
 // GET /dashboard route
 const crypto = require('crypto');
+const deposit_model = require("../Models/Depositmodel");
 
 user_route.post("/product-order", async (req, res) => {
   try {
@@ -82,5 +95,99 @@ user_route.get("/all-tutorials",async(req,res)=>{
   }
 });
 // ------------------------------
+// Route to create a deposit
+// Get all deposits or filter by userId or gatewayName
+const generateInvoiceId = async () => {
+  // Generate a unique ID based on a random value
+  const uniqueId = crypto.randomBytes(16).toString('hex'); // 16 bytes = 32 hex characters
+  const datePrefix = new Date().getFullYear(); // Use the current year as a prefix
+  return `INV-${datePrefix}-${uniqueId}`;
+};
+
+user_route.post("/deposit", uploadimage.single("file"), async (req, res) => {
+  try {
+    const { gatewayName, customer_name, amount, senderNumber, transactionId, email, customer_id } = req.body;
+
+    // Generate the unique invoice ID
+    const invoiceId = await generateInvoiceId();
+    console.log(invoiceId)
+    const depositData = {
+      userId: customer_id,
+      gatewayName,
+      amount,
+      senderNumber,
+      transactionId,
+      email,
+      customer_name,
+      invoiceId, // Include the generated invoice ID
+    };
+
+    // Only add the file path if a file was uploaded
+    if (req.file) {
+      depositData.file = req.file.filename;
+    }
+
+    const deposit = new deposit_model(depositData);
+
+    await deposit.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Deposit created successfully",
+      deposit,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+// Get all deposits or filter by userId or gatewayName
+user_route.get("/deposits", async (req, res) => {
+  try {
+    const { userId, gatewayName } = req.query; // Extract query parameters
+
+    // Build a query object
+    const query = {};
+    if (userId) query.userId = userId;
+    if (gatewayName) query.gatewayName = gatewayName;
+
+    // Fetch deposits based on the query
+    const deposits = await deposit_model.find(query).sort({ createdAt: -1 }); // Sort by latest
+
+    res.status(200).json({
+      success: true,
+      message: "Deposits retrieved successfully",
+      deposits,
+    });
+  } catch (error) {
+    console.error("Error retrieving deposits:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error });
+  }
+});
+user_route.get("/deposit/:id", async (req, res) => {
+  try {
+    const { id } = req.params; // Get the invoiceId from URL params
+    console.log(id)
+    // Find the deposit using the provided invoiceId
+    const deposit = await deposit_model.findById({ _id:id });
+    console.log(deposit)
+    if (!deposit) {
+      return res.status(404).json({
+        success: false,
+        message: "Deposit not found",
+      });
+    }
+
+    // If deposit found, return it
+    res.status(200).json({
+      success: true,
+      message: "Deposit found",
+      data:deposit,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
 
 module.exports=user_route;

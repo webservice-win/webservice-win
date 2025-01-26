@@ -35,7 +35,7 @@ const AffiliatesAllProduct = () => {
   return (
     <div>
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pb-[20px]">
-            {videos.map((video) => (
+            {videos?.slice(0,3).map((video) => (
                 <div key={video._id} className="flex bg-[#AB1E1E] rounded-[5px] overflow-hidden flex-col items-center">
                     {/* Video Container */}
                     <div className="w-full bg-red-500 relative">

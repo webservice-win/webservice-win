@@ -91,7 +91,7 @@
             }
         }
     return (
-        <header className='w-full font-poppins h-[12vh] bg-gray-900 sticky top-0 left-0 z-[12] shadow-sm xl:h-[13vh] px-[20px] md:px-[30px] py-[10px] flex  justify-between  xl:justify-end items-center'>
+        <header className='w-full font-poppins h-[12vh] bg-gray-900 sticky top-0 left-0 z-[12] shadow-sm xl:h-[10vh] px-[20px] md:px-[30px] py-[10px] flex  justify-between  xl:justify-end items-center'>
         <div className='flex justify-start items-center gap-[20px] xl:hidden'>
             <div className="cursor-pointer text-white text-[28px]"onClick={handlesidebar}>
             <CgMenuLeftAlt/>

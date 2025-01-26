@@ -17,8 +17,9 @@ import empty_img from "../../assets/empty.png"
 import axios from "axios"
 const Deposit = () => {
    const navigate=useNavigate();
-     const base_url=import.meta.env.VITE_API_KEY_Base_URL;
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
+     const user_info=JSON.parse(localStorage.getItem("user_data"));
+
         useEffect(()=>{
      window.addEventListener("scroll",()=>{
       if(window.scrollY > 100){
@@ -28,20 +29,55 @@ const Deposit = () => {
       }
      })
    },[]);
-   const depositHistory = [
-    { id: 1, date: "2025-01-15", amount: "$100.00", provider: "PayPal", transaction: "TXN12345", status: "Completed" },
-    { id: 2, date: "2025-01-14", amount: "$50.00", provider: "Stripe", transaction: "TXN12346", status: "Pending" },
-    { id: 3, date: "2025-01-13", amount: "$200.00", provider: "Bank Transfer", transaction: "TXN12347", status: "Failed" },
-    { id: 4, date: "2025-01-12", amount: "$150.00", provider: "Payoneer", transaction: "TXN12348", status: "Completed" },
-    { id: 5, date: "2025-01-11", amount: "$300.00", provider: "Revolut", transaction: "TXN12349", status: "Pending" },
-  ];
+   const [depositHistory, setDepositHistory] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const base_url=import.meta.env.VITE_API_KEY_Base_URL;
+  // Replace with your backend base URL
+  const userId = JSON.parse(localStorage.getItem("user_data"))._id;
 
   const statusColors = {
-    Completed: "bg-green-100 text-green-700",
-    Pending: "bg-yellow-100 text-yellow-700",
-    Failed: "bg-red-100 text-red-700",
+    Success: "bg-green-100 text-green-800",
+    Pending: "bg-yellow-100 text-yellow-800",
+    Failed: "bg-red-100 text-red-800",
   };
 
+  useEffect(() => {
+    const fetchDeposits = async () => {
+      try {
+        const response = await axios.get(`${base_url}/deposits`, {
+          params: { userId },
+        });
+        if (response.data.success) {
+          setDepositHistory(response.data.deposits);
+        } else {
+          setError("Failed to fetch deposits.");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching deposits.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeposits();
+  }, []);
+
+  const filteredDeposits = depositHistory
+    .filter((deposit) => {
+      const matchesSearch = deposit.gatewayName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesFilter =
+        filterStatus === "All" || deposit.status === filterStatus;
+      return matchesSearch && matchesFilter;
+    });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -55,30 +91,74 @@ const Deposit = () => {
   
          {/* ------------------new customer table----------------- */}
          <div className="p-4">
-      <div className="overflow-x-auto ">
+      <h1 className="text-2xl font-bold mb-4 text-left">Deposit History</h1>
+
+      {/* Search and Filter */}
+      <div className="flex justify-between items-center mb-4">
+        <input
+          type="text"
+          placeholder="Search by Provider"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-md w-[30%] focus:outline-none focus:ring focus:ring-indigo-500"
+        />
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-500"
+        >
+          <option value="All">All</option>
+          <option value="Success">Success</option>
+          <option value="Pending">Pending</option>
+          <option value="Failed">Failed</option>
+        </select>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white">
-              <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Date</th>
-              <th className="px-4 py-2 text-left text-[17px] font-semibold">Amount</th>
-              <th className="px-4 py-2 text-left text-[17px] font-semibold">Provider</th>
-              <th className="px-4 py-2 text-left text-[17px] font-semibold">Transaction</th>
-              <th className="px-4 py-2 text-left text-[17px] font-semibold">Status</th>
-              <th className="px-4 py-2 text-left text-[17px] font-semibold">Details</th>
+              <th className="px-4 py-[12px] text-left text-[17px] font-semibold">
+                Date
+              </th>
+              <th className="px-4 py-2 text-left text-[17px] font-semibold">
+                Amount
+              </th>
+              <th className="px-4 py-2 text-left text-[17px] font-semibold">
+                Provider
+              </th>
+              <th className="px-4 py-2 text-left text-[17px] font-semibold">
+                Transaction
+              </th>
+              <th className="px-4 py-2 text-left text-[17px] font-semibold">
+                Status
+              </th>
+              <th className="px-4 py-2 text-left text-[17px] font-semibold">
+                Details
+              </th>
             </tr>
           </thead>
           <tbody>
-            {depositHistory.map((deposit, index) => (
+            {filteredDeposits.map((deposit, index) => (
               <tr
-                key={deposit.id}
+                key={deposit._id}
                 className={`${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } hover:bg-indigo-100 transition-colors`}
               >
-                <td className="px-4 py-3 text-sm text-gray-700">{deposit.date}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">{deposit.amount}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">{deposit.provider}</td>
-                <td className="px-4 py-3 text-sm text-gray-700">{deposit.transaction}</td>
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  {new Date(deposit.createdAt).toLocaleDateString()}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  {deposit.amount}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  {deposit.gatewayName}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-700">
+                  {deposit.transactionId}
+                </td>
                 <td className="px-4 py-3 text-sm">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -89,11 +169,11 @@ const Deposit = () => {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-700">
-                  <button
-                    className="px-3 py-[10px] bg-indigo-500 text-white text-[17px] font-medium rounded-lg hover:bg-indigo-600 transition"
-                  >
+                  <NavLink to={`/deposit-invoice/${deposit._id}`}>
+                  <button className="px-3 py-[10px] bg-indigo-500 text-white text-[17px] font-medium rounded-lg hover:bg-indigo-600 transition">
                     Details
                   </button>
+                  </NavLink>
                 </td>
               </tr>
             ))}
@@ -101,9 +181,8 @@ const Deposit = () => {
         </table>
       </div>
     </div>
+    </div>
      </section>
-     
-     
           </section>
      </section>
      </section>

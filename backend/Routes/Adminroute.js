@@ -21,6 +21,9 @@ const achievement_model = require("../Models/Addachievement");
 const payment_method_model = require("../Models/paymentMethodSchema ");
 const tutorial_model = require("../Models/Tutorial");
 const order_model = require("../Models/Ordermodel");
+const deposit_model = require("../Models/Depositmodel");
+const UserModel = require("../Models/User");
+
 
 
 // ------------file-upload----------
@@ -769,23 +772,23 @@ admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res)
         depositInstruction,
         userData,
       } = req.body;
-      
-      console.log(userData)
-      const newPaymentMethod = new payment_method_model({
-        gatewayName,
-        currency:currencyName,
-        rate,
-        minAmount,
-        maxAmount,
-        fixedCharge,
-        percentCharge,
-        depositInstruction,
-        userData:"sdfsdf",
-        image: req.file.filename,
-      });
+     
+      console.log(req.body)
+      // const newPaymentMethod = new payment_method_model({
+      //   gatewayName,
+      //   currency:currencyName,
+      //   rate,
+      //   minAmount,
+      //   maxAmount,
+      //   fixedCharge,
+      //   percentCharge,
+      //   depositInstruction,
+      //   userData:"sdfsdf",
+      //   image: req.file.filename,
+      // });
   
-      await newPaymentMethod.save();
-      res.status(201).json({ message: 'Payment method added successfully!' });
+      // await newPaymentMethod.save();
+      // res.status(201).json({ message: 'Payment method added successfully!' });
     } catch (error) {
         console.log(error)
       res.send({ message: 'Error adding payment method', error });
@@ -853,4 +856,70 @@ admin_route.delete('/delete-order/:id', async (req, res) => {
         console.log(error)
     }
 });
+// ---------------deposit-data-------------
+admin_route.get("/all-deposits",async(req,res)=>{
+    try {
+        const deposit_data=await deposit_model.find();
+        if(deposit_data){
+               res.send({success:true,data:deposit_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.delete('/delete-deposit/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await deposit_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Deposit deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+  admin_route.put("/update-deposit-status/:id", async (req, res) => {
+    try {
+      const { status } = req.body;
+  
+      // Update the deposit status
+      const deposit_data = await deposit_model.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { status: status } },
+        { new: true } // Return the updated document
+      );
+  
+      if (!deposit_data) {
+        return res.status(404).send({ success: false, message: "Deposit not found" });
+      }
+  
+      // If status is "completed", update the user's deposit balance
+      if (status.toLowerCase() === "completed") {
+        const userId = deposit_data.userId;
+        userId.dposit_balance+=deposit_data.amount;
+        // Find the user and update the deposit balance
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          { _id: userId },
+          { $inc: { deposit_balance: deposit_data.amount } }, // Increment deposit_balance by the deposit amount
+          { new: true } // Return the updated user document
+        );
+  
+        if (!updatedUser) {
+          return res
+            .status(404)
+            .send({ success: false, message: "User not found, balance not updated" });
+        }
+  
+        return res.send({
+          success: true,
+          message: "Status and user deposit balance have been updated",
+          data: deposit_data,
+        });
+      }
+  
+      // If status is not "completed", return a success message for status update only
+      res.send({ success: true, message: "Status has been updated", data: deposit_data });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ success: false, message: "An error occurred", error });
+    }
+  });
 module.exports=admin_route;
