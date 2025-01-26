@@ -10,6 +10,7 @@ import { RiDashboardFill } from "react-icons/ri";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { MdSupportAgent } from "react-icons/md";
 import { RiPageSeparator } from "react-icons/ri";
+import { RiShoppingCartLine } from "react-icons/ri";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlineWeb } from "react-icons/md";
 import { RiDashboardLine } from "react-icons/ri";
@@ -18,6 +19,8 @@ import { SiSololearn } from "react-icons/si";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import { RiFeedbackLine } from "react-icons/ri";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
+import { MdOutlinePayments } from "react-icons/md";
+import { RiLuggageDepositLine } from "react-icons/ri";
 const Dashboardleftside = () => {
   const { activesidebar, setactivesidebar } = useContext(Contextapi);
   const [activesubmenu, setactivesubmenu] = useState(false);
@@ -77,8 +80,8 @@ const Dashboardleftside = () => {
       <section
         className={
           activesidebar
-            ? "w-[100%] bg-[#338585] z-[10000] xl:block hidden border-r-[1px] border-[#eee] h-[100%]  relative transition-all duration-300  top-0 left-[-100%]"
-            : "w-[100%] z-[1000] h-[100%] border-r-[1px] border-[#eee]  transition-all xl:block hidden duration-300  bg-[#338585] relative left-0 top-0 overflow-y-auto no-scrollbar"
+            ? "w-[100%] bg-[#338585] xl:block hidden border-r-[1px] border-[#eee] h-[100%]  relative transition-all duration-300  top-0 left-[-100%]"
+            : "w-[100%] h-[100%] border-r-[1px] border-[#eee]  transition-all xl:block hidden duration-300  bg-[#338585] relative left-0 top-0 overflow-y-auto no-scrollbar"
         }
       >
         <div className="w-full h-[100vh] overflow-y-auto no-scrollbar xl:px-[6px] 2xl:px-[20px]">
@@ -96,7 +99,12 @@ const Dashboardleftside = () => {
                   <span>Dashboard</span>
                 </NavLink>
               </li>
-
+              <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
+                    </li>
               <li>
                 <button
                   onClick={() =>
@@ -161,6 +169,12 @@ const Dashboardleftside = () => {
                     </li>
                     <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
                       <NavLink to="/websites/member-list">Member List</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-tutorial">Add Tutorial</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/tutorial-list">Tutorial List</NavLink>
                     </li>
                     <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
                       <NavLink to="/websites/add-achievement">
@@ -452,7 +466,9 @@ const Dashboardleftside = () => {
                   </ul>
                 </div>
               </li>
-
+              <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <MdOutlinePayments className="text-[22px]"/>  <NavLink to="/payment-setting">Payment Setting</NavLink>
+                    </li>
               {/* Existing Menu Items */}
             </ul>
           </div>

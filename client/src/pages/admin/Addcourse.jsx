@@ -29,16 +29,19 @@ const Addcourse = () => {
 
   // Form data state
   const [profileImage, setProfileImage] = useState(null);
+  const [file,set_file]=useState()
   const [formData, setFormData] = useState({
     title: "",
     reviews: "",
     students: "",
     price: "",
+    offline_price: "",
   });
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      set_file(file)
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
@@ -85,11 +88,17 @@ const Addcourse = () => {
     // Submit the data using axios
     const formPayload = {
       ...formData,
-      profileImage,
+      file,
     };
-
+    const form_data=new FormData();
+    form_data.append("title",formData.title);
+    form_data.append("reviews",formData.reviews );
+    form_data.append("students",formData.students);
+    form_data.append("price",formData.price);
+    form_data.append("offline_price",formData.offline_price);
+    form_data.append("file",file);
     axios
-      .post(`${base_url}/your-endpoint`, formPayload)
+      .post(`${base_url}/admin/add-course`, form_data)
       .then((res) => {
         if (res.data.success) {
           Swal.fire({
@@ -142,7 +151,7 @@ const Addcourse = () => {
                 Add Course
               </h1>
               <ul className="flex justify-center items-center gap-[10px] text-neutral-500 text-[14px] font-[500]">
-                <li>Reviews</li>
+                <li>Courses</li>
                 <li>
                   <IoIosArrowForward />
                 </li>
@@ -190,7 +199,7 @@ const Addcourse = () => {
                     htmlFor="title"
                     className="text-[15px] font-[500] text-gray-600"
                   >
-                    Member Name <span className="text-red-500">*</span>
+                    Title <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -208,14 +217,14 @@ const Addcourse = () => {
                   htmlFor="reviews"
                   className="text-[15px] font-[500] text-gray-600"
                 >
-                  Member Designation <span className="text-red-500">*</span>
+                 Reviews <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   name="reviews"
                   value={formData.reviews}
                   onChange={handleInputChange}
-                  placeholder="Enter member designation"
+                  placeholder="Enter number"
                   className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[45px] border-[1px] border-[#eee] p-[15px]"
                 />
               </div>
@@ -225,14 +234,14 @@ const Addcourse = () => {
                   htmlFor="students"
                   className="text-[15px] font-[500] text-gray-600"
                 >
-                  Member Facebook Link <span className="text-red-500">*</span>
+                  Students <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="url"
+                  type="number"
                   name="students"
                   value={formData.students}
                   onChange={handleInputChange}
-                  placeholder="Enter Facebook link"
+                  placeholder="Enter number"
                   className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[45px] border-[1px] border-[#eee] p-[15px]"
                 />
               </div>
@@ -242,18 +251,33 @@ const Addcourse = () => {
                   htmlFor="price"
                   className="text-[15px] font-[500] text-gray-600"
                 >
-                  Member Twitter Link <span className="text-red-500">*</span>
+                  Price <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="url"
+                  type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
-                  placeholder="Enter Twitter link"
+                  placeholder="Enter amount"
                   className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[45px] border-[1px] border-[#eee] p-[15px]"
                 />
               </div>
-
+              <div className="w-[100%] mt-[15px]">
+                <label
+                  htmlFor="price"
+                  className="text-[15px] font-[500] text-gray-600"
+                >
+                 Offline Price <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  name="offline_price"
+                  value={formData.offline_price}
+                  onChange={handleInputChange}
+                  placeholder="Enter amount"
+                  className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[45px] border-[1px] border-[#eee] p-[15px]"
+                />
+              </div>
               <div className="flex justify-end items-center gap-[10px]">
                 <button
                   type="submit"

@@ -19,6 +19,10 @@ const UserSchema = new Schema({
         type:String,
         default:"user"
     },
+    deposit_balance:{
+        type:Number,
+        default:0
+    }
 });
 
 const UserModel = mongoose.model('users', UserSchema);

@@ -18,6 +18,11 @@ const accordion_model = require("../Models/Accordion");
 const fs=require("fs");
 const member_model = require("../Models/Memebermodel");
 const achievement_model = require("../Models/Addachievement");
+const payment_method_model = require("../Models/paymentMethodSchema ");
+const tutorial_model = require("../Models/Tutorial");
+const order_model = require("../Models/Ordermodel");
+const deposit_model = require("../Models/Depositmodel");
+const UserModel = require("../Models/User");
 
 
 // ------------file-upload----------
@@ -340,15 +345,57 @@ admin_route.get("/all-video-review",async(req,res)=>{
         console.log(error)
     }
 });
+// ------------------add-tutorial-----------------
+admin_route.post("/add-tutorial",uploadimage.single("file"),ensureAuthenticated,async(req,res)=>{
+    try {
+         const {videoUrl,category,title}=req.body;
+         console.log(req.body)
+         if(!videoUrl){
+               return res.send({success:false,message:"Please enter information!"})
+         }
+         const create_tutorial=new tutorial_model({
+            thumbnail:req.file.filename,tutorial_link:videoUrl,category,title
+         });
+         if(create_tutorial){
+            create_tutorial.save();
+               return res.send({success:true,message:"Video Review has been created!"})
+
+         }
+               return res.send({success:false,message:"Something went wrong!"})
+       
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.delete("/delete-tutorial/:id",ensureAuthenticated,async(req,res)=>{
+        try{
+          const delete_video_review=await tutorial_model.findByIdAndDelete({_id:req.params.id});
+          if(!delete_video_review){
+           return  res.send({success:false,message:"Video review  did not find!"})
+          };
+          res.send({success:true,message:"Review has been deleted!"})
+        }catch(err){
+            console.log(err)
+        }
+});
+admin_route.get("/all-tutorials",async(req,res)=>{
+    try {
+       const video_review=await tutorial_model.find();
+       res.send({success:true,data:video_review})
+    } catch (error) {
+        console.log(error)
+    }
+});
 // ------------------courses---------------
 admin_route.post("/add-course",uploadimage.single("file"),async(req,res)=>{
     try {
-         const {title,reviews,students,price,offlinePrice}=req.body;
-         if(!title || !reviews || !students || !price || !offlinePrice){
+         const {title,reviews,students,price,offline_price}=req.body;
+         console.log(req.body)
+         if(!title || !reviews || !students || !price || !offline_price){
                return res.send({success:false,message:"Please enter information!"})
          }
          const create_course=new course_model({
-          title,total_reviews:reviews,total_students:students,online_price:price,offline_price:offlinePrice,image:req.file.filename
+          title,total_reviews:reviews,total_students:students,online_price:price,offline_price:offline_price,image:req.file.filename
          });
             create_course.save();
                return res.send({success:true,message:"Course has been created!"})
@@ -708,4 +755,172 @@ admin_route.get("/all-achievement",async(req,res)=>{
         console.log(error)
     }
 });
+// -----------------add payment method------------------
+// Add a new payment method
+admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res) => {
+    try {
+        console.log(req.file)
+      const {
+        gatewayName,
+        currencyName,
+        rate,
+        minAmount,
+        maxAmount,
+        fixedCharge,
+        percentCharge,
+        depositInstruction,
+        userData,
+      } = req.body;
+      
+      console.log(req.body)
+      // const newPaymentMethod = new payment_method_model({
+      //   gatewayName,
+      //   currency:currencyName,
+      //   rate,
+      //   minAmount,
+      //   maxAmount,
+      //   fixedCharge,
+      //   percentCharge,
+      //   depositInstruction,
+      //   userData:"sdfsdf",
+      //   image: req.file.filename,
+      // });
+  
+      // await newPaymentMethod.save();
+      // res.status(201).json({ message: 'Payment method added successfully!' });
+    } catch (error) {
+        console.log(error)
+      res.send({ message: 'Error adding payment method', error });
+    }
+  });
+  
+  // Fetch all payment methods
+  admin_route.get('/payment-methods', async (req, res) => {
+    try {
+      const paymentMethods = await payment_method_model.find();
+      res.status(200).json(paymentMethods);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching payment methods', error });
+    }
+  });
+  
+  // Delete a payment method
+  admin_route.delete('/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await payment_method_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Payment method deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+//   ------------------orders--------------
+admin_route.get("/all-orders",async(req,res)=>{
+    try {
+        const order_data=await order_model.find();
+        if(order_data){
+               res.send({success:true,data:order_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.put("/update-order-status/:id",async(req,res)=>{
+    try {
+        console.log(req.body.status)
+        const order_data=await order_model.findByIdAndUpdate({_id:req.params.id},{$set:{status:req.body.status}});
+        if(order_data){
+               res.send({success:true,message:"Status has been updated",data:order_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+admin_route.delete('/delete-order/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await order_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Order deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+  admin_route.get("/single-order/:id",async(req,res)=>{
+    try {
+        const order_data=await order_model.findById({_id:req.params.id});
+        if(order_data){
+               res.send({success:true,data:order_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+// ---------------deposit-data-------------
+admin_route.get("/all-deposits",async(req,res)=>{
+    try {
+        const deposit_data=await deposit_model.find();
+        if(deposit_data){
+               res.send({success:true,data:deposit_data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+});
+admin_route.delete('/delete-deposit/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await deposit_model.findByIdAndDelete(id);
+      res.status(200).json({ success:true,message: 'Deposit deleted successfully!' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting payment method', error });
+    }
+  });
+  admin_route.put("/update-deposit-status/:id", async (req, res) => {
+    try {
+      const { status } = req.body;
+  
+      // Update the deposit status
+      const deposit_data = await deposit_model.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { status: status } },
+        { new: true } // Return the updated document
+      );
+  
+      if (!deposit_data) {
+        return res.status(404).send({ success: false, message: "Deposit not found" });
+      }
+  
+      // If status is "completed", update the user's deposit balance
+      if (status.toLowerCase() === "completed") {
+        const userId = deposit_data.userId;
+        userId.dposit_balance+=deposit_data.amount;
+        // Find the user and update the deposit balance
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          { _id: userId },
+          { $inc: { deposit_balance: deposit_data.amount } }, // Increment deposit_balance by the deposit amount
+          { new: true } // Return the updated user document
+        );
+  
+        if (!updatedUser) {
+          return res
+            .status(404)
+            .send({ success: false, message: "User not found, balance not updated" });
+        }
+  
+        return res.send({
+          success: true,
+          message: "Status and user deposit balance have been updated",
+          data: deposit_data,
+        });
+      }
+  
+      // If status is not "completed", return a success message for status update only
+      res.send({ success: true, message: "Status has been updated", data: deposit_data });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ success: false, message: "An error occurred", error });
+    }
+  });
+  
 module.exports=admin_route;

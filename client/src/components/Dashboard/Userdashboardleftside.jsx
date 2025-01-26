@@ -69,7 +69,7 @@ const Userdashboardleftside = () => {
   const closesidebar = () => setactivesidebar(false);
   return (
     <>
-    <section className={activesidebar ? 'w-[100%] bg-[#338585] z-[10000] xl:block hidden border-r-[1px] border-[#eee] h-[100%]  relative transition-all duration-300  top-0 left-[-100%]':'w-[100%] z-[1000] h-[100%] border-r-[1px] border-[#eee]  transition-all xl:block hidden duration-300  bg-[#338585] relative left-0 top-0 overflow-y-auto no-scrollbar'}>
+    <section className={activesidebar ? 'w-[100%] bg-[#338585] xl:block hidden border-r-[1px] border-[#eee] h-[100%]  relative transition-all duration-300  top-0 left-[-100%]':'w-[100%]  h-[100%] border-r-[1px] border-[#eee]  transition-all xl:block hidden duration-300  bg-[#338585] relative left-0 top-0 overflow-y-auto no-scrollbar'}>
     <div className="w-full h-screen bg-gray-900 text-white flex flex-col p-4 shadow-lg">
       {/* User Panel Header */}
       <div className="mb-8 flex items-center justify-between border-b border-gray-700 pb-4">

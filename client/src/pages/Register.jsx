@@ -88,6 +88,12 @@ const Register = () => {
                           text: `${res.data.message}`,
                         });
           navigate("/login")
+          }else{
+            Swal.fire({
+              icon: "error",
+              title: `Error`,
+              text: `${res.data.message}`,
+            });
           }
         }).catch((err)=>{
           console.log(err)

@@ -53,6 +53,16 @@ import Wallet from './pages/user/Wallet'
 import Allcourse from './pages/user/Allcourse'
 import Allproduct from './pages/user/Allproduct'
 import Tutorial from './pages/user/Tutorial'
+import Checkout from './pages/Checkout'
+import Confirmorder from './pages/Confirmorder'
+import Paymentsetting from './pages/admin/Paymentsetting'
+import Addpaymentmethod from './pages/admin/Addpaymentmethod'
+import Addtutorial from './pages/admin/Addtutorial'
+import Tutoriallist from './pages/admin/Tutoriallist'
+import Orders from './pages/admin/Orders'
+import Invoice from './pages/admin/Invoice'
+import Depositinvoice from './pages/user/Depositinvoice'
+import Deposits from './pages/admin/Deposits'
 const App = () => {
   return (
     <BrowserRouter>
@@ -73,6 +83,10 @@ const App = () => {
         {/* -----------------about us--------------- */}
         <Route exact path="/api-provider"element={<Apiprovider/>}/>
         <Route exact path="/our-customer"element={<Ourcustomer/>}/>
+        <Route exact path="/orders"element={<Orders/>}/>
+        <Route exact path="/deposits"element={<Deposits/>}/>
+        <Route exact path="/order-invoice/:id"element={<Invoice/>}/>
+
         {/* ----------------admin pages------------------- */}
         <Route exact path="/dashboard"element={<Dashboard/>}/>
         <Route exact path="/websites/add-category"element={<Addcategory/>}/>
@@ -87,6 +101,8 @@ const App = () => {
         <Route exact path="/websites/member-list"element={<Memberlist/>}/>
         <Route exact path="/websites/add-achievement"element={<Addacievement/>}/>
         <Route exact path="/websites/achievement-list"element={<Achievementlist/>}/>
+        <Route exact path="/websites/add-tutorial"element={<Addtutorial/>}/>
+        <Route exact path="/websites/tutorial-list"element={<Tutoriallist/>}/>
       
         {/* -------------------course------------------ */}
         <Route exact path="/courses/add-course"element={<Addcourse/>}/>
@@ -105,6 +121,8 @@ const App = () => {
         <Route exact path="/reviews/add-video-review"element={<Addvideoreview/>}/>
         <Route exact path="/reviews/feedback-list"element={<Feedbacklist/>}/>
         <Route exact path="/reviews/video-reviews-list"element={<Videoreviewlist/>}/>
+        <Route exact path="/payment-setting"element={<Paymentsetting/>}/>
+        <Route exact path="/add-payment-method"element={<Addpaymentmethod/>}/>
         
         {/* ----------------admin pages------------------- */}
         {/* ------------------user dashboard-------------------------------- */}
@@ -119,6 +137,9 @@ const App = () => {
         <Route exact path="/all-course"element={<Allcourse/>}/>
         <Route exact path="/all-product"element={<Allproduct/>}/>
         <Route exact path="/tutorial"element={<Tutorial/>}/>
+        <Route exact path="/deposit-invoice/:id"element={<Depositinvoice/>}/>
+        <Route exact path="/checkout/:id"element={<Checkout/>}/>
+        <Route exact path="/confirm-order/:provider"element={<Confirmorder/>}/>
 
 
         {/* ------------------user dashboard-------------------------------- */}
