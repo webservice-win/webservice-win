@@ -387,12 +387,13 @@ admin_route.get("/all-tutorials",async(req,res)=>{
 // ------------------courses---------------
 admin_route.post("/add-course",uploadimage.single("file"),async(req,res)=>{
     try {
-         const {title,reviews,students,price,offlinePrice}=req.body;
-         if(!title || !reviews || !students || !price || !offlinePrice){
+         const {title,reviews,students,price,offline_price}=req.body;
+         console.log(req.body)
+         if(!title || !reviews || !students || !price || !offline_price){
                return res.send({success:false,message:"Please enter information!"})
          }
          const create_course=new course_model({
-          title,total_reviews:reviews,total_students:students,online_price:price,offline_price:offlinePrice,image:req.file.filename
+          title,total_reviews:reviews,total_students:students,online_price:price,offline_price:offline_price,image:req.file.filename
          });
             create_course.save();
                return res.send({success:true,message:"Course has been created!"})
