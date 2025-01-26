@@ -20,10 +20,10 @@ const Contact = () => {
             />
           </div>
           {/* --------------animation---------------- */}
-          <div class="absolute w-4 h-4 bg-white rounded-full animate-bubble left-10 bottom-10"></div>
-          <div class="absolute w-6 h-6 bg-white rounded-full animate-bubble left-20 bottom-20 delay-200"></div>
-          <div class="absolute w-3 h-3 bg-white rounded-full animate-bubble left-30 bottom-5 delay-500"></div>
-          <div class="absolute w-5 h-5 bg-white rounded-full animate-bubble left-40 bottom-15 delay-1000"></div>
+          <div className="absolute w-4 h-4 bg-white rounded-full animate-bubble left-10 bottom-10"></div>
+          <div className="absolute w-6 h-6 bg-white rounded-full animate-bubble left-20 bottom-20 delay-200"></div>
+          <div className="absolute w-3 h-3 bg-white rounded-full animate-bubble left-30 bottom-5 delay-500"></div>
+          <div className="absolute w-5 h-5 bg-white rounded-full animate-bubble left-40 bottom-15 delay-1000"></div>
           {/* -------------hero section------------ */}
           <div className="hero w-full flex justify-center items-center z-[1]">
             <div className="text-center w-[90%] lg:w-[90%]  font-noto-sans">
