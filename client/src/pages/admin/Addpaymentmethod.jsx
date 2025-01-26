@@ -104,14 +104,12 @@ const Addpaymentmethod = () => {
        depositInstruction,
        userData,
      };
- 
+   console.log(payload)
     //  if (!currencyName || !payload.range.minAmount || !payload.range.maxAmount) {
     //    Swal.fire("Error", "Please fill in all required fields.", "error");
     //    return;
     //  }
-    console.log(
-        userData)
-     axios.post(`${base_url}/admin/manual-payment`,form_data)
+     axios.post(`${base_url}/admin/manual-payment`,{userData})
      .then((res)=>{
       Swal.fire({
         title: "Success",

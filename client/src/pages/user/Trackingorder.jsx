@@ -18,7 +18,7 @@ const Trackingorder = () => {
   const get_website=()=>{
       axios.get(`${base_url}/user-order/${user_info._id}`)
       .then((res)=>{
-          if(res.data.success){
+          if(res){
             set_orders(res.data.data);
             console.log(res.data)
           }
@@ -27,7 +27,7 @@ const Trackingorder = () => {
       })
   };
   useEffect(()=>{
-      get_website()
+    get_website()
   },[]);
   const statusColors = {
     pending: "bg-blue-100 text-blue-700",

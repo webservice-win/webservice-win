@@ -1,13 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Contextapi } from '../../context/Appcontext';
-import Dashboardleftside from '../../components/Dashboard/Dashboardleftside';
-import Dashboradheader from '../../components/Dashboard/Dashboardheader';
-import { GrLineChart } from "react-icons/gr";
-import { FaTrophy } from "react-icons/fa";
-import { SiSololearn } from "react-icons/si";
-import { CgWebsite } from "react-icons/cg";
-import { FaRegAddressCard } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";

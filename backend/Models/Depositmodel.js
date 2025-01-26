@@ -1,20 +1,51 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
-const deposit_schema=new mongoose.Schema({
-  payerr_number:{
-    type:String,
-    required:true,
+const depositSchema = new mongoose.Schema(
+  {
+    invoiceId:String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    gatewayName: {
+      type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    senderNumber: {
+      type: String,
+    },
+    transactionId: {
+      type: String,
+    },
+    customer_name:{
+      type:String
+    },
+    email: {
+      type: String,
+    },
+    file: {
+      type: String, // URL/path to the uploaded file
+    },
+    status: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected"],
+      default: "Pending",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-   transiction:{
-    type:String,
-    required:true,
-   },
-   status:{
-    type:String,
-    default:"pending"
-   }
-},{timestamps:true});
+  {
+    timestamps: true,
+  }
+);
 
-const deposit_model=mongoose.model("Order",deposit_schema);
-
+const deposit_model= mongoose.model("Deposit", depositSchema);
 module.exports=deposit_model;

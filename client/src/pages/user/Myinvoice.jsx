@@ -1,39 +1,38 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
 import { Contextapi } from '../../context/Appcontext';
 import Userdashboardleftside from '../../components/Dashboard/Userdashboardleftside';
 import Userheader from '../../components/Dashboard/Userheader';
 import axios from 'axios';
 
 const Myinvoice = () => {
-  const navigate = useNavigate();
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
+  const userInfo = JSON.parse(localStorage.getItem("user_data")); // Assuming user_info is stored in localStorage
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [invoices, setInvoices] = useState([
-    { id: 1, date: "2025-01-15", invoiceId: "INV12345", amount: "$500.00", status: "Paid" },
-    { id: 2, date: "2025-01-14", invoiceId: "INV12346", amount: "$300.00", status: "Unpaid" },
-    { id: 3, date: "2025-01-13", invoiceId: "INV12347", amount: "$450.00", status: "Pending" },
-    { id: 4, date: "2025-01-12", invoiceId: "INV12348", amount: "$700.00", status: "Paid" },
-    { id: 5, date: "2025-01-11", invoiceId: "INV12349", amount: "$250.00", status: "Overdue" },
-  ]);
+  const [invoices, setInvoices] = useState([]);
 
   const statusColors = {
     Paid: "bg-green-100 text-green-700",
     Unpaid: "bg-red-100 text-red-700",
     Pending: "bg-yellow-100 text-yellow-700",
     Overdue: "bg-orange-100 text-orange-700",
+    processing: "bg-blue-100 text-blue-700", // for processing status
   };
 
-  // Filter invoices based on search query
-  const filteredInvoices = invoices.filter((invoice) => {
-    return (
-      invoice.invoiceId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      invoice.date.includes(searchQuery) ||
-      invoice.status.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
+  // Fetch invoices from API
+  const getInvoices = () => {
+    axios.get(`${base_url}/user-order/${userInfo._id}`)
+    .then((res) => {
+      if (res) {
+        console.log(res)
+        setInvoices(res.data.data);
+      }
+    })
+    .catch((err) => {
+      console.log(err.name);
+    });
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -43,7 +42,17 @@ const Myinvoice = () => {
         setactivetopbar(false);
       }
     });
-  }, [setactivetopbar]);
+    getInvoices(); // Fetch the invoices when component mounts
+  }, []);
+
+  // Filter invoices based on search query
+  const filteredInvoices = invoices.filter((invoice) => {
+    return (
+      invoice.invoice_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      invoice.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      invoice.status.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
@@ -60,7 +69,7 @@ const Myinvoice = () => {
                 <div className="relative w-1/2">
                   <input
                     type="text"
-                    placeholder="Search by Invoice ID, Date, or Status..."
+                    placeholder="Search by Invoice ID, Product Name, or Status..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
@@ -68,12 +77,13 @@ const Myinvoice = () => {
                 </div>
               </div>
 
-              <div className="overflow-x-auto ">
+              <div className="overflow-x-auto">
                 <table className="min-w-full bg-white border border-gray-200">
                   <thead>
                     <tr className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                       <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Date</th>
                       <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Invoice ID</th>
+                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Product Name</th>
                       <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Amount</th>
                       <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Status</th>
                       <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Action</th>
@@ -83,19 +93,18 @@ const Myinvoice = () => {
                     {filteredInvoices.length > 0 ? (
                       filteredInvoices.map((invoice, index) => (
                         <tr
-                          key={invoice.id}
+                          key={invoice._id}
                           className={`${
                             index % 2 === 0 ? "bg-gray-50" : "bg-white"
                           } hover:bg-blue-100 transition-colors`}
                         >
-                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.date}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.invoiceId}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.amount}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700">{new Date(invoice.createdAt.$date).toLocaleDateString()}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.invoice_id}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.product_name}</td>
+                          <td className="px-4 py-3 text-sm text-gray-700">{`$${invoice.product_price}`}</td>
                           <td className="px-4 py-3 text-sm">
                             <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                statusColors[invoice.status]
-                              }`}
+                              className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[invoice.status] || 'bg-gray-100 text-gray-700'}`}
                             >
                               {invoice.status}
                             </span>
@@ -111,7 +120,7 @@ const Myinvoice = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="px-4 py-3 text-center text-gray-700">
+                        <td colSpan="6" className="px-4 py-3 text-center text-gray-700">
                           No invoices found.
                         </td>
                       </tr>
