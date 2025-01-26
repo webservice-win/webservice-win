@@ -105,6 +105,7 @@ const Dashboardleftside = () => {
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
                     </li>
+
               <li>
                 <button
                   onClick={() =>

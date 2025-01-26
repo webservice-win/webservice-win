@@ -138,6 +138,7 @@ const App = () => {
         <Route exact path="/all-product"element={<Allproduct/>}/>
         <Route exact path="/tutorial"element={<Tutorial/>}/>
         <Route exact path="/deposit-invoice/:id"element={<Depositinvoice/>}/>
+
         <Route exact path="/checkout/:id"element={<Checkout/>}/>
         <Route exact path="/confirm-order/:provider"element={<Confirmorder/>}/>
 

@@ -25,6 +25,7 @@ const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 
 
+
 // ------------file-upload----------
 const storage=multer.diskStorage({
     destination:function(req,file,cb){
@@ -771,7 +772,7 @@ admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res)
         depositInstruction,
         userData,
       } = req.body;
-      
+     
       console.log(req.body)
       // const newPaymentMethod = new payment_method_model({
       //   gatewayName,
@@ -855,7 +856,6 @@ admin_route.delete('/delete-order/:id', async (req, res) => {
         console.log(error)
     }
 });
-
 // ---------------deposit-data-------------
 admin_route.get("/all-deposits",async(req,res)=>{
     try {
@@ -922,5 +922,4 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
       res.status(500).send({ success: false, message: "An error occurred", error });
     }
   });
-  
 module.exports=admin_route;

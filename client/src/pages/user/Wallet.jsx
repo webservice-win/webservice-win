@@ -271,7 +271,6 @@ const Wallet = () => {
             ))}
           </div>
         </div>
-
         {/* Tab Content */}
         <div className="w-2/3 pl-4">
           <div className="bg-gray-800 text-gray-300 p-4 rounded-md mb-6">
