@@ -23,6 +23,7 @@ const tutorial_model = require("../Models/Tutorial");
 const order_model = require("../Models/Ordermodel");
 const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
+const ads_model = require("../Models/Adsmodel");
 
 
 // ------------file-upload----------
@@ -922,5 +923,35 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
       res.status(500).send({ success: false, message: "An error occurred", error });
     }
   });
-  
+  // --------------add-ads-----------------
+admin_route.post("/add-ads",uploadimage.single("file"),async(req,res)=>{
+  try {
+         const create_payment=new ads_model({
+          image:req.file.filename
+         });
+         create_payment.save();
+         res.send({success:true,message:"Ads created successfully!"})
+  } catch (error) {
+      console.log(error)
+  }
+});
+admin_route.delete("/delete-ads/:id",ensureAuthenticated,async(req,res)=>{
+      try{
+        const payment_proof=await ads_model.findByIdAndDelete({_id:req.params.id});
+        if(!payment_proof){
+         return  res.send({success:false,message:"Payment  did not find!"})
+        };
+        res.send({success:true,message:"Ads has been deleted!"})
+      }catch(err){
+          console.log(err)
+      }
+});
+admin_route.get("/all-ads",async(req,res)=>{
+  try {
+     const payment_proof=await ads_model.find();
+     res.send({success:true,data:payment_proof})
+  } catch (error) {
+      console.log(error)
+  }
+});
 module.exports=admin_route;

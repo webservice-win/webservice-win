@@ -16,11 +16,13 @@ import { MdOutlineWeb } from "react-icons/md";
 import { RiDashboardLine } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
 import { SiSololearn } from "react-icons/si";
+import { FaUserAlt } from "react-icons/fa";
 import { MdOutlineVideoLibrary } from "react-icons/md";
 import { RiFeedbackLine } from "react-icons/ri";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { MdOutlinePayments } from "react-icons/md";
 import { RiLuggageDepositLine } from "react-icons/ri";
+import { SiGoogleadsense } from "react-icons/si";
 const Dashboardleftside = () => {
   const { activesidebar, setactivesidebar } = useContext(Contextapi);
   const [activesubmenu, setactivesubmenu] = useState(false);
@@ -104,6 +106,12 @@ const Dashboardleftside = () => {
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>
                     </li>
               <li>
                 <button
