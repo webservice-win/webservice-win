@@ -13,6 +13,7 @@ const storage=multer.diskStorage({
         cb(null,`${Date.now()}_${file.originalname}`)
     }
 
+
 });
 const uploadimage=multer({storage:storage});
 // -----------------------user dashboard--------------------

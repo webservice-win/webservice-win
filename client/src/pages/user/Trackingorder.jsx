@@ -28,6 +28,7 @@ const Trackingorder = () => {
   };
   useEffect(()=>{
     get_website()
+
   },[]);
   const statusColors = {
     pending: "bg-blue-100 text-blue-700",

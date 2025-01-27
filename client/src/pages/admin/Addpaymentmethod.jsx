@@ -105,6 +105,7 @@ const Addpaymentmethod = () => {
        userData,
      };
    console.log(payload)
+
     //  if (!currencyName || !payload.range.minAmount || !payload.range.maxAmount) {
     //    Swal.fire("Error", "Please fill in all required fields.", "error");
     //    return;
