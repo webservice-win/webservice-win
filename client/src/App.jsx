@@ -63,6 +63,7 @@ import Orders from './pages/admin/Orders'
 import Invoice from './pages/admin/Invoice'
 import Depositinvoice from './pages/user/Depositinvoice'
 import Deposits from './pages/admin/Deposits'
+import Addads from './pages/admin/Addads'
 const App = () => {
   return (
     <BrowserRouter>
@@ -85,6 +86,7 @@ const App = () => {
         <Route exact path="/our-customer"element={<Ourcustomer/>}/>
         <Route exact path="/orders"element={<Orders/>}/>
         <Route exact path="/deposits"element={<Deposits/>}/>
+        <Route exact path="/ads"element={<Addads/>}/>
         <Route exact path="/order-invoice/:id"element={<Invoice/>}/>
 
         {/* ----------------admin pages------------------- */}
