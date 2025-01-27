@@ -15,7 +15,14 @@ app.get('/ping', (req, res) => {
 });
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(
+    {
+        origin: "https://oraclescript.net", // Specify the allowed origin
+        methods: ["GET", "POST", "PUT", "DELETE","Patch"], // Specify allowed methods
+        allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+        credentials: true, // Allow credentials (cookies, etc.)
+      }
+));
 app.use(express.static("public"))
 app.use('/auth', AuthRouter);
 app.use('/admin', admin_route);
