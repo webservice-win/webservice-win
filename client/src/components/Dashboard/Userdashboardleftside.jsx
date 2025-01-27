@@ -99,10 +99,10 @@ const Userdashboardleftside = () => {
           <MdTrackChanges size={20} />
           <span>Tracking Order</span>
           </NavLink>
-          <NavLink to="/transictions" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          {/* <NavLink to="/transictions" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <MdHistory size={20} />
           <span>Transaction History</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/all-product"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaBox size={20} />
           <span>All Product</span>

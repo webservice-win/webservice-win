@@ -17,10 +17,24 @@ app.get('/ping', (req, res) => {
 app.use(bodyParser.json());
 app.use(cors(
     {
-        origin: "https://oraclescript.net", // Specify the allowed origin
-        methods: ["GET", "POST", "PUT", "DELETE","Patch"], // Specify allowed methods
+        origin:[
+            "http://localhost:5173",
+            "http://localhost:5174",
+            "https://oraclescript.net",
+            "http://oraclescript.net",
+            "www.oraclescript.net",
+            "oraclescript.net",
+            "https://oraclesoft.org",
+            "http://oraclesoft.org",
+            "http://www.oraclesoft.org",
+            "www.oraclesoft.org",
+            "oraclesoft.org",
+            "*",
+          ], // Specify the allowed origin
+        methods: ["GET", "POST", "PUT", "DELETE","PATCH","OPTIONS"], // Specify allowed methods
         allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
         credentials: true, // Allow credentials (cookies, etc.)
+        optionsSuccessStatus:200,
       }
 ));
 app.use(express.static("public"))
