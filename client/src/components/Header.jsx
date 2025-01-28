@@ -64,7 +64,7 @@ const Header = () => {
                <div className='flex justify-center items-center gap-[20px]'>
             <div className='flex justify-center items-center gap-[5px] text-white'>
                 <IoIosCall className='text-[18px]'/>
-                <p className='text-[16px]'>+33756757364 (Whats App)</p>
+                <p className='text-[16px]'>447414240705 (Whats App)</p>
             </div>
                  <div className='flex justify-center items-center gap-[5px] text-white'>
                 <HiOutlineMail className='text-[18px]'/>

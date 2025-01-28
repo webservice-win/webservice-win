@@ -297,7 +297,6 @@ const Addwebsite = () => {
           likeNumber: "",
           loveNumber: "",
         });
-        setFeatures([]);
       } else {
         Swal.fire("Error", response.data.message, "error");
       }

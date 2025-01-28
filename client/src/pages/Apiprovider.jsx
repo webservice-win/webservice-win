@@ -72,11 +72,11 @@ const Apiprovider = () => {
           </h1>
         </div>
         {/* ---------------review----------------- */}
-        <section className="pt-[50px] grid lg:grid-cols-2 xl:grid-cols-6  gap-[20px]">
+        <section className="pt-[50px] grid grid-cols-2 xl:grid-cols-6  gap-[20px]">
           {providers.map((data) => {
             return (
               <NavLink to={`${data.link}`} className="w-full" target="_blank">
-                <div className=" w-full lg:w-[200px] h-[120px] lg:h-[180px] p-[6px] bg-white rounded-[10px]">
+                <div className=" w-full lg:w-[200px] h-[180px] lg:h-[180px] p-[6px] bg-white rounded-[10px]">
                   <img
                     className="w-full h-full rounded-[10px]"
                     src={`${base_url}/images/${data.image}`}

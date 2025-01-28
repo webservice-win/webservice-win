@@ -95,10 +95,10 @@ const Userdashboardleftside = () => {
           <RiLuggageDepositFill size={20} />
           <span>Deposit</span>
           </NavLink>
-          <NavLink to="/tracking-order"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          {/* <NavLink to="/tracking-order"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <MdTrackChanges size={20} />
           <span>Tracking Order</span>
-          </NavLink>
+          </NavLink> */}
           {/* <NavLink to="/transictions" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <MdHistory size={20} />
           <span>Transaction History</span>
@@ -136,58 +136,63 @@ const Userdashboardleftside = () => {
     </div>
     </section>
     <section className={activesidebar ? ' z-[10453530000] bg-[#338585] w-[60%] xl:hidden block h-[100%] fixed transition-all duration-300 shadow-boxshadow5 border-r-[1px] border-[#eee]  top-0 left-0':'z-[100000] w-[100%] h-[100%] transition-all xl:hidden block duration-300 bg-[#338585] fixed left-[-100%] top-0 shadow-boxshadow5 border-r-[1px] border-[#eee]'}>
-       <div onClick={closesidebar} className="cursor-pointer close absolute top-[10px] right-[30px]">
+       <div onClick={closesidebar} className="cursor-pointer  text-white close absolute top-[10px] right-[30px]">
           <button className='text-[25px] hover:text-[#FF5200] transition-all duration-200'><IoClose/></button>
        </div>
        <div className="w-full h-screen bg-gray-900 text-white flex flex-col p-4 shadow-lg">
       {/* User Panel Header */}
       <div className="mb-8 flex items-center justify-between border-b border-gray-700 pb-4">
         <h2 className="text-lg font-bold">User Panel</h2>
-        <span className="bg-red-500 text-sm px-2 py-1 rounded">Free</span>
+        <span className="bg-red-500 text-sm px-2 lg:block hidden py-1 rounded">Free</span>
       </div>
 
       {/* Menu Items */}
       <ul className="space-y-4">
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
-          <AiOutlineDashboard size={20} />
-          <span>Dashboard</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+        <NavLink to="/user-dashboard" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+        <AiOutlineDashboard size={20} />
+        <span>Dashboard</span>
+        </NavLink>
+          <NavLink to="/my-order"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaShoppingCart size={20} />
           <span>My Order</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+          <NavLink to="/my-invoice"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaFileInvoice size={20} />
           <span>My Invoice</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+          <NavLink to="/deposit" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          <RiLuggageDepositFill size={20} />
+          <span>Deposit</span>
+          </NavLink>
+          {/* <NavLink to="/tracking-order"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <MdTrackChanges size={20} />
           <span>Tracking Order</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink> */}
+          {/* <NavLink to="/transictions" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <MdHistory size={20} />
           <span>Transaction History</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink> */}
+          <NavLink to="/all-product"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaBox size={20} />
           <span>All Product</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+          <NavLink to="/all-course" className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaBook size={20} />
           <span>All Course</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+          <NavLink to="/tutorial"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaUserCircle size={20} />
           <span>Tutorial</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+          <NavLink to="/wallet"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaWallet size={20} />
           <span>My Wallet</span>
-        </li>
-        <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
+          </NavLink>
+        <NavLink to="/user-profile"className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaUserCircle size={20} />
           <span>Profile</span>
-        </li>
+        </NavLink>
+      
         <li className="flex items-center space-x-3 hover:text-indigo-400 cursor-pointer border-b border-gray-700 pb-2">
           <FaTicketAlt size={20} />
           <span>Support Ticket</span>

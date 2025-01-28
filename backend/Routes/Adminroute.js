@@ -759,9 +759,9 @@ admin_route.get("/all-achievement",async(req,res)=>{
 });
 // -----------------add payment method------------------
 // Add a new payment method
-admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res) => {
+admin_route.post('/manual-payment', async (req, res) => {
     try {
-        console.log(req.file)
+
       const {
         gatewayName,
         currencyName,
@@ -774,22 +774,22 @@ admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res)
         userData,
       } = req.body;
      
-      console.log(req.body)
-      // const newPaymentMethod = new payment_method_model({
-      //   gatewayName,
-      //   currency:currencyName,
-      //   rate,
-      //   minAmount,
-      //   maxAmount,
-      //   fixedCharge,
-      //   percentCharge,
-      //   depositInstruction,
-      //   userData:"sdfsdf",
-      //   image: req.file.filename,
-      // });
+      console.log(depositInstruction)
+      const newPaymentMethod = new payment_method_model({
+        gatewayName,
+        currency:currencyName,
+        rate,
+        minAmount,
+        maxAmount,
+        fixedCharge,
+        percentCharge,
+        depositInstruction,
+        userData,
+        // image: req.file.filename,
+      });
   
-      // await newPaymentMethod.save();
-      // res.status(201).json({ message: 'Payment method added successfully!' });
+      await newPaymentMethod.save();
+      res.status(201).json({ message: 'Payment method added successfully!' });
     } catch (error) {
         console.log(error)
       res.send({ message: 'Error adding payment method', error });
@@ -800,7 +800,7 @@ admin_route.post('/manual-payment', uploadimage.single('file'), async (req, res)
   admin_route.get('/payment-methods', async (req, res) => {
     try {
       const paymentMethods = await payment_method_model.find();
-      res.status(200).json(paymentMethods);
+      res.status(200).json({data:paymentMethods});
     } catch (error) {
       res.status(500).json({ message: 'Error fetching payment methods', error });
     }
@@ -952,6 +952,26 @@ admin_route.get("/all-ads",async(req,res)=>{
      res.send({success:true,data:payment_proof})
   } catch (error) {
       console.log(error)
+  }
+});
+// -----------------------all customer--------------------
+admin_route.get("/all-customers",async(req,res)=>{
+  try {
+     const all_customers=await UserModel.find();
+     res.send({success:true,data:all_customers})
+  } catch (error) {
+      console.log(error)
+  }
+});
+admin_route.delete("/delete-customer/:id",ensureAuthenticated,async(req,res)=>{
+  try{
+    const delete_customer=await UserModel.findByIdAndDelete({_id:req.params.id});
+    if(!delete_customer){
+     return  res.send({success:false,message:"Customer  did not find!"})
+    };
+    res.send({success:true,message:"Customer has been deleted!"})
+  }catch(err){
+      console.log(err)
   }
 });
 module.exports=admin_route;

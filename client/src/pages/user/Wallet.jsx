@@ -23,81 +23,96 @@ const Wallet = () => {
   // const [paymentMethods, setPaymentMethods] = useState([]);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const user_info = JSON.parse(localStorage.getItem("user_data"));
-
-  // // Fetch payment methods from the backend
-  // const fetchPaymentMethods = async () => {
-  //   try {
-  //     const response = await axios.get(`${base_url}/admin/payment-methods`);
-  //     setPaymentMethods(response.data); // Store the fetched data in state
-  //   } catch (error) {
-  //     console.error('Error fetching payment methods:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Fetch payment methods from backend when the component mounts
-  
-  //   fetchPaymentMethods();
-  // }, []);
   const [activeTab, setActiveTab] = useState("bkash");
   const [paymentMethods, setPaymentMethods] = useState([]);
   const [formData, setFormData] = useState({});
+  // // Fetch payment methods from the backend
+          // ---------------all-websites--------------
+const [details,set_details]=useState([]);
+const my_details=()=>{
+    axios.get(`${base_url}/user-order/${user_info._id}`)
+    .then((res)=>{
+        if(res.data.success){
+          set_details(res.data.data);
+        }
+    }).catch((err)=>{
+        console.log(err.name)
+    })
+};
+useEffect(()=>{
+  my_details()
+},[]);
+  const fetchPaymentMethods = async () => {
+    axios.get(`${base_url}/admin/payment-methods`)
+    .then((res)=>{
+      setPaymentMethods(res.data.data)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  };
 
   useEffect(() => {
-    // Simulate fetching data (replace this with your API call)
-    setPaymentMethods([
-      {
-        _id: "67955dd054e4da6f641969af",
-        gatewayName: "Bkash",
-        currency: "BDT",
-        rate: "126",
-        minAmount: 2323,
-        maxAmount: 2323,
-        fixedCharge: 2323,
-        percentCharge: 23,
-        depositInstruction: "Please use your bKash wallet to send the amount.",
-        requiredFields: [
-          { name: "amount", label: "Amount", type: "number", required: true },
-          { name: "senderNumber", label: "Sender Number", type: "text", required: true },
-          { name: "transactionId", label: "Transaction ID", type: "text", required: true },
-        ],
-        image: "1737842128840_wallpaperflare.com_wallpaper (1).jpg",
-      },
-      {
-        _id: "67955dd054e4da6f641969b0",
-        gatewayName: "Nagad",
-        currency: "BDT",
-        rate: "126",
-        minAmount: 1000,
-        maxAmount: 5000,
-        fixedCharge: 50,
-        percentCharge: 15,
-        depositInstruction: "Send the payment via Nagad and provide your details.",
-        requiredFields: [
-          { name: "amount", label: "Amount", type: "number", required: true },
-          { name: "email", label: "Email", type: "email", required: false },
-          { name: "transactionId", label: "Transaction ID", type: "text", required: true },
-        ],
-        image: "nagad_image.jpg",
-      },
-      {
-        _id: "67955dd054e4da6f641969b1",
-        gatewayName: "Rocket",
-        currency: "BDT",
-        rate: "126",
-        minAmount: 500,
-        maxAmount: 3000,
-        fixedCharge: 30,
-        percentCharge: 10,
-        depositInstruction: "Use Rocket to deposit and confirm your transaction details.",
-        requiredFields: [
-          { name: "amount", label: "Amount", type: "number", required: true },
-          { name: "file", label: "Upload File", type: "file", required: false },
-        ],
-        image: "rocket_image.jpg",
-      },
-    ]);
+    // Fetch payment methods from backend when the component mounts
+  
+    fetchPaymentMethods();
   }, []);
+
+
+  // useEffect(() => {
+  //   // Simulate fetching data (replace this with your API call)
+  //   setPaymentMethods([
+  //     {
+  //       _id: "67955dd054e4da6f641969af",
+  //       gatewayName: "Bkash",
+  //       currency: "BDT",
+  //       rate: "126",
+  //       minAmount: 2323,
+  //       maxAmount: 2323,
+  //       fixedCharge: 2323,
+  //       percentCharge: 23,
+  //       depositInstruction: "Please use your bKash wallet to send the amount.",
+  //       requiredFields: [
+  //         { name: "amount", label: "Amount", type: "number", required: true },
+  //         { name: "senderNumber", label: "Sender Number", type: "text", required: true },
+  //         { name: "transactionId", label: "Transaction ID", type: "text", required: true },
+  //       ],
+  //       image: "1737842128840_wallpaperflare.com_wallpaper (1).jpg",
+  //     },
+  //     {
+  //       _id: "67955dd054e4da6f641969b0",
+  //       gatewayName: "Nagad",
+  //       currency: "BDT",
+  //       rate: "126",
+  //       minAmount: 1000,
+  //       maxAmount: 5000,
+  //       fixedCharge: 50,
+  //       percentCharge: 15,
+  //       depositInstruction: "Send the payment via Nagad and provide your details.",
+  //       requiredFields: [
+  //         { name: "amount", label: "Amount", type: "number", required: true },
+  //         { name: "email", label: "Email", type: "email", required: false },
+  //         { name: "transactionId", label: "Transaction ID", type: "text", required: true },
+  //       ],
+  //       image: "nagad_image.jpg",
+  //     },
+  //     {
+  //       _id: "67955dd054e4da6f641969b1",
+  //       gatewayName: "Rocket",
+  //       currency: "BDT",
+  //       rate: "126",
+  //       minAmount: 500,
+  //       maxAmount: 3000,
+  //       fixedCharge: 30,
+  //       percentCharge: 10,
+  //       depositInstruction: "Use Rocket to deposit and confirm your transaction details.",
+  //       requiredFields: [
+  //         { name: "amount", label: "Amount", type: "number", required: true },
+  //         { name: "file", label: "Upload File", type: "file", required: false },
+  //       ],
+  //       image: "rocket_image.jpg",
+  //     },
+  //   ]);
+  // }, []);
 
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -183,37 +198,67 @@ const Wallet = () => {
   
   
   const renderTabContent = () => {
-    const method = paymentMethods.find(
+    const activeMethod = paymentMethods.find(
       (method) => method.gatewayName.toLowerCase() === activeTab
     );
-
-    if (!method) return <p className="text-sm text-gray-400">Loading payment methods...</p>;
-
+  
+    if (!activeMethod) {
+      return (
+        <div className="text-center text-gray-400">
+          <p>No payment method selected.</p>
+        </div>
+      );
+    }
+  
     return (
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-white">{method.gatewayName} Deposit</h3>
-        <p className="text-sm text-gray-400 mb-2">{method.depositInstruction}</p>
-        {method.requiredFields.map((field) => (
-          <div key={field.name}>
-            <label className="block text-sm mb-1">{field.label}</label>
-            <input
-              type={field.type}
-              name={field.name}
-              onChange={handleInputChange}
-              className="w-full bg-gray-800 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-          </div>
-        ))}
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
-          Confirm Deposit
-        </button>
+      <div className="bg-gray-800 w-full text-gray-300 p-4 rounded-md">
+        <h3 className="text-xl font-bold text-white mb-4">{activeMethod.gatewayName}</h3>
+        {/* <p className="mb-4">
+          <span className="font-bold">Currency:</span> {activeMethod.currency}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Exchange Rate:</span> {activeMethod.rate}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Minimum Amount:</span> {activeMethod.minAmount}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Maximum Amount:</span> {activeMethod.maxAmount}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Fixed Charge:</span> {activeMethod.fixedCharge}
+        </p>
+        <p className="mb-4">
+          <span className="font-bold">Percentage Charge:</span> {activeMethod.percentCharge}
+        </p> */}
+        <div>
+          <h4 className="font-bold text-lg text-white mb-2">Deposit Instructions:</h4>
+          <div
+            className="text-sm"
+            dangerouslySetInnerHTML={{ __html: activeMethod.depositInstruction }}
+          />
+        </div>
+        <div className="mt-6">
+          <h4 className="font-bold text-lg text-white mb-2">User Data Requirements:</h4>
+          {activeMethod.userData.map((field) => (
+            <div key={field._id.$oid} className="mb-4">
+              <label className="block text-sm font-medium text-gray-200">
+                {field.label}{" "}
+                {field.isRequired === "required" && <span className="text-red-500">*</span>}
+              </label>
+              <input
+                type={field.type}
+                className="w-full bg-gray-700 text-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={field.label}
+                required={field.isRequired === "required"}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
-
+  
   return (
     <section className="w-full h-[100vh] flex font-poppins">
       <section className={activesidebar ? 'w-0 h-[100vh] transition-all duration-300 overflow-hidden' : 'w-0 xl:w-[20%] transition-all duration-300 h-[100vh]'}>
@@ -224,7 +269,7 @@ const Wallet = () => {
         <section className="w-[100%] m-auto py-[20px] xl:py-[40px] px-[30px]">
         <div className="bg-[#0E1335] ww-full max-w-4xl mx-auto p-6 py-[50px] rounded-2xl shadow-lg mb-[30px] text-center">
       <h3 className="text-white text-[20px] lg:text-[22px] font-medium mb-2">My Balance</h3>
-      <p className="text-blue-400 text-2xl font-bold">$0.50 USD</p>
+      <p className="text-blue-400 text-2xl font-bold">${details.deposit_balance} USD</p>
       {/* <div className="flex justify-center mt-4 space-x-4">
         <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
           Deposit
@@ -272,20 +317,15 @@ const Wallet = () => {
           </div>
         </div>
         {/* Tab Content */}
-        <div className="w-2/3 pl-4">
-          <div className="bg-gray-800 text-gray-300 p-4 rounded-md mb-6">
-            <h3 className="text-lg font-bold text-white mb-2">Deposit Instructions</h3>
-            <p className="text-sm mb-2">
-              Please ensure the details provided are accurate to avoid any delays. Different payment methods have specific steps and requirements.
-            </p>
-            <ul className="list-disc list-inside text-sm">
-              <li>Verify your payment account details before submitting.</li>
-              <li>Follow the steps for the selected payment method carefully.</li>
-              <li>Contact support if you encounter any issues.</li>
-            </ul>
-          </div>
-          {renderTabContent()}
-        </div>
+        <div className="flex w-full">
+    {/* Sidebar Tabs */}
+  
+    {/* Tab Content */}
+    <div className="w-full pl-4">
+     
+      {renderTabContent()}
+    </div>
+  </div>
       </div>
     </div>
         </section>

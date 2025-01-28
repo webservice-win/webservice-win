@@ -14,7 +14,7 @@ import { FaWandMagicSparkles } from "react-icons/fa6";
 import Typed from "typed.js";
 import { FaPlay } from "react-icons/fa";
 import Businessmap from "../components/home/Businessmap";
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import loader_gif from "../assets/loader.gif";
 import Teammember from "../components/home/Teammember";
@@ -109,13 +109,18 @@ const Home = () => {
             </h2>
 
             <div className="btn mt-[20px] flex justify-start items-center gap-[10px]">
-              <button className="px-[25px] lg:px-[38px] flex justify-center items-center gap-[8px] py-[8px] lg:py-[12px] border-[2px] border-white font-[500] bg-btncolor1 text-white rounded-full text-[14px] lg:text-[16px]">
-                Project{" "}
+             <NavLink to="/registration">
+             <button className="px-[25px] lg:px-[38px] flex justify-center items-center gap-[8px] py-[8px] lg:py-[12px] border-[2px] border-white font-[500] bg-btncolor1 text-white rounded-full text-[14px] lg:text-[16px]">
+                Get Started
                 <FaWandMagicSparkles className="text-[16px] lg:text-[18px]" />
               </button>
-              <button className="px-[25px] lg:px-[38px] py-[8px] lg:py-[12px] border-[2px] font-[500] hover:bg-btncolor1 transition-all duration-150 hover:text-white border-white bg-transparent text-white rounded-full text-[14px] lg:text-[16px]">
-                Course
+             </NavLink>
+             <NavLink to="/login">
+             <button className="px-[25px] lg:px-[38px] py-[8px] lg:py-[12px] border-[2px] font-[500] hover:bg-btncolor1 transition-all duration-150 hover:text-white border-white bg-transparent text-white rounded-full text-[14px] lg:text-[16px]">
+                Login
               </button>
+             </NavLink>
+         
             </div>
           </div>
 

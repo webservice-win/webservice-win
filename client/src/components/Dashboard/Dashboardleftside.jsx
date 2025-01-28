@@ -505,369 +505,394 @@ const Dashboardleftside = () => {
           />
         </div>
         <div>
-          <ul className="sellerheader pt-[10px] ">
-            <li className="mb-[10px]">
-              <NavLink
-                to="/dashboard"
-                className="hover:bg-indigo-500  hover:text-white flex group text-white rounded-[6px] justify-start items-center gap-[10px] px-[13px] py-[10px] tr text-[15px] font-[500]"
-              >
-                <RiDashboardLine className="icon text-[20px] text-white group-hover:text-white" />{" "}
-                <span>Dashboard</span>
-              </NavLink>
-            </li>
+        <ul className="sellerheader pt-[10px] ">
+              <li className="mb-[10px]">
+                <NavLink
+                  to="/dashboard"
+                  className="hover:bg-indigo-500  hover:text-white flex group text-white rounded-[6px] justify-start items-center gap-[10px] px-[13px] py-[10px] tr text-[15px] font-[500]"
+                >
+                  <RiDashboardLine className="icon text-[20px] text-white group-hover:text-white" />{" "}
+                  <span>Dashboard</span>
+                </NavLink>
+              </li>
+              <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>
+                    </li>
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      customer: !submenuStates.customer,
+                    })
+                  }
+                  className={
+                    submenuStates.customer
+                      ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] text-black w-full"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between group-hover:text-white text-white text-[15px] font-[500] items-center gap-[10px]">
+                    <MdOutlineWeb className="text-[22px] group-hover:text-white" />
+                    Websites
+                  </span>
+                  {submenuStates.customer ? (
+                    <IoIosArrowDown className="text-[20px]  text-white group-hover:text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] group-hover:text-white text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.customer
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul className="pl-[10px]">
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-category">
+                        Add Category
+                      </NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-technology">
+                        Add Technology
+                      </NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-website">Add Website</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/websites-list">
+                        Website List
+                      </NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-brand">Add Provider</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/payment">Payment</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/our-site">Our Site</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-member">Add Member</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/member-list">Member List</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-tutorial">Add Tutorial</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/tutorial-list">Tutorial List</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/add-achievement">
+                        Add Acievement
+                      </NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/websites/achievement-list">
+                        Acievement List
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    customer: !submenuStates.customer,
-                  })
-                }
-                className={
-                  submenuStates.customer
-                    ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] text-black w-full"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between group-hover:text-white text-white text-[15px] font-[500] items-center gap-[10px]">
-                  <MdOutlineWeb className="text-[22px] group-hover:text-white" />
-                  Websites
-                </span>
-                {submenuStates.customer ? (
-                  <IoIosArrowDown className="text-[20px]  text-white group-hover:text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] group-hover:text-white text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.customer
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul className="pl-[10px]">
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-category">Add Category</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-technology">
-                      Add Technology
-                    </NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-website">Add Website</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/websites-list">Website List</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-brand">Add Provider</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/payment">Payment</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/our-site">Our Site</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-member">Add Member</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/member-list">Member List</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/add-achievement">
-                      Add Acievement
-                    </NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/websites/achievement-list">
-                      Acievement List
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      pricePlan: !submenuStates.pricePlan,
+                    })
+                  }
+                  className={
+                    submenuStates.pricePlan
+                      ? "flex justify-between items-center transition-all duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] hover:bg-indigo-500 group hover:text-white transition-all duration-300 px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white  text-[15px] font-[500]">
+                    <SiSololearn className="text-[22px] font-[500] group-hover:text-white" />
+                    Courses
+                  </span>
+                  {submenuStates.pricePlan ? (
+                    <IoIosArrowDown className="text-[20px]  group-hover:text-white text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.pricePlan
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul className="pl-[10px]">
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/courses/add-course">Add Course</NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/courses/courses-list">Courses List</NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/courses/admissions-list">Admission</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      accordion: !submenuStates.accordion,
+                    })
+                  }
+                  className={
+                    submenuStates.accordion
+                      ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
+                    <TfiLayoutAccordionSeparated className="text-[22px] font-[500] group-hover:text-white" />
+                    Accordion
+                  </span>
+                  {submenuStates.accordion ? (
+                    <IoIosArrowDown className="text-[20px] group-hover:text-white text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.accordion
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/accordion/add-accordion">
+                        Add Accordion
+                      </NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/accordion/accordion-list">
+                        Accordion List
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    pricePlan: !submenuStates.pricePlan,
-                  })
-                }
-                className={
-                  submenuStates.pricePlan
-                    ? "flex justify-between items-center transition-all duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] hover:bg-indigo-500 group hover:text-white transition-all duration-300 px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white  text-[15px] font-[500]">
-                  <SiSololearn className="text-[22px] font-[500] group-hover:text-white" />
-                  Courses
-                </span>
-                {submenuStates.pricePlan ? (
-                  <IoIosArrowDown className="text-[20px]  group-hover:text-white text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.pricePlan
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul className="pl-[10px]">
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/courses/add-course">Add Course</NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/courses/courses-list">Courses List</NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/courses/admissions-list">Admission</NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    accordion: !submenuStates.accordion,
-                  })
-                }
-                className={
-                  submenuStates.accordion
-                    ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
-                  <TfiLayoutAccordionSeparated className="text-[22px] font-[500] group-hover:text-white" />
-                  Accordion
-                </span>
-                {submenuStates.accordion ? (
-                  <IoIosArrowDown className="text-[20px] group-hover:text-white text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.accordion
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/accordion/add-accordion">
-                      Add Accordion
-                    </NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/accordion/accordion-list">
-                      Accordion List
-                    </NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      users: !submenuStates.users,
+                    })
+                  }
+                  className={
+                    submenuStates.users
+                      ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
+                    <MdOutlineVideoLibrary className="text-[22px] font-[500] group-hover:text-white" />
+                    Videos
+                  </span>
+                  {submenuStates.users ? (
+                    <IoIosArrowDown className="text-[20px] group-hover:text-white text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.users
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/videos/add-video">Add Video</NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/videos/videos-list">Videos List</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li>
+                {" "}
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      support: !submenuStates.support,
+                    })
+                  }
+                  className={
+                    submenuStates.support
+                      ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
+                    <RiFeedbackLine className="text-[22px] font-[500]" />
+                    Reviews
+                  </span>
+                  {submenuStates.support ? (
+                    <IoIosArrowDown className="text-[20px] group-hover:text-white text-neutral-400" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] group-hover:text-white text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.support
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/reviews/add-video-review">
+                        Video Review
+                      </NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/reviews/video-reviews-list">
+                        Video Reviews List
+                      </NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/reviews/add-feedback">Add Feedback</NavLink>
+                    </li>
+                    <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="/reviews/feedback-list">
+                        Feedback List
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              {/* Settings Submenu */}
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      settings: !submenuStates.settings,
+                    })
+                  }
+                  className={
+                    submenuStates.settings
+                      ? "flex justify-between items-center transition-all duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] hover:bg-indigo-500 group hover:text-white transition-all duration-300 px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
+                    <LuSettings className="text-[22px] group-hover:text-white" />
+                    Settings
+                  </span>
+                  {submenuStates.settings ? (
+                    <IoIosArrowDown className="text-[20px] text-white group-hover:text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.settings
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul className="pl-[10px]">
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">Profile</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">Tearms & Condition</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">Privacy Policy</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
 
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    users: !submenuStates.users,
-                  })
-                }
-                className={
-                  submenuStates.users
-                    ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
-                  <MdOutlineVideoLibrary className="text-[22px] font-[500] group-hover:text-white" />
-                  Videos
-                </span>
-                {submenuStates.users ? (
-                  <IoIosArrowDown className="text-[20px] group-hover:text-white text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.users
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/videos/add-video">Add Video</NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/videos/videos-list">Videos List</NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              {" "}
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    support: !submenuStates.support,
-                  })
-                }
-                className={
-                  submenuStates.support
-                    ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
-                  <RiFeedbackLine className="text-[22px] font-[500]" />
-                  Reviews
-                </span>
-                {submenuStates.support ? (
-                  <IoIosArrowDown className="text-[20px] group-hover:text-white text-neutral-400" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] group-hover:text-white text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.support
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/reviews/add-video-review">
-                      Video Review
-                    </NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/reviews/video-reviews-list">
-                      Video Reviews List
-                    </NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/reviews/add-feedback">Add Feedback</NavLink>
-                  </li>
-                  <li className="py-[8px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="/reviews/feedback-list">Feedback List</NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            {/* Settings Submenu */}
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    settings: !submenuStates.settings,
-                  })
-                }
-                className={
-                  submenuStates.settings
-                    ? "flex justify-between items-center transition-all duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] hover:bg-indigo-500 group hover:text-white transition-all duration-300 px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
-                  <LuSettings className="text-[22px] group-hover:text-white" />
-                  Settings
-                </span>
-                {submenuStates.settings ? (
-                  <IoIosArrowDown className="text-[20px] text-white group-hover:text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.settings
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul className="pl-[10px]">
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">Profile</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">Tearms & Condition</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">Privacy Policy</NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            {/* Pages Submenu */}
-            <li>
-              <button
-                onClick={() =>
-                  setSubmenuStates({
-                    ...submenuStates,
-                    pages: !submenuStates.pages,
-                  })
-                }
-                className={
-                  submenuStates.pages
-                    ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
-                    : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
-                }
-              >
-                <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
-                  <RiPageSeparator className="text-[22px] group-hover:text-white" />{" "}
-                  Components
-                </span>
-                {submenuStates.pages ? (
-                  <IoIosArrowDown className="text-[20px] text-white group-hover:text-white" />
-                ) : (
-                  <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
-                )}
-              </button>
-              <div
-                className={
-                  submenuStates.pages
-                    ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
-                    : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
-                }
-              >
-                <ul className="pl-[10px]">
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">Header</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">About</NavLink>
-                  </li>
-                  <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
-                    <NavLink to="">Footer</NavLink>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            {/* Existing Menu Items */}
-          </ul>
+              {/* Pages Submenu */}
+              <li>
+                <button
+                  onClick={() =>
+                    setSubmenuStates({
+                      ...submenuStates,
+                      pages: !submenuStates.pages,
+                    })
+                  }
+                  className={
+                    submenuStates.pages
+                      ? "flex justify-between transition-all duration-300 items-center gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white"
+                      : "mb-[10px] w-full flex justify-between items-center cursor-pointer rounded-[6px] transition-all duration-300 hover:bg-indigo-500 group hover:text-white px-[13px] py-[10px]"
+                  }
+                >
+                  <span className="flex justify-between items-center group-hover:text-white gap-[10px] text-white text-[15px] font-[500]">
+                    <RiPageSeparator className="text-[22px] group-hover:text-white" />{" "}
+                    Components
+                  </span>
+                  {submenuStates.pages ? (
+                    <IoIosArrowDown className="text-[20px] text-white group-hover:text-white" />
+                  ) : (
+                    <IoIosArrowForward className="text-[20px] text-white group-hover:text-white transition-all duration-200" />
+                  )}
+                </button>
+                <div
+                  className={
+                    submenuStates.pages
+                      ? "h-auto overflow-hidden transition-all pl-[30px] duration-300"
+                      : "submenu pl-[30px] h-0 overflow-hidden transition-all duration-300"
+                  }
+                >
+                  <ul className="pl-[10px]">
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">Header</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">About</NavLink>
+                    </li>
+                    <li className="py-[12px] text-[15px] text-white list-disc font-[500]">
+                      <NavLink to="">Footer</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <MdOutlinePayments className="text-[22px]"/>  <NavLink to="/payment-setting">Payment Setting</NavLink>
+                    </li>
+              {/* Existing Menu Items */}
+            </ul>
         </div>
       </section>
     </>

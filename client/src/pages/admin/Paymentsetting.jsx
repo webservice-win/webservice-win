@@ -6,6 +6,7 @@ import Dashboradheader from '../../components/Dashboard/Dashboardheader';
 import { FiSearch } from 'react-icons/fi';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Paymentsetting = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Paymentsetting = () => {
   const fetchPaymentMethods = async () => {
     try {
       const response = await axios.get(`${base_url}/admin/payment-methods`);
-      setPaymentMethods(response.data); // Store the fetched data in state
+      setPaymentMethods(response.data.data);// Store the fetched data in state
     } catch (error) {
       console.error('Error fetching payment methods:', error);
     }
@@ -47,11 +48,12 @@ const Paymentsetting = () => {
         .then((res) => {
           if (res.data.success) {
             Swal.fire("Success", `${res.data.message}`, "success");
-            get_course();
+            fetchPaymentMethods();
+
           }
         })
         .catch((err) => {
-          console.log(err.name);
+          console.log(err);
         });
     }
   };
