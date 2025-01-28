@@ -1,5 +1,6 @@
 import React,{useState} from 'react'
 import { FaTrophy, FaUserFriends, FaChartBar, FaMoneyBillWave, FaHeadset } from "react-icons/fa";
+import { IoCloseOutline } from "react-icons/io5";
 const Achievementmodel = ({data}) => {
     const base_url= import.meta.env.VITE_API_KEY_Base_URL;
     const [isPopupVisible, setPopupVisible] = useState(false);

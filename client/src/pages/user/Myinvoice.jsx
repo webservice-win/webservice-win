@@ -3,7 +3,7 @@ import { Contextapi } from '../../context/Appcontext';
 import Userdashboardleftside from '../../components/Dashboard/Userdashboardleftside';
 import Userheader from '../../components/Dashboard/Userheader';
 import axios from 'axios';
-
+import { NavLink } from 'react-router-dom';
 const Myinvoice = () => {
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
@@ -62,8 +62,12 @@ const Myinvoice = () => {
         </section>
         <section className={activesidebar ? 'w-[100%] h-[100vh] overflow-y-auto transition-all duration-300' : ' transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
           <Userheader />
+          
           {/* ----------------box-------------- */}
           <section className='w-[100%] m-auto py-[20px] xl:py-[40px] px-[30px]'>
+          <div>
+                <h1 className='text-[20px] lg:text-[24px] font-[600] px-[20px] mb-[8px]'>Invoice List</h1>
+          </div>
             <div className="p-4">
               <div className="mb-4 flex justify-between items-center">
                 <div className="relative w-1/2">
@@ -77,55 +81,68 @@ const Myinvoice = () => {
                 </div>
               </div>
               <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Date</th>
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Invoice ID</th>
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Product Name</th>
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Amount</th>
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Status</th>
-                      <th className="px-4 py-[12px] text-left text-[17px] font-semibold">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredInvoices.length > 0 ? (
-                      filteredInvoices.map((invoice, index) => (
-                        <tr
-                          key={invoice._id}
-                          className={`${
-                            index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                          } hover:bg-blue-100 transition-colors`}
-                        >
-                          <td className="px-4 py-3 text-sm text-gray-700">{new Date(invoice.createdAt.$date).toLocaleDateString()}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.invoice_id}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{invoice.product_name}</td>
-                          <td className="px-4 py-3 text-sm text-gray-700">{`$${invoice.product_price}`}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[invoice.status] || 'bg-gray-100 text-gray-700'}`}
-                            >
-                              {invoice.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-700">
-                            <button
-                              className="px-3 py-[10px] bg-blue-500 text-white text-[16px] font-medium rounded-lg hover:bg-blue-600 transition"
-                            >
-                              View Details
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="6" className="px-4 py-3 text-center text-gray-700">
-                          No invoices found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+              <table className="min-w-full bg-white border border-gray-200 overflow-hidden">
+  <thead className="text-xs text-white uppercase bg-gradient-to-r from-indigo-600 to-indigo-700 border-b border-gray-200 dark:border-gray-700">
+    <tr>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Date</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Invoice ID</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Product Name</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Amount</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Status</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredInvoices.length > 0 ? (
+      filteredInvoices.map((invoice, index) => (
+        <tr
+          key={invoice._id}
+          className={`${
+            index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900"
+          } border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}
+        >
+          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+            {invoice.createdAt.slice(0, 10)}
+          </td>
+          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+            {invoice.invoice_id}
+          </td>
+          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+            {invoice.product_name}
+          </td>
+          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+            ${invoice.product_price}
+          </td>
+          <td className="px-6 py-2 text-[16px] font-medium border-r border-gray-200 dark:border-gray-700">
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium ${
+                statusColors[invoice.status] || 'bg-gray-100 text-gray-700'
+              }`}
+            >
+              {invoice.status}
+            </span>
+          </td>
+          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white">
+            <NavLink to={`/user-order-invoice/${invoice._id}`}>
+            <button className="px-4 py-2 bg-indigo-600 text-white text-[16px] font-medium rounded-lg hover:bg-indigo-700 transition">
+              View Details
+            </button>
+            </NavLink>
+          
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan="6" className="px-6 py-3 text-center text-gray-700 dark:text-white">
+          No invoices found.
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
+
+
               </div>
             </div>
           </section>

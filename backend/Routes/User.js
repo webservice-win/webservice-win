@@ -28,11 +28,12 @@ user_route.get("/dashboard",(req,res)=>{
 // GET /dashboard route
 const crypto = require('crypto');
 const deposit_model = require("../Models/Depositmodel");
+const UserModel = require("../Models/User");
 
 user_route.post("/product-order", async (req, res) => {
   try {
-    const { product_id, product_price, customer_id, provider_name, payeer_number, transiction, product_name } = req.body;
-    console.log(product_id, product_price, customer_id, provider_name, payeer_number, transiction);
+    const { product_id, product_price, customer_id, provider_name, payeer_number, transiction, product_name,due_payment,paid } = req.body;
+    console.log(req.body);
 
     // Validate query parameters
     if (!product_id || !product_price || !customer_id || !provider_name || !payeer_number || !transiction || !product_name) {
@@ -58,6 +59,7 @@ user_route.post("/product-order", async (req, res) => {
       payeer_number,
       transiction,
       product_name,
+      due_payment,paid,
       invoice_id: invoiceId, // Add the generated invoice ID to the order
     });
 
@@ -189,5 +191,22 @@ user_route.get("/deposit/:id", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+// ------------------user-data--------------------
+user_route.get("/user/:id",async(req,res)=>{
+  try {
+    const find_user=await UserModel.findById({_id:req.params.id});
+    res.send({data:find_user})
+  } catch (error) {
+    console.log(error)
+  }
+})
+user_route.get("/my-order-invoice/:id",async(req,res)=>{
+  try {
+    const order_invoice=await order_model.findById({_id:req.params.id});
+    res.send({data:order_invoice})
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 module.exports=user_route;
