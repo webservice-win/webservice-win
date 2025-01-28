@@ -6,7 +6,8 @@ import Dashboradheader from '../../components/Dashboard/Dashboardheader';
 import { AiOutlinePlus, AiOutlineRollback, AiOutlineCamera } from "react-icons/ai";
 import Swal from "sweetalert2";
 import axios from "axios";
-
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import ReactQuill from "react-quill";
 const Addpaymentmethod = () => {
    const navigate=useNavigate();
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
@@ -56,7 +57,10 @@ const Addpaymentmethod = () => {
      setShowPopup(false);
      Swal.fire("Success!", "New field added successfully.", "success");
    };
- 
+   const handleInputChange = (value) => {
+    set_depositInstruction(value);
+  };
+
    const handleDeleteField = (index) => {
      Swal.fire({
        title: "Are you sure?",
@@ -80,7 +84,38 @@ const Addpaymentmethod = () => {
      const [depositInstruction,set_depositInstruction]=useState("");
      const [getwayname,set_getwayname]=useState("");
      const [rate,set_rate]=useState();
+       // Modules for ReactQuill
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ color: [] }, { background: [] }],
+      ["link"],
+      ["clean"],
+      ["image"], // Add image button to toolbar
+      [{ font: [] }], // Add font size control
+      [{ size: ["small", "medium", "large", "huge"] }], // Define available text sizes
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "color",
+    "background",
+    "link",
+    "image",
+    "font",
+    "size",
+  ];
+
    const handleSubmit = async (event) => {
+    console.log(depositInstruction)
      event.preventDefault();
     const form_data=new FormData();
     form_data.append("currencyName",currencyName);
@@ -110,7 +145,16 @@ const Addpaymentmethod = () => {
     //    Swal.fire("Error", "Please fill in all required fields.", "error");
     //    return;
     //  }
-     axios.post(`${base_url}/admin/manual-payment`,{userData})
+     axios.post(`${base_url}/admin/manual-payment`,{
+      gatewayName:getwayname,
+      currencyName,
+      minAmount,
+      maxAmount,
+        fixedCharge,
+        percentCharge,
+      depositInstruction,
+      rate,
+      userData,})
      .then((res)=>{
       Swal.fire({
         title: "Success",
@@ -256,11 +300,14 @@ const Addpaymentmethod = () => {
 
         <div className="mb-6">
           <h2 className="bg-indigo-500 text-white py-2 px-4 rounded-md mb-2">Deposit Instruction</h2>
-          <textarea
-          value={depositInstruction}
-          onChange={(e)=>{set_depositInstruction(e.target.value)}}
-            className="w-full border rounded-[5px] mt-[5px] px-4 py-2 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 h-40"
-          ></textarea>
+          <ReactQuill 
+      modules={modules} 
+      formats={formats} 
+      style={{ height: "250px" }} 
+      value={depositInstruction} 
+      onChange={handleInputChange} 
+      className="w-full mt-[8px] mb-[70px]" 
+    />
         </div>
 
         <div className="mb-6">

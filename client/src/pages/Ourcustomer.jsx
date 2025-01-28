@@ -73,7 +73,7 @@ const Ourcustomer = () => {
           </h1>
         </div>
         {/* ---------------review----------------- */}
-        <section className="pt-[50px] grid lg:grid-cols-2 xl:grid-cols-6  gap-[20px]">
+        <section className="pt-[50px] grid grid-cols-2 xl:grid-cols-6  gap-[20px]">
           {oursite.map((data) => {
             return (
               <NavLink>

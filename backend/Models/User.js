@@ -22,8 +22,12 @@ const UserSchema = new Schema({
     deposit_balance:{
         type:Number,
         default:0
+    },
+    due_balance:{
+        type:Number,
+        default:0
     }
-});
+},{timestamps:true});
 
 const UserModel = mongoose.model('users', UserSchema);
 module.exports = UserModel;

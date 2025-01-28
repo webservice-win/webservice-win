@@ -3,45 +3,34 @@ const mongoose=require("mongoose");
 const order_schema=new mongoose.Schema({
   invoice_id:{
     type:String,
-    required:true,
   },
   product_name:{
     type:String,
-    required:true,
   },
    product_id:{
     type:String,
-    required:true,
    },
      product_price:{
     type:String,
-    required:true,
    },
    customer_id:{
     type:String,
-    required:true,
    },
    provider_name:{
     type:String,
-    required:true,
    },
    payeer_number:{
      type:String,
-    required:true,
    },
    transiction:{
      type:String,
-    required:true,
    },
+   image:String,
+   due_payment:Number,
+   paid:Number,
    status:{
     type:String,
-    enum: [
-      "pending",
-      "processing",
-      "hold",
-      "completed",
-      "suspended",
-    ],
+    default:"processing",
    }
 },{timestamps:true});
 

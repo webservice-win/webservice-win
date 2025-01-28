@@ -115,16 +115,16 @@ const Details = () => {
       navigate("/login")
     }
   }
-  const handle_buy2=()=>{
+  const handle_buy2=(id2)=>{
     if(user_info){
-      alert("hello")
+      navigate(`/checkout/${id2}?product_id=${id}`)
  }else{
    navigate("/login")
  }
   }
-  const handle_buy3=()=>{
+  const handle_buy3=(id2)=>{
     if(user_info){
-      alert("hello")
+      navigate(`/checkout/${id2}?product_id=${id}`)
  }else{
    navigate("/login")
  }
@@ -244,7 +244,7 @@ const Details = () => {
                     </li>
                   ))}
                 </ul>
-                <button onClick={()=>{handle_buy2()}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
+                <button onClick={()=>{handle_buy2(2)}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
                   Buy Now
                 </button>
               </div>
@@ -276,7 +276,7 @@ const Details = () => {
                     </li>
                   ))}
                 </ul>
-                <button onClick={()=>{handle_buy3()}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
+                <button onClick={()=>{handle_buy3(3)}} className="mt-6 px-[25px] bg-indigo-900 border-[2px] border-white text-white rounded-full block m-auto py-2 text-[18px] font-bold hover:bg-yellow-600">
                   Buy Now
                 </button>
               </div>

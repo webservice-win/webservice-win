@@ -15,7 +15,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.use(bodyParser.json());
-app.use(express.urlencoded({ limit: '10mb', extended: true }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors(
     {
         origin:[

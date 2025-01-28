@@ -133,7 +133,7 @@ useEffect(()=>{
      <section className="pt-[40px] pb-[30px]">
          {
           orders.length > 0 ?     <div className="relative overflow-x-auto border-[1px] border-[#eee] rounded-[5px]">
-           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700 overflow-hidden">
+<table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-l border-r border-b border-gray-200 dark:border-gray-700 overflow-hidden">
   <thead className="text-xs text-white uppercase bg-indigo-600 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
     <tr>
       <th
@@ -164,6 +164,18 @@ useEffect(()=>{
         scope="col"
         className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
       >
+        Paid Amount
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Due Amount
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
         Download
       </th>
     </tr>
@@ -182,17 +194,17 @@ useEffect(()=>{
           {data.product_name}
         </td>
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-          {data.product_price}
+          ${data.product_price}
         </td>
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
           {data.payeer_number}
         </td>
         <td
           className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 rounded-lg text-center ${
-            data.status === "pending"
+            data.status === "processing"
               ? "text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
               : data.status === "completed"
-              ? "text-green-600  dark:bg-green-900 dark:text-green-300"
+              ? "text-green-600 dark:bg-green-900 dark:text-green-300"
               : data.status === "failed"
               ? "text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300"
               : "text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400"
@@ -200,24 +212,40 @@ useEffect(()=>{
         >
           {data.status}
         </td>
-        {
-          data.status=="completed"?      <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-          {/* Download link or button */}
-          <a href={`https://i.imgur.com/pScFoho.png`} download className='text-indigo-400 underline'>
-            Download Zip File
-          </a>
-        </td>:""
-        }
-   
+        <td
+          className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
+            data.paid > 0 ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          ${data.paid}
+        </td>
+        <td
+          className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
+            data.due_payment > 0 ? "text-red-600" : "text-red-600"
+          }`}
+        >
+          ${data.due_payment}
+        </td>
+        {data.status === "completed" ? (
+          <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+            {/* Download link or button */}
+            <a href={`https://i.imgur.com/pScFoho.png`} download className="text-indigo-400 underline">
+              Download Zip File
+            </a>
+          </td>
+        ) : (
+          ""
+        )}
       </tr>
     ))}
   </tbody>
 </table>
 
+
           </div>:<section className='w-full flex justify-center items-center'>
                <div>
                 <img className='w-[100px] lg:w-[300px]' src={empty_img} alt="" />
-                <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Websites are empty!</h2>
+                <h2 className='text-[18px] lg:text-[25px] text-center font-[500] mt-[5px]'>Orders are empty!</h2>
                </div>
           </section>
          }

@@ -10,6 +10,7 @@ import { CgWebsite } from "react-icons/cg";
 import { FaRegAddressCard } from "react-icons/fa";
 import Userdashboardleftside from '../../components/Dashboard/Userdashboardleftside';
 import Userheader from '../../components/Dashboard/Userheader';
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 const Userprofile = () => {
    const navigate=useNavigate();
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
@@ -30,6 +31,31 @@ const Userprofile = () => {
          set_name(user_info.name);
          set_email(user_info.email)
    },[])
+   const [formData, setFormData] = useState({
+    firstName: 'Rafiq',
+    lastName: 'Mahim',
+    email: 'rafiq@gmail.com',
+    mobile: '01686273273',
+    address: '',
+    state: '',
+    zipCode: '',
+    city: '',
+    country: 'Bangladesh',
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.address || !formData.state || !formData.zipCode || !formData.city) {
+      alert('Please fill out all fields before submitting');
+      return;
+    }
+    console.log('Updated Data:', formData);
+    alert('Profile updated successfully!');
+  };
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -39,24 +65,60 @@ const Userprofile = () => {
         <section className={activesidebar ? 'w-[100%] h-[100vh] bg-[#080F25] overflow-y-auto transition-all duration-300':' bg-[#080F25]  transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
         <Userheader/> 
        {/* ----------------box-------------- */}
-              <section className='w-full p-[30px]'>
-                 <form action="" className='w-full'>
-                    <h1 className='text-[20px] lg:text-[25px] text-white'>Your Information</h1>
-                 <div className='w-full mt-[30px]'>
-                    <label htmlFor=""className='text-[17px] text-white'>Name</label>
-                    <input type="text"placeholder='Enter your name'value={name} className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
-                  </div>
-                  <div className='w-full mt-[10px]'>
-                    <label htmlFor=""className='text-[17px] text-white'>Email</label>
-                    <input type="email"placeholder='Enter your email'value={email} className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
-                  </div>
-                  <div className='w-full mt-[10px]'>
-                    <label htmlFor=""className='text-[17px] text-white'>Passoword</label>
-                    <input type="password"placeholder='Enter your password'className='w-full h-[45px] outline-indigo-500 mt-[8px] px-[20px] rounded-[5px] bg-white border-[1px] border-[#eee] text-[16px]' />
-                  </div>
-                  <button className='w-full h-[50px] bg-indigo-600 rounded-[5px] text-white  mt-[20px]'>Submit</button>
-                 </form>
-              </section>
+      <section className='w-full p-[30px]'>
+      <section className="w-full mt-[30px] p-[20px] font-poppins   bg-white shadow-md rounded-[5px]">
+      <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
+        <FaUser /> Profile Setting
+      </h2>
+      <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit}>
+        <div>
+          <label className="block text-[15px] font-medium">First Name</label>
+          <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} className="mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium">Last Name</label>
+          <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} className=" mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium flex items-center gap-2">
+            <FaEnvelope /> E-mail Address
+          </label>
+          <input type="email" name="email" value={formData.email} readOnly className="mt-[5px] w-full p-2 border rounded-md bg-gray-200" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium flex items-center gap-2">
+            <FaPhone /> Mobile Number
+          </label>
+          <input type="text" name="mobile" value={formData.mobile} readOnly className="mt-[5px] w-full p-2 border rounded-md bg-gray-200" />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-[15px] font-medium">Address</label>
+          <input type="text" name="address" value={formData.address} onChange={handleChange} className="mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium">State</label>
+          <input type="text" name="state" value={formData.state} onChange={handleChange} className="mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px`] font-medium">Zip Code</label>
+          <input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} className="mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium">City</label>
+          <input type="text" name="city" value={formData.city} onChange={handleChange} className="mt-[5px] w-full p-2 border rounded-md" />
+        </div>
+        <div>
+          <label className="block text-[15px] font-medium flex items-center gap-2">
+            <FaMapMarkerAlt /> Country
+          </label>
+          <input type="text" name="country" value={formData.country} readOnly className="mt-[5px] w-full p-2 border rounded-md bg-gray-200" />
+        </div>
+        <div className="col-span-2">
+          <button type="submit" className="w-full p-3 bg-blue-600 text-white rounded-md font-medium">Submit</button>
+        </div>
+      </form>
+    </section>
+      </section>
       {/* ----------------box-------------- */}
 
         </section>
