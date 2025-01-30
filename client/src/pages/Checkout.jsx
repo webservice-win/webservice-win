@@ -1,218 +1,366 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useParams, useSearchParams } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Import SweetAlert2
-import axios from 'axios'; // Import axios for API requests
-
+import { useNavigate, useParams, useSearchParams,Link} from 'react-router-dom';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import bankLogo from '../assets/bank-logo.png';
+import bkashLogo from '../assets/bkash-logo.png';
+import nagadLogo from '../assets/nagad-logo.png';
+import rocketLogo from '../assets/rocket-logo.png';
+import binanceLogo from '../assets/binance-logo.png';
+import { FaWhatsapp } from "react-icons/fa";
 const Checkout = () => {
-  const [selectedTab, setSelectedTab] = useState("Bank Transfer");
+  const [selectedTab, setSelectedTab] = useState("");
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState(0);
   const [site, setSiteName] = useState("");
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [senderNumber, setSenderNumber] = useState('');
   const [trxId, setTrxId] = useState('');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const user_info = JSON.parse(localStorage.getItem("user_data")); 
+  const user_info = JSON.parse(localStorage.getItem("user_data"));
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
 
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const conversionRate = 125;
+  const [product, set_product] = useState([]);
+  const product_Id = searchParams.get("product_id");
+  const navigate = useNavigate();
+  const whatsapp_number = import.meta.env.VITE_WHATSAPP_NUMBER;
+  const payment_method = [
+    {
+      tab_name: "Binance",
+      image: binanceLogo
+    },
+    {
+      tab_name: "Bank Transfer",
+      image: bankLogo
+    },
+    {
+      tab_name: "Bkash",
+      image: bkashLogo
+    },
+    {
+      tab_name: "Nagad",
+      image: nagadLogo
+    },
+    {
+      tab_name: "Rocket",
+      image: rocketLogo
+    },
+  ]
+  useEffect(() => {
+    axios.get(`${base_url}/admin/single-website/${product_Id}`)
+      .then((res) => {
+        if (res.data.success) {
+          set_product(res.data.data);
+        }
+      })
+      .catch((err) => console.log(err.name));
+  }, []);
 
   useEffect(() => {
-    if (id == 1) {
-      setSiteName("Single License Script");
-      setPrice(299);
-    } else if (id == 2) {
-      setSiteName("Unlimited License Script");
-      setPrice(2999);
-    } else if (id == 3) {
-      setSiteName("Completed Betting Website");
-      setPrice(1800);
-    }
-  }, [id]);
+    if (id == 1) setSiteName("Single License Script"), setPrice(product.singleLicense);
+    else if (id == 2) setSiteName("Unlimited License Script"), setPrice(product.unlimitedLicense);
+    else if (id == 3) setSiteName("Completed Betting Website"), setPrice(product.bettinglicense);
+  }, [product]);
 
   const finalPayment = Math.max(price - amount, 0);
 
-  // Validate form
-  const validateForm = () => {
-    if (!trxId) {
-      return false; 
-    }
-    return true;
-  };
-
   const handlePayNow = async (e) => {
     e.preventDefault();
+
+    if (!selectedTab) return Swal.fire('Error', 'Please select a payment method.', 'error');
+    if (amount > price) return Swal.fire('Error', 'Amount cannot exceed total price.', 'error');
+    if (selectedTab !== "Bank Transfer" && (!trxId)) return Swal.fire('Error', 'Please fill all required fields.', 'error');
+
     setLoading(true);
-  
+
     try {
-      const response = await axios.post(`${base_url}/product-order`, {
-        product_id: searchParams.get("product_id"),
+      // const formData = new FormData();
+      // formData.append("product_id", product_Id);
+      // formData.append("product_price", price);
+      // formData.append("customer_id", user_info._id);
+      // formData.append("provider_name", selectedTab);
+      // formData.append("payeer_number", senderNumber || ""); // Optional
+      // formData.append("transiction", trxId || ""); // Optional
+      // formData.append("product_name", site);
+      // formData.append("due_payment", finalPayment);
+      // formData.append("paid", amount);
+
+      if (file) {
+        formData.append("image", file); // Attach the image if available
+      }
+      console.log(trxId)
+      await axios.post(`${base_url}/product-order`, {
+        product_id: product_Id,
         product_price: price,
         customer_id: user_info._id,
         provider_name: selectedTab,
-        payeer_number: senderNumber,
-        transiction: trxId,
-        product_name: site,
+        product_name:product.title,
         due_payment: finalPayment,
-        paid: amount,
-      });
-      setShowModal(false)
-      // TailwindCSS modal with glowing effect
-      Swal.fire({
-        title: 'Order Confirmed!',
-        text: 'Your payment is being processed. Thank you for your order!',
-        icon: 'success',
-        confirmButtonText: 'OK',
-        customClass: {
-          popup: 'animate-glow bg-white text-green-500 p-8 rounded-lg shadow-lg border border-green-400',  // Apply glowing effect using Tailwind
-          title: 'text-2xl font-semibold text-center',
-          content: 'text-lg text-center',
-        },
+        package_name:site,
+        paid:amount ,
+        payeer_number: senderNumber || "",
+        transaction: trxId || ""
+      })
+        .then((res) => {
+          console.log(res)
+          navigate("/user-dashboard/my-order")
+        }).catch((err) => {
+          console.log(err)
+        })
 
-        willClose: () => {
-          setShowModal(false); // Close the modal after confirmation
-        },
-      });
+      Swal.fire('Success', 'Order confirmed successfully!', 'success');
+      navigate("/my-order")
     } catch (error) {
-      Swal.fire({
-        title: 'Error!',
-        text: 'There was an issue with your payment. Please try again.',
-        icon: 'error',
-        confirmButtonText: 'OK',
-      });
+      Swal.fire('Error', 'Payment failed. Try again.', 'error');
     } finally {
       setLoading(false);
     }
   };
-  
+
 
   return (
     <section className="font-poppins">
       <Header />
-      <section className="w-full flex bg-[#F9FBFC] justify-center items-center py-[80px]">
-        <div className="w-[70%] flex flex-col md:flex-row gap-6">
+      <section className="w-full flex bg-[#F9FBFC] justify-center items-center py-[80px] gap-[20px] lg:flex-row ">
+        <div className="w-[97%] lg:w-[70%] flex md:flex-row gap-6 flex-col">
+
           {/* Left Section */}
-          <div className="w-full md:w-1/2 bg-white shadow p-6 rounded-lg">
-            <h1 className="text-[22px] font-semibold mb-3">Deposit</h1>
-            {[
-              { id: "Bank Transfer", label: "Bank Transfer", logo: "https://goldsnova.com/assets/images/gateway/678d4895e80b21737312405.png" },
-              { id: "Bkash", label: "Bkash", logo: "https://goldsnova.com/assets/images/gateway/678d6bd41c50b1737321428.png" },
-              { id: "Nagad", label: "Nagad", logo: "https://goldsnova.com/assets/images/gateway/678d73ec0db361737323500.png" },
-            ].map((tab) => (
-              <div
-                key={tab.id}
-                className={`flex items-center justify-between p-3 mb-2 rounded-lg cursor-pointer border ${selectedTab === tab.id ? "border-blue-500 bg-blue-100" : "border-gray-200"}`}
-                onClick={() => setSelectedTab(tab.id)}
-              >
-                <div className="flex items-center">
-                  <input type="radio" checked={selectedTab === tab.id} readOnly className="mr-3" />
-                  <p className="text-gray-700 font-medium">{tab.label}</p>
-                </div>
-                <img src={tab.logo} alt={tab.label} className="w-10 h-10" />
+          <div className="w-full md:w-1/2  shadow  p-[10px] bg-[#3D2BFB]">
+            <div className='p-6 bg-[#010053]'>
+              <h1 className='text-center text-white font-[500] text-[22px] p-[10px] bg-indigo-800'>Order Details</h1>
+              <h1 className='text-[20px] text-white mt-[20px]'>{product.title}</h1>
+              <div className='flex justify-between items-center py-[10px]'>
+                <h2 className='text-[18px] font-[500] text-white'>{site}</h2>
+                <h2 className='text-[20px] font-[600] text-white'>${price}</h2>
               </div>
-            ))}
+            </div>
+            <div className='bg-[#010053] mt-[10px] p-[10px]'>
+  <h1 className="text-[22px] font-semibold mb-3 text-white">Payment Method</h1>
+  {payment_method.map((tab, i) => {
+    const tabBackgrounds = {
+      "Binance": "bg-[#E29700]",
+      "Bank Transfer": "bg-[#004404]",
+      "Bkash": "bg-[#F0047F]",
+      "Nagad": "bg-[#ED1C24]",
+      "Rocket": "bg-[#8F2A85]"
+    };
+
+    return (
+      <div
+        key={i}
+        className={`flex items-center justify-between p-3 mb-2 rounded-lg cursor-pointer border transition-all duration-200 
+          ${selectedTab === tab.tab_name 
+            ? `border-none text-white ${tabBackgrounds[tab.tab_name] || "bg-gray-200"}`
+            : "border-gray-200 bg-white text-gray-700"}`}
+        onClick={() => setSelectedTab(tab.tab_name)}
+      >
+        <div className='w-full flex justify-between items-center'>
+          <div className="flex items-center">
+            <input type="radio" checked={selectedTab === tab.tab_name} readOnly className="mr-3" />
+            <p className="font-medium">{tab.tab_name}</p>
+          </div>
+          <div>
+            <img className='w-[90px] h-[50px]' src={tab.image} alt="" />
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+
           </div>
 
           {/* Right Section */}
-          <div className="w-full md:w-1/2 bg-white shadow p-6 rounded-lg">
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Amount</label>
-              <div className="relative">
-                <input
-                  type="number"
-                  placeholder="Enter amount"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 outline-none"
-                />
-                <span className="absolute right-3 top-3 text-gray-500">$</span>
-              </div>
-            </div>
+          <div className="w-full md:w-1/2 p-[10px] bg-[#010053] ">
+            {(selectedTab === "Binance") && (
+              <>
+                <form action="" className='w-full ' onSubmit={handlePayNow}>
+                  <div className="bg-[#010053] p-[10px]">
+                    <h2 className="text-lg font-semibold mb-3 p-[10px] bg-[#E29700] text-center text-white ">Payment Information</h2>
+                    <div className='text-center py-[10px] text-yellow-500 text-[20px] font-[500] space-y-2'>
+                      <h2>GETWAY NAME :BINANCE</h2>
+                      <h2>BINANCE PAY ID : 942300272</h2>
+                    </div>
+                    <p className='text-white px-[20px] py-[10px]'>বি:দ্র: এই বাইন্যান্স আইডিতে পেমেন্ট করে নিচের হুটস এপস এ স্কেনসট সেন্ড করুন এবং কত ডলার পে করলেন সেটি লিখুন  পেমেন্ট সংক্রান্ত
+                    কোন সহযোগীতা  প্রয়োজন হলে হুটস এপস যোগাযোগ করবেন 
+                    </p>
+                    <div className='flex justify-center items-center'>
+                      <Link to="https://wa.me/+447414240705" target='_blank' className="px-[20px] py-[8px] rounded-full bg-green-600 inline-flex items-center gap-[5px] text-[15px]">
+                        <FaWhatsapp  className='text-white text-[20px]' />
+                        <span className='font-poppins text-white '>{whatsapp_number}</span>
+                      </Link>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className='p-[10px] text-center bg-[#E29700] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-white'>Transaction ID</label>
+                    <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                  </div>
+                </form>
+              </>
+            )}
+            {selectedTab === "Bank Transfer" && (
+              <>
+                <form action="" onSubmit={handlePayNow}>
+                  <div className=" p-[10px]">
+                    <h2 className="text-lg font-semibold mb-3 p-[10px] bg-[#004404] text-center text-white ">Payment Information</h2>
+                    <div className='text-center py-[10px] text-yellow-500 text-[20px] font-[500] space-y-2'>
+                      <h2>GETWAY NAME : BANK TRANSFER</h2>
+                      <h2>BANK NAME : PUBALI BANK LIMITED</h2>
+                      <h2>BRANCH : BAMNA BRANCH</h2>
+                      <h2>ACCOUNT NUMBER : 1146101191473</h2>
+                      <h2>ROUTING NUMBER : 175040108</h2>
+                    </div>
+                  </div>
+                  <p className='text-white px-[20px] py-[10px]'>বি:দ্র: এই PUBALI BANK LIMITED ACCOUNT এ পেমেন্ট করে নিচের হুটস এপস এ স্কেনসট আপলোড করুন এবং কত ডলার পে 
+                  করলেন সেটি লিখুন  পেমেন্ট সংক্রান্ত  কোন সহযোগীতা  প্রয়োজন হলে  হুটস এপস যোগাযোগ করবেন । 
+                    </p>
+                    <div className='flex justify-center items-center'>
+                      <Link to="https://wa.me/+447414240705" target='_blank' className="px-[20px] py-[8px] rounded-full bg-green-600 inline-flex items-center gap-[5px] text-[15px]">
+                        <FaWhatsapp  className='text-white text-[20px]' />
+                        <span className='font-poppins text-white '>{whatsapp_number}</span>
+                      </Link>
+                    </div>
+                  <div className=' mt-[10px]'>
+                    <h2 className='p-[10px] text-center bg-[#004404] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-[16px] text-white'>Upload Payment Proof</label> <br />
+                    <input type="file" onChange={(e) => setFile(e.target.files[0])} className="w-full bg-white rounded-[5px] mt-[5px] mb-3 border-[1px] p-[10px] border-[#eee]" /> <br />
+
+                  </div>
+                </form>
+              </>
+            )}
+            {(selectedTab === "Bkash") && (
+              <>
+                <form action="" onSubmit={handlePayNow}>
+                  <div className=" p-[10px]">
+                    <h2 className="text-lg font-semibold mb-3 p-[10px] bg-[#F0047F] text-center text-white ">Payment Information</h2>
+                    <div className='text-center py-[10px] text-yellow-500 text-[20px] font-[500] space-y-2'>
+                      <h2>GETWAY NAME : MOBILE BANKING</h2>
+                      <h2>BANK NAME : BKASH</h2>
+                      <h2>PAYMENT CHANEL : SEND MONEY OR CASH IN</h2>
+                      <h2>ACCOUNT TYPE : PARSONAL ACCOUNT</h2>
+                      <h2>ACCOUNT NUMBER : 01889921959</h2>
+                    </div>
+                  </div>
+                  <p className='text-white px-[20px] py-[10px]'>বি:দ্র: এই  Bkash ACCOUNT এ পেমেন্ট করে নিচে স্কেনসট আপলোড করুন এবং কত ডলার পে 
+                  করলেন সেটি লিখুন  পেমেন্ট সংক্রান্ত  কোন সহযোগীতা  প্রয়োজন হলে  হুটস এপস যোগাযোগ করবেন ।
+                    </p>
+                    <div className='flex justify-center items-center mb-[10px]'>
+                      <Link to="https://wa.me/+447414240705" target='_blank' className="px-[20px] py-[8px] rounded-full bg-green-600 inline-flex items-center gap-[5px] text-[15px]">
+                        <FaWhatsapp  className='text-white text-[20px]' />
+                        <span className='font-poppins text-white '>{whatsapp_number}</span>
+                      </Link>
+                    </div>
+                  <div>
+                    <h2 className='p-[10px] text-center bg-[#F0047F] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-white'>Sender Number</label>
+                    <input type="text" value={senderNumber} onChange={(e) => setSenderNumber(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                    <label className='text-white'>Transaction ID</label>
+                    <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                  </div>
+                </form>
+              </>
+            )}
+            {(selectedTab === "Nagad") && (
+              <>
+                <form action="" onSubmit={handlePayNow}>
+                  <div className=" p-[10px]">
+                    <h2 className="text-lg font-semibold mb-3 p-[10px] bg-[#ED1C24] text-center text-white ">Payment Information</h2>
+                    <div className='text-center py-[10px] text-yellow-500 text-[20px] font-[500] space-y-2'>
+                      <h2>GETWAY NAME : MOBILE BANKING</h2>
+                      <h2>BANK NAME : NAGAD</h2>
+                      <h2>PAYMENT CHANEL : SEND MONEY OR CASH IN</h2>
+                      <h2>ACCOUNT TYPE : PARSONAL ACCOUNT</h2>
+                      <h2>ACCOUNT NUMBER : 01889921959</h2>
+                    </div>
+                  </div>
+                  <p className='text-white px-[20px] py-[10px]'>বি:দ্র: এই  Nagad ACCOUNT এ পেমেন্ট করে নিচে স্কেনসট আপলোড করুন এবং কত ডলার পে 
+                  করলেন সেটি লিখুন  পেমেন্ট সংক্রান্ত  কোন সহযোগীতা  প্রয়োজন হলে  হুটস এপস যোগাযোগ করবেন । 
+                    </p>
+                    <div className='flex justify-center items-center  mb-[10px]'>
+                      <Link to="https://wa.me/+447414240705" target='_blank' className="px-[20px] py-[8px] rounded-full bg-green-600 inline-flex items-center gap-[5px] text-[15px]">
+                        <FaWhatsapp  className='text-white text-[20px]' />
+                        <span className='font-poppins text-white '>{whatsapp_number}</span>
+                      </Link>
+                    </div>
+                  <div>
+                    <h2 className='p-[10px] text-center bg-[#ED1C24] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-white'>Sender Number</label>
+                    <input type="text" value={senderNumber} onChange={(e) => setSenderNumber(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                    <label className='text-white'>Transaction ID</label>
+                    <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+
+                  </div>
+                </form>
+              </>
+            )}
+            {(selectedTab === "Rocket") && (
+              <>
+                <form action="" onSubmit={handlePayNow}>
+                  <div className=" p-[10px]">
+                    <h2 className="text-lg font-semibold mb-3 p-[10px] bg-[#8F2A85] text-center text-white ">Payment Information</h2>
+                    <div className='text-center py-[10px] text-yellow-500 text-[20px] font-[500] space-y-2'>
+                      <h2>GETWAY NAME : MOBILE BANKING</h2>
+                      <h2>BANK NAME : ROCKET</h2>
+                      <h2>PAYMENT CHANEL : SEND MONEY OR CASH IN</h2>
+                      <h2>ACCOUNT TYPE : PARSONAL ACCOUNT</h2>
+                      <h2>ACCOUNT NUMBER : 01889921959-9</h2>
+                    </div>
+                  </div>
+                  <p className='text-white px-[20px] py-[10px]'>বি:দ্র: এই  Rocket ACCOUNT এ পেমেন্ট করে নিচে স্কেনসট আপলোড করুন এবং কত ডলার পে 
+                  করলেন সেটি লিখুন  পেমেন্ট সংক্রান্ত  কোন সহযোগীতা  প্রয়োজন হলে  হুটস এপস যোগাযোগ করবেন । 
+                    </p>
+                    <div className='flex justify-center items-center mb-[10px]'>
+                      <Link to="https://wa.me/+447414240705" target='_blank' className="px-[20px] py-[8px] rounded-full bg-green-600 inline-flex items-center gap-[5px] text-[15px]">
+                        <FaWhatsapp  className='text-white text-[20px]' />
+                        <span className='font-poppins text-white '>{whatsapp_number}</span>
+                      </Link>
+                    </div>
+                  <div>
+                    <h2 className='p-[10px] text-center bg-[#8F2A85] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-white'>Sender Number</label>
+                    <input type="text" value={senderNumber} onChange={(e) => setSenderNumber(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                    <label className='text-white'>Transaction ID</label>
+                    <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+
+                  </div>
+                </form>
+              </>
+            )}
+            <label className='text-white'>Amount</label>
+            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
             <div className="border-t mt-4 pt-4">
-              <div className="flex justify-between text-sm mb-2 font-semibold">
-                <span>Total Price</span>
-                <span>{price.toFixed(2)} USD</span>
+              <div className="flex justify-between text-sm font-semibold">
+                <span className='text-[18px] text-white'>TOTAL AMOUNT</span>
+                <span className='text-[18px] text-white'>{price} USD</span>
               </div>
-              <div className="flex justify-between text-sm mb-2 font-semibold text-red-600">
-                <span>Due Payment</span>
-                <span>{finalPayment.toFixed(2)} USD</span>
+              <div className="flex justify-between text-sm font-semibold ">
+                <span className='text-[18px] text-white mt-[10px]'>EXCHENGE RATE : </span>
+                <span className='text-[18px] text-white mt-[10px]'>1 USD = 126 BDT</span>
               </div>
-              <div className="flex justify-between text-sm mb-2 font-bold text-blue-600">
-                <span>Due In BDT</span>
-                <span>{(finalPayment * conversionRate).toFixed(2)} BDT</span>
+              <div className="flex justify-between text-sm font-semibold ">
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>DUE AMOUNT</span>
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>{finalPayment} USD</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold text-blue-600">
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>DUE BDT AMOUNT </span>
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>{(finalPayment * conversionRate).toFixed(2)} BDT</span>
               </div>
             </div>
-            <button
-              className="w-full mt-4 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-200"
-              onClick={() => setShowModal(true)}
-            >
-              Confirm Order
+            <button className={`w-[40%] m-auto block mt-4 text-white py-3 rounded-lg ${!selectedTab ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`} onClick={handlePayNow} disabled={!selectedTab}>
+              Pay Now
             </button>
           </div>
         </div>
       </section>
-
-      {/* Modal for transaction details */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%]">
-            <h2 className="text-xl font-semibold mb-4">Confirm Payment</h2>
-            <p className="mb-4">Please review and submit your payment details.</p>
-
-            <form onSubmit={handlePayNow}>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">Transaction ID (Required)</label>
-                <input
-                  type="text"
-                  value={trxId}
-                  onChange={(e) => setTrxId(e.target.value)}
-                  className="w-full border rounded-lg p-3"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">Sender's Number (Optional)</label>
-                <input
-                  type="text"
-                  value={senderNumber}
-                  onChange={(e) => setSenderNumber(e.target.value)}
-                  className="w-full border rounded-lg p-3"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">Upload File (Optional)</label>
-                <input
-                  type="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  className="w-full border rounded-lg p-3"
-                />
-              </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                  disabled={loading}
-                >
-                  {loading ? "Processing..." : "Submit"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      
       <Footer />
     </section>
   );

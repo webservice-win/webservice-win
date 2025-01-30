@@ -74,7 +74,15 @@ const Addwebsite = () => {
   }, []);
   // -----------------unlimited featires-
   const [featureValue, setFeatureValue] = useState("");
-  const [features, setFeatures] = useState([]);
+  const [features, setFeatures] = useState(["✅1 Fonted Script",
+    "✅1 Admin Script",
+   " ✅1 Affliate Script",
+    "✅1 Waleat Agent script",
+    "✅All Use 1 Domain",
+    "✅All use 1 VPS ",
+    "❌No Game Api",
+    "❌No Sarver Api",
+    "♻এই প্যাকেজ ডেভেলপারদের জন্য "]);
   const [banner2, set_banner2] = useState();
   const [banner3, set_banner3] = useState();
   const [banner4, set_banner4] = useState();
@@ -82,10 +90,36 @@ const Addwebsite = () => {
   const [banner6, set_banner6] = useState();
   const [tutorial_banner, set_tutorialbanenr] = useState();
   const [unlimitedFeatureValue, setUnlimitedFeatureValue] = useState("");
-  const [unlimitedFeatures, setUnlimitedFeatures] = useState([]);
+  const [unlimitedFeatures, setUnlimitedFeatures] = useState(["✅1 Fonted Script",
+    "✅1 Admin Script",
+    "✅1 Affliate Script",
+   " ✅1 Waleat Agent script",
+    "✅All Use unlimited Domain",
+    "✅All use unlimited VPS ",
+    "❌No Game Api",
+    "❌No Sarver Api",
+    "♻এই প্যাকেজ ডেভেলপারদের জন্য ",
+    ]);
 
   const [bettingFeatureValue, setBettingFeatureValue] = useState("");
-  const [bettingFeatures, setBettingFeatures] = useState([]);
+  const [bettingFeatures, setBettingFeatures] = useState(["✅completed betting website",
+    "✅Admin panel",
+    "✅Affliate panel",
+    "✅Waleat Agent",
+    "✅ 1 year Domain",
+    "✅1 year VPS ",
+    "✅all Game Api",
+    "✅Sarver Api",
+    "✅Casino Bill",
+    "✅unlimited Balence free",
+    "✅lifetime Support",
+    "✅android app free",
+    "✅1 video ads",
+    "✅Free Traning ",
+    "✅1 Whats App number",
+    "✅free chat boot",
+    "♻এই প্যাকেজ নিলে আপনি বেটিং বিজনেস সব কিছু পাচ্ছেন।  A to Z Completed."
+    ]);
 
   const addFeature = () => {
     if (featureValue.trim()) {

@@ -24,6 +24,7 @@ const order_model = require("../Models/Ordermodel");
 const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 const ads_model = require("../Models/Adsmodel");
+const bcrypt=require("bcryptjs")
 
 
 
@@ -245,6 +246,16 @@ admin_route.get("/all-websites",async(req,res)=>{
     } catch (error) {
         console.log(error)
     }
+});
+
+admin_route.get("/single-website/:id",async(req,res)=>{
+  try {
+     const all_websites=await website_model.findById({_id:req.params.id});
+     console.log(req.params.id)
+     res.send({success:true,data:all_websites})
+  } catch (error) {
+      console.log(error)
+  }
 });
 admin_route.delete("/delete-website/:id",ensureAuthenticated,async(req,res)=>{
         try{
@@ -820,8 +831,9 @@ admin_route.post('/manual-payment', async (req, res) => {
 admin_route.get("/all-orders",async(req,res)=>{
     try {
         const order_data=await order_model.find();
+        const pending_order=await order_model.find({status:"processing"});
         if(order_data){
-               res.send({success:true,data:order_data})
+               res.send({success:true,data:order_data,pending_order})
         }
     } catch (error) {
         console.log(error)
@@ -974,4 +986,31 @@ admin_route.delete("/delete-customer/:id",ensureAuthenticated,async(req,res)=>{
       console.log(err)
   }
 });
+// ---------------/admin-informations---------------
+admin_route.get("/admin-informations/:id",ensureAuthenticated,async(req,res)=>{
+  try {
+    const find_data=await UserModel.findById({_id:req.params.id});
+    res.send({success:true,message:"Ok",data:find_data})
+  } catch (error) {
+    console.log(error)
+  }
+});
+admin_route.put("/update-details",async(req,res)=>{
+  try {
+    const {name,email,password}=req.body;
+    console.log(name,email,password)
+     const find_user=await UserModel.findOne({email});
+     console.log(find_user)
+     if(!email){
+      res.send({success:false,message:"Wrong email!"})
+     }
+    // console.log(find_user._id)
+    const hash_password=await bcrypt.hash(password,10);
+    const update_data=await UserModel.findByIdAndUpdate({_id:find_user._id},{$set:{name,email,password:hash_password}});
+    console.log(update_data)
+    res.send({success:true,message:"Updated successfully"})
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports=admin_route;

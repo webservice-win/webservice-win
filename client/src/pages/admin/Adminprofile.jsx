@@ -8,16 +8,16 @@ import { FaTrophy } from "react-icons/fa";
 import { SiSololearn } from "react-icons/si";
 import { CgWebsite } from "react-icons/cg";
 import { FaRegAddressCard } from "react-icons/fa";
-import Userdashboardleftside from '../../components/Dashboard/Userdashboardleftside';
-import Userheader from '../../components/Dashboard/Userheader';
+import Userdashboardleftside from '../../components/Dashboard/Dashboardleftside';
+import Userheader from '../../components/Dashboard/Dashboardheader';
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { MdLockOutline } from "react-icons/md";
 import axios from 'axios';
 import Swal from 'sweetalert2';
-const Userprofile = () => {
+const Adminprofile = () => {
    const navigate=useNavigate();
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
-     const admin_info = JSON.parse(localStorage.getItem("user_data"));
+     const admin_info = JSON.parse(localStorage.getItem("admin_data"));
         useEffect(()=>{
      window.addEventListener("scroll",()=>{
       if(window.scrollY > 100){
@@ -147,4 +147,4 @@ const update_details=(e)=>{
   )
 }
 
-export default Userprofile
+export default Adminprofile

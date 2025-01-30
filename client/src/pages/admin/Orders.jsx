@@ -30,7 +30,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
   const [filter, setFilter] = useState("");
   const [orders, setOrders] = useState([]);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-
+  const [pending_order,setpending_order]=useState([])
   // ---------------all-feedback--------------
   const get_orders = () => {
     axios
@@ -38,6 +38,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
       .then((res) => {
         if (res.data.success) {
             setOrders(res.data.data);
+            setpending_order(req.data.pending_order)
         }
       })
       .catch((err) => {
@@ -167,7 +168,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
               <th className="py-3 px-4 text-left">Invoice</th>
               <th className="py-3 px-4 text-left">Date</th>
               <th className="py-3 px-4 text-left">Amount</th>
-              <th className="py-3 px-4 text-left">Provider</th>
+              <th className="py-3 px-4 text-left">Payment Method</th>
               <th className="py-3 px-4 text-left">Payer Number</th>
               <th className="py-3 px-4 text-left">Transaction</th>
               <th className="py-3 px-4 text-left">Status</th>
