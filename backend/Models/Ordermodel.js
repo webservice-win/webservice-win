@@ -7,6 +7,9 @@ const order_schema=new mongoose.Schema({
   product_name:{
     type:String,
   },
+  package_name:{
+    type:String,
+  },
    product_id:{
     type:String,
    },
@@ -22,7 +25,7 @@ const order_schema=new mongoose.Schema({
    payeer_number:{
      type:String,
    },
-   transiction:{
+   transaction:{
      type:String,
    },
    image:String,

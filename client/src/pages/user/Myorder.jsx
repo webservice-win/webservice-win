@@ -146,6 +146,12 @@ useEffect(()=>{
         scope="col"
         className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
       >
+        Package
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
         Price
       </th>
       <th
@@ -155,6 +161,18 @@ useEffect(()=>{
         Sender Number
       </th>
       <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+       Transiction
+      </th>
+      <th
+        scope="col"
+        className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
+      >
+        Payment Method
+      </th>
+          <th
         scope="col"
         className="px-6 py-[15px] border-r border-gray-200 dark:border-gray-700 text-[15px] font-semibold text-nowrap"
       >
@@ -191,13 +209,23 @@ useEffect(()=>{
         } border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700`}
       >
         <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700 font-bangla_font text-[17px]">
-          {data.product_name}
+          {data?.product_name}
+        </td>
+        <td className="w-32 p-4 border-r border-gray-200 dark:border-gray-700 font-bangla_font text-[17px]">
+          {data?.package_name}
         </td>
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-          ${data.product_price}
+          ${data?.product_price}
         </td>
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-          {data.payeer_number}
+          {data?.payeer_number}
+        </td>
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+          {data?.transiction}
+        </td>
+        
+        <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
+          {data?.provider_name}
         </td>
         <td
           className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 rounded-lg text-center ${
@@ -210,21 +238,21 @@ useEffect(()=>{
               : "text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400"
           }`}
         >
-          {data.status}
+          {data?.status}
         </td>
         <td
           className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
             data.paid > 0 ? "text-green-600" : "text-red-600"
           }`}
         >
-          ${data.paid}
+          ${data?.paid}
         </td>
         <td
           className={`px-6 py-2 text-[16px] font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
             data.due_payment > 0 ? "text-red-600" : "text-red-600"
           }`}
         >
-          ${data.due_payment}
+          ${data?.due_payment}
         </td>
         {data.status === "completed" ? (
           <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">

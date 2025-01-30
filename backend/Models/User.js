@@ -26,6 +26,14 @@ const UserSchema = new Schema({
     due_balance:{
         type:Number,
         default:0
+    },
+    total_order:{
+        type:Number,
+        default:0 
+    },
+    paid_amount:{
+        type:Number,
+        default:0
     }
 },{timestamps:true});
 

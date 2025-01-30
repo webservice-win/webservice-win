@@ -66,6 +66,7 @@ import Deposits from './pages/admin/Deposits'
 import Addads from './pages/admin/Addads'
 import Customers from './pages/admin/Customers'
 import Orderinvoice from './pages/user/Orderinvoice'
+import Adminprofile from './pages/admin/Adminprofile'
 const App = () => {
   return (
     <BrowserRouter>
@@ -128,6 +129,7 @@ const App = () => {
         <Route exact path="/reviews/video-reviews-list"element={<Videoreviewlist/>}/>
         <Route exact path="/payment-setting"element={<Paymentsetting/>}/>
         <Route exact path="/add-payment-method"element={<Addpaymentmethod/>}/>
+        <Route exact path="/admin-profile/:id"element={<Adminprofile/>}/>
         
         {/* ----------------admin pages------------------- */}
         {/* ------------------user dashboard-------------------------------- */}

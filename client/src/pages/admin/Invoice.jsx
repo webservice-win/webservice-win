@@ -9,6 +9,7 @@ import { SiSololearn } from "react-icons/si";
 import { CgWebsite } from "react-icons/cg";
 import { FaRegAddressCard } from "react-icons/fa";
 import { useReactToPrint } from "react-to-print";
+import red_logo from "../../assets/red-logo.png"
 import axios from 'axios';
 const Invoice = () => {
    const navigate=useNavigate();
@@ -79,12 +80,13 @@ const Invoice = () => {
         <section className={activesidebar ? 'w-[100%] h-[100vh] overflow-y-auto transition-all duration-300':' transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
         <Dashboradheader/> 
        {/* ----------------box-------------- */}
-<section className="pt-[20px] ">
-<div className="bg-gray-100 min-h-screen p-6">
-      <div ref={componentRef} className="bg-white border-[1px] border-[#eee] shadow-lg rounded-lg p-8 max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+<section className="">
+<div className="bg-gray-100 min-h-screen p-6 ">
+      <div ref={componentRef} className="bg-white  border-[1px] border-[#eee] p-8 max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8 ">
           <div>
-            <h1 className="text-2xl font-bold text-red-600">Oracle Soft</h1>
+            <img className='w-[150px]' src={red_logo} alt="" />
+            {/* <h1 className="text-2xl font-bold text-red-600">Oracle Soft</h1> */}
             {/* <p className="text-sm">1st Floor, House: 21, Road: 3, Banani DOHS, Dhaka-1206</p>
             <p className="text-sm">info@imbdagency.com | 01797242610</p> */}
           </div>
@@ -118,26 +120,28 @@ const Invoice = () => {
               <th className="border border-gray-300 p-2 text-left">Qty\hrs</th>
               <th className="border border-gray-300 p-2 text-left">Unit Price</th>
               <th className="border border-gray-300 p-2 text-left">Tax</th>
-              <th className="border border-gray-300 p-2 text-left">Price (BDT)</th>
+              <th className="border border-gray-300 p-2 text-left">Paid</th>
+              <th className="border border-gray-300 p-2 text-left">Due</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td className="border border-gray-300 p-2">1</td>
-              <td className="border border-gray-300 p-2">Product</td>
+              <td className="border border-gray-300 p-2">{single_order.product_name}</td>
               <td className="border border-gray-300 p-2">1</td>
-              <td className="border border-gray-300 p-2">{single_order.product_price}</td>
+              <td className="border border-gray-300 p-2">{single_order.product_price}$</td>
               <td className="border border-gray-300 p-2">-</td>
-              <td className="border border-gray-300 p-2">{single_order.product_price}</td>
+              <td className="border border-gray-300 p-2">{single_order.paid}$</td>
+              <td className="border border-gray-300 text-red-500 p-2">{single_order.due_payment}$</td>
             </tr>
           </tbody>
         </table>
 
         <div className="text-right">
-          <p className="mb-2">Sub Total: <span className="font-bold">{single_order.product_price}</span></p>
-          <p className="mb-2">Total: <span className="font-bold">{single_order.product_price}</span></p>
-          <p className="mb-2">Total Paid: <span className="font-bold">0.00</span></p>
-          <p className="mb-2">Total Due: <span className="font-bold text-red-500">{single_order.product_price} BDT</span></p>
+          <p className="mb-2">Sub Total: <span className="font-bold">{single_order.product_price}$</span></p>
+          <p className="mb-2">Total: <span className="font-bold">{single_order.product_price}$</span></p>
+          <p className="mb-2">Total Paid: <span className="font-bold">{single_order.paid}$</span></p>
+          <p className="mb-2">Total Due: <span className="font-bold text-red-500">{single_order.due_payment}$</span></p>
         </div>
 
         <p className="text-sm text-gray-500 mt-6">Note</p>
