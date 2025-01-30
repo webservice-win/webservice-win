@@ -8,6 +8,7 @@ import axios from "axios";
 import DOMPurify from "dompurify";
 import { GrLineChart } from "react-icons/gr";
 import { FaHeart } from "react-icons/fa";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaPlay } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
@@ -504,58 +505,70 @@ const Details = () => {
                 {items?.slice(0, 3).map((data, i) => {
                   return (
                     <SwiperSlide>
-                      <div
-                        key={i}
-                        className="p-[7px] rounded-[10px] font-poppins group  bg-white overflow-hidden "
-                      >
-                        <div className="w-full h-[200px] lg:h-[300px] rounded-[10px] overflow-hidden ">
-                          <img
-                            className="w-full h-full group-hover:scale-[1.1] group-hover:rotate-[2deg] transition-all duration-200"
-                            src={`${base_url}/images/${data.thumbnail}`}
-                            alt=""
-                          />
-                        </div>
-                        <div className="p-[10px] lg:p-[15px] font-rubik w-full">
-                          {data.title.length > 60 ? (
-                            <h2 className="text-[16px] font-poppins lg:text-[22px] mb-[15px] font-[600] ">
-                              {data.title.slice(0, 60)}...
-                            </h2>
-                          ) : (
-                            <h2 className="text-[16px] lg:text-[22px] mb-[5px] lg:mb-[15px] font-[600] font-poppins">
-                              {data.title}
-                            </h2>
-                          )}
-                          <h2 className="text-[14px] lg:text-[16px] font-[500] text-neutral-600 mb-[8px]">
-                            Single License:${data.singleLicense}
-                          </h2>
-                          <h2 className="text-[14px] lg:text-[16px] font-[500] text-neutral-600">
-                            Unlimited:${data.unlimitedLicense}
-                          </h2>
-                          <div className="flex justify-between items-center mt-[20px]">
-                            <h2 className="text-[15px] lg:text-[17px] font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
-                              <FaHeart className="text-[15px] lg:text-[18px] text-red-600" />
-                              <p>({data?.love}+)</p>
-                            </h2>
-                            <h2 className="text-[15px] lg:text-[17px] font-[500] text-neutral-500 flex justify-center items-center gap-[8px]">
-                              <AiOutlineLike className="text-[20px] text-red-600" />
-                              <p>({data?.like}+)</p>
-                            </h2>
-                          </div>
-                          <div className="flex justify-center items-center gap-[15px] mt-[10px] lg:mt-[15px]">
-                            <button className="w-[50%] py-[8px] lg:h-[50px] text-red-500 border-red-400 border-[2px] font-[500] text-[14px] lg:text-[17px] hover:bg-red-400 hover:text-white transition-all duration-150">
-                              Live Demo
-                            </button>
-                            <NavLink
-                              to={`/single-website-details/${data._id}`}
-                              className="w-[50%]"
-                            >
-                              <button className="w-[100%] py-[8px] lg:h-[50px] text-gray-500 border-gray-400 border-[2px] font-[500] text-[14px] lg:text-[17px] hover:bg-gray-400 hover:text-white transition-all duration-150">
-                                Details
-                              </button>
-                            </NavLink>
-                          </div>
-                        </div>
-                      </div>
+                     <div className="p-[5px] bg-white rounded-[10px]" key={i}>
+                                <div className="p-[7px] h-[100%] rounded-[10px]  font-poppins group bg-[#010053] overflow-hidden">
+                                  <div className="w-full h-[200px] lg:h-[300px] rounded-[10px] overflow-hidden">
+                                    <img
+                                      className="w-full h-full group-hover:scale-[1.1] group-hover:rotate-[2deg] transition-all duration-200"
+                                      src={`${base_url}/images/${data.thumbnail}`}
+                                      alt=""
+                                    />
+                                  </div>
+                                  <div className="px-[6px] py-[10px] lg:p-[15px] font-rubik w-full">
+                                    {data.title.length > 60 ? (
+                                      <NavLink to={`/single-website-details/${data._id}`}>
+                                        <h2 className="text-white font-noto-sans text-[16px] hover:underline hover:text-orange-400 cursor-pointer  lg:text-[22px] mb-[15px] font-[600]">
+                                          {data.title.slice(0, 60)}...
+                                        </h2>
+                                      </NavLink>
+                                    ) : (
+                                      <NavLink to={`/single-website-details/${data._id}`}>
+                                        <h2 className="text-[16px] lg:text-[22px] mb-[5px] lg:mb-[15px] hover:underline hover:text-orange-400 font-[600] font-noto-sans text-white">
+                                          {data.title}
+                                        </h2>
+                                      </NavLink>
+                                    )}
+                                    <div className="mb-[8px] flex gap-[10px] justify-between items-center">
+                                      <h2 className="text-[12px] lg:text-[13px] px-[4px] py-[7px] rounded-full bg-indigo-800 font-[500] text-white">
+                                        Single License: ${data.singleLicense}
+                                      </h2>
+                                      <h2 className="text-[12px] lg:text-[13px] px-[4px] py-[7px] rounded-full bg-indigo-800 font-[500] text-white">
+                                        Unlimited License: ${data.unlimitedLicense}
+                                      </h2>
+                                    </div>
+                                    <div className="flex justify-between items-center mt-[20px]">
+                                      <h2 className="text-[15px] lg:text-[17px] font-[500] text-white flex justify-center items-center gap-[8px]">
+                                        <FaHeart className="text-[15px] lg:text-[18px] text-red-600" />
+                                        <p>({data?.love}+)</p>
+                                      </h2>
+                                      <h2 className="text-[15px] lg:text-[17px] font-[500] text-white flex justify-center items-center gap-[8px]">
+                                        <AiOutlineLike className="text-[20px] text-indigo-300" />
+                                        <p>({data?.like}+)</p>
+                                      </h2>
+                                    </div>
+                                    <div className="flex justify-center items-center gap-[15px] mt-[10px] lg:mt-[15px]">
+                                      <NavLink
+                                        to={`${data.demoFrontend}`}
+                                        className="w-[50%]"
+                                        target="_blank"
+                                      >
+                                        <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] font-[800] hover:bg-red-400 hover:text-white transition-all duration-150 font-bangla_font">
+                                          লাইভ ডেমো
+                                        </button>
+                                      </NavLink>
+                                      <NavLink
+                                        to={`/single-website-details/${data._id}`}
+                                        className="w-[50%]"
+                                      >
+                                        <button className="w-full py-[8px] lg:h-[50px] text-white bg-[#2563EB] font-[500] rounded-full text-[14px] lg:text-[19px] hover:bg-red-400 hover:text-white font-[800] transition-all duration-150 flex font-bangla_font justify-center items-center gap-[8px]">
+                                          বিস্তারিত দেখুন
+                                          <FaArrowUpRightFromSquare />
+                                        </button>
+                                      </NavLink>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                     </SwiperSlide>
                   );
                 })}

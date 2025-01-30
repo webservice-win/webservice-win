@@ -18,6 +18,7 @@ const Header = () => {
       const [active_header,set_header]=useState(false);
     //   const [sidebar,set_sidebar]=useState(false)
         const [sidebar, setSidebar] = useState(false);
+        const whatsapp_number = import.meta.env.VITE_WHATSAPP_NUMBER;
       window.addEventListener("scroll",()=>{
         if(window.scrollY > 0){
              set_header(true)
@@ -52,7 +53,7 @@ const Header = () => {
    }
   return (
     <section className='font-poppins h-[11vh] lg:h-[18vh]'>
-        <NavLink to="https://wa.me/+447723840957"target="_blank">
+        <NavLink to={`https://wa.me/${whatsapp_number}`}target="_blank">
     <span className="group px-[20px] lg:px-[25px] py-[12px] lg:py-[14px] rounded-full bg-[#ff3f34] fixed bottom-[2%] right-[2%] z-[100] text-white cursor-pointer flex justify-center items-center gap-[10px] text-[14px] lg:text-[16px] transition-transform transform hover:scale-110 hover:shadow-lg">
       <FaWhatsapp className="text-[25px] lg:text-[30px] group-hover:animate-pulse" />
       <span className="group-hover:animate-bounce">LiveChat</span>
@@ -64,7 +65,7 @@ const Header = () => {
                <div className='flex justify-center items-center gap-[20px]'>
             <div className='flex justify-center items-center gap-[5px] text-white'>
                 <IoIosCall className='text-[18px]'/>
-                <p className='text-[16px]'>447414240705 (Whats App)</p>
+                <p className='text-[16px]'>{whatsapp_number} (Whats App)</p>
             </div>
                  <div className='flex justify-center items-center gap-[5px] text-white'>
                 <HiOutlineMail className='text-[18px]'/>

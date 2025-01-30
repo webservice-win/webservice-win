@@ -23,6 +23,8 @@ import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { MdOutlinePayments } from "react-icons/md";
 import { RiLuggageDepositLine } from "react-icons/ri";
 import { SiGoogleadsense } from "react-icons/si";
+import { CgProfile } from "react-icons/cg";
+import axios from "axios";
 const Dashboardleftside = () => {
   const { activesidebar, setactivesidebar } = useContext(Contextapi);
   const [activesubmenu, setactivesubmenu] = useState(false);
@@ -31,7 +33,28 @@ const Dashboardleftside = () => {
   const [activesubmenu4, setactivesubmenu4] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [orders, setOrders] = useState([]);
+  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
+  const [pending_order,setpending_order]=useState([])
+  const admin_info = JSON.parse(localStorage.getItem("admin_data"));
+  // ---------------all-feedback--------------
+  const get_orders = () => {
+    axios
+      .get(`${base_url}/admin/all-orders`)
+      .then((res) => {
+        if (res.data.success) {
+            setOrders(res.data.data);
+            setpending_order(res.data.pending_order)
+            console.log(res.data.pending_order)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    get_orders();
+  }, []);
   // State to track active submenus
   const [submenuStates, setSubmenuStates] = useState({
     customer: false,
@@ -103,6 +126,7 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_order?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
@@ -476,6 +500,9 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <MdOutlinePayments className="text-[22px]"/>  <NavLink to="/payment-setting">Payment Setting</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <CgProfile className="text-[22px]"/>  <NavLink to={`/admin-profile/${admin_info._id}`}>Profile</NavLink>
                     </li>
               {/* Existing Menu Items */}
             </ul>
@@ -517,6 +544,7 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
+                    <span>{pending_order?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
@@ -890,6 +918,9 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <MdOutlinePayments className="text-[22px]"/>  <NavLink to="/payment-setting">Payment Setting</NavLink>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <CgProfile className="text-[22px]"/>  <NavLink to={`/admin-profile/${admin_info._id}`}>Profile</NavLink>
                     </li>
               {/* Existing Menu Items */}
             </ul>

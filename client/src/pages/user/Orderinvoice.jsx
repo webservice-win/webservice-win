@@ -27,8 +27,10 @@ const Orderinvoice = () => {
     axios
       .get(`${base_url}/my-order-invoice/${id}`)
       .then((res) => {
-        if (res.data.success) {
-          set_single_order(res.data.data); // Assuming the data is in res.data.data
+        if (res) {
+          set_single_order(res.data.data);
+          console.log("hello")
+          console.log(res.data.data) // Assuming the data is in res.data.data
         }
       })
       .catch((err) => {
@@ -40,10 +42,6 @@ const Orderinvoice = () => {
     getOrder(); 
   },[])
   // Handle the printing and downloading of the invoice
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   const handleDownloadPDF = () => {
     const element = document.createElement("a");
@@ -54,7 +52,11 @@ const Orderinvoice = () => {
     element.click();
     document.body.removeChild(element);
   };
+  const componentRef = useRef();
 
+  const handlePrint = () => {
+    window.print();
+  };
   return (
     <section className="w-full h-[100vh] flex font-poppins">
     {/* Sidebar */}
@@ -65,52 +67,89 @@ const Orderinvoice = () => {
     {/* Main Content */}
     <section className={activesidebar ? 'w-[100%] h-[100vh] overflow-y-auto transition-all duration-300' : 'transition-all duration-300 w-[100%] overflow-y-auto xl:w-[85%] h-[100vh]'}>
       <Userheader />
-      
       <section className="pt-[20px]">
-        <div className="bg-gray-100 min-h-screen p-6">
-          {/* Invoice Section */}
-          <div ref={componentRef} className="bg-white border-[1px] border-[#eee] shadow-lg rounded-lg p-8 max-w-4xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-2xl font-bold text-red-600">Oracle Soft</h1>
-              <div className="text-right">
-                <h2 className="text-xl font-bold">Invoice</h2>
-                <p className="text-sm font-semibold text-gray-700">Invoice ID: {single_order?.invoice_id}</p>
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold">Billed To:</h3>
-              <p>Customer ID: {single_order?.customer_id}</p>
-              <p>Provider Name: {single_order?.provider_name}</p>
-              <p>Payeer Number: {single_order?.payeer_number}</p>
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold">Transaction Details</h3>
-              <p>Transaction ID: {single_order?.transiction}</p>
-              <p>Product Name: {single_order?.product_name}</p>
-              <p>Product Price: {single_order?.product_price} BDT</p>
-              <p>Paid: {single_order?.paid} BDT</p>
-              <p>Due Payment: {single_order?.due_payment} BDT</p>
-              <p>Created At: {new Date(single_order?.createdAt).toLocaleString()}</p>
-              <p>Updated At: {new Date(single_order?.updatedAt).toLocaleString()}</p>
-            </div>
-
+      <div className="bg-gray-100 min-h-screen p-6">
+        {/* Invoice Section */}
+        <div 
+          ref={componentRef} 
+          className="bg-white border-[1px] border-[#eee] rounded-lg p-8 max-w-[210mm] mx-auto"
+          style={{ 
+            width: '210mm', 
+            minHeight: '297mm', 
+            boxSizing: 'border-box',
+            margin: '0 auto',
+            pageBreakAfter: 'always' 
+          }}
+        >
+          {/* Header Section */}
+          <div className="flex justify-between items-center mb-8 border-b-[2px] border-gray-300 pb-4">
+            <h1 className="text-2xl font-bold text-red-600">Oracle Soft</h1>
             <div className="text-right">
-              <p className="mb-2">Sub Total: <span className="font-bold">{single_order?.product_price} BDT</span></p>
-              <p className="mb-2">Total Paid: <span className="font-bold">{single_order?.paid} BDT</span></p>
-              <p className="mb-2">Total Due: <span className="font-bold text-red-500">{single_order?.due_payment} BDT</span></p>
+              <h2 className="text-xl font-bold">Invoice</h2>
+              <p className="text-sm font-semibold text-gray-700">Invoice ID: {single_order?.invoice_id}</p>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="mt-6 flex justify-center space-x-4">
-            <button onClick={handlePrint} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
-              Print Invoice
-            </button>
+          {/* Billed To Section */}
+          <div className="mb-6 border-b-[1px] border-gray-300 pb-4">
+            <h3 className="text-lg font-semibold">Billed To:</h3>
+            <p>Customer ID: {single_order?.customer_id}</p>
+            <p>Provider Name: {single_order?.provider_name}</p>
+            <p>Payeer Number: {single_order?.payeer_number}</p>
+          </div>
+
+          {/* Transaction Details Section */}
+          <div className="mb-6 border-b-[1px] border-gray-300 pb-4">
+            <h3 className="text-lg font-semibold">Transaction Details</h3>
+            <p>Transaction ID: {single_order?.transiction}</p>
+            <p>Product Name: {single_order?.product_name}</p>
+            <p>Product Price: {single_order?.product_price} BDT</p>
+            <p>Paid: {single_order?.paid} BDT</p>
+            <p>Due Payment: {single_order?.due_payment} BDT</p>
+            <p>Created At: {new Date(single_order?.createdAt).toLocaleString()}</p>
+            <p>Updated At: {new Date(single_order?.updatedAt).toLocaleString()}</p>
+          </div>
+
+          {/* Itemized Table */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2">Items</h3>
+            <table className="min-w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border border-gray-300 px-4 py-2 text-left">Product</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Unit Price</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Quantity</th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* You can iterate over items if there are multiple */}
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">{single_order?.product_name}</td>
+                  <td className="border border-gray-300 px-4 py-2">{single_order?.product_price} BDT</td>
+                  <td className="border border-gray-300 px-4 py-2">1</td>
+                  <td className="border border-gray-300 px-4 py-2">{single_order?.product_price} BDT</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Totals Section */}
+          <div className="text-right border-t-[2px] border-gray-300 pt-4">
+            <p className="mb-2">Sub Total: <span className="font-bold">{single_order?.product_price} BDT</span></p>
+            <p className="mb-2">Total Paid: <span className="font-bold">{single_order?.paid} BDT</span></p>
+            <p className="mb-2">Total Due: <span className="font-bold text-red-500">{single_order?.due_payment} BDT</span></p>
           </div>
         </div>
-      </section>
+
+        {/* Action Buttons */}
+        <div className="mt-6 flex justify-center space-x-4">
+          <button onClick={handlePrint} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">
+            Print Invoice
+          </button>
+        </div>
+      </div>
+    </section>
     </section>
   </section>
   );
