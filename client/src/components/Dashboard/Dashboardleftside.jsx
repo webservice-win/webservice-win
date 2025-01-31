@@ -37,6 +37,8 @@ const Dashboardleftside = () => {
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const [pending_order,setpending_order]=useState([])
   const admin_info = JSON.parse(localStorage.getItem("admin_data"));
+  const [pending_deposit,set_pending_deposit]=useState([]);
+  const [total_customer,set_totalcustomer]=useState([])
   // ---------------all-feedback--------------
   const get_orders = () => {
     axios
@@ -45,7 +47,9 @@ const Dashboardleftside = () => {
         if (res.data.success) {
             setOrders(res.data.data);
             setpending_order(res.data.pending_order)
-            console.log(res.data.pending_order)
+            console.log(res.data.pending_order);
+            set_pending_deposit(res.data.pending_deposit);
+            set_totalcustomer(res.data.total_customer)
         }
       })
       .catch((err) => {
@@ -130,9 +134,11 @@ const Dashboardleftside = () => {
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_deposit?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_customer?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>

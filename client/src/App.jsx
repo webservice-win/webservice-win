@@ -67,6 +67,7 @@ import Addads from './pages/admin/Addads'
 import Customers from './pages/admin/Customers'
 import Orderinvoice from './pages/user/Orderinvoice'
 import Adminprofile from './pages/admin/Adminprofile'
+import Viewcustomer from './pages/admin/Viewcustomer'
 const App = () => {
   return (
     <BrowserRouter>
@@ -91,6 +92,7 @@ const App = () => {
         <Route exact path="/deposits"element={<Deposits/>}/>
         <Route exact path="/ads"element={<Addads/>}/>
         <Route exact path="/customers"element={<Customers/>}/>
+        <Route exact path="/customer/:id"element={<Viewcustomer/>}/>
         <Route exact path="/order-invoice/:id"element={<Invoice/>}/>
 
         {/* ----------------admin pages------------------- */}

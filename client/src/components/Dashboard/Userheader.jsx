@@ -13,6 +13,8 @@
     import { BiTask } from "react-icons/bi";
     const Userheader = () => {
         const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
+     const user_info = JSON.parse(localStorage.getItem("user_data"));
+
         function handlesidebar(){
             setactivesidebar(!activesidebar)
         }
@@ -123,18 +125,18 @@
                 <FiSettings/>
                 </div> */}
                 <div className='relative'>
-                <img onClick={()=>{setprofile_dropdown(!profile_dropdown)}} className='w-[40px] cursor-pointer h-[40px] rounded-[5px]' src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp" alt="" />
+                <img onClick={()=>{setprofile_dropdown(!profile_dropdown)}} className='w-[40px] cursor-pointer h-[40px] rounded-[5px]' src="https://img.freepik.com/premium-photo/3d-cartoon-avatar_113255-5602.jpg?w=360" alt="" />
             {/*------------------- profile dropdown-------------- */}
         <div className={profile_dropdown ? "absolute top-[120%] font-poppins bg-white border-[1px] border-[#eee] rounded-[5px] right-0 w-max mx-auto" : "absolute top-[120%] font-poppins bg-white border-[1px] border-[#eee] rounded-[5px] right-0 hidden w-max mx-auto"}>
     <div className="p-[10px] flex items-center gap-3">
         <img
-        src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars/avatar-11.webp"
+        src="https://img.freepik.com/premium-photo/3d-cartoon-avatar_113255-5602.jpg?w=360"
         alt="User Avatar"
         className="w-10 h-10 rounded-full object-cover"
         />
         <div>
-        <h2 className="text-[12px] lg:text-[14px] font-[500]">Admin</h2>
-        <p className="text-[11px] lg:text-[13px] text-gray-600">admin@gmail.com</p>
+        <h2 className="text-[12px] lg:text-[14px] font-[500]">{user_info.name}</h2>
+        <p className="text-[11px] lg:text-[13px] text-gray-600">{user_info.email}</p>
         </div>
     </div>
     <ul id="dropdownMenu" className="block shadow-lg bg-white py-2 z-[1000] min-w-full w-max rounded-lg max-h-96 overflow-auto">

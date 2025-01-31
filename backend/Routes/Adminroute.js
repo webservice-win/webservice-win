@@ -830,10 +830,12 @@ admin_route.post('/manual-payment', async (req, res) => {
 //   ------------------orders--------------
 admin_route.get("/all-orders",async(req,res)=>{
     try {
-        const order_data=await order_model.find();
+        const order_data=await order_model.find().sort({ createdAt: -1 });
         const pending_order=await order_model.find({status:"processing"});
+        const pending_deposit=await deposit_model.find({status:"Pending"});
+        const total_customer=await UserModel.find();
         if(order_data){
-               res.send({success:true,data:order_data,pending_order})
+               res.send({success:true,data:order_data,pending_order,pending_deposit,total_customer})
         }
     } catch (error) {
         console.log(error)
@@ -872,7 +874,7 @@ admin_route.delete('/delete-order/:id', async (req, res) => {
 // ---------------deposit-data-------------
 admin_route.get("/all-deposits",async(req,res)=>{
     try {
-        const deposit_data=await deposit_model.find();
+        const deposit_data=await deposit_model.find().sort({ createdAt: -1 });
         if(deposit_data){
                res.send({success:true,data:deposit_data})
         }
@@ -969,7 +971,7 @@ admin_route.get("/all-ads",async(req,res)=>{
 // -----------------------all customer--------------------
 admin_route.get("/all-customers",async(req,res)=>{
   try {
-     const all_customers=await UserModel.find();
+     const all_customers=await UserModel.find().sort({ createdAt: -1 });
      res.send({success:true,data:all_customers})
   } catch (error) {
       console.log(error)
@@ -1009,6 +1011,14 @@ admin_route.put("/update-details",async(req,res)=>{
     const update_data=await UserModel.findByIdAndUpdate({_id:find_user._id},{$set:{name,email,password:hash_password}});
     console.log(update_data)
     res.send({success:true,message:"Updated successfully"})
+  } catch (error) {
+    console.log(error)
+  }
+});
+admin_route.get("/customer-details/:id",async(req,res)=>{
+  try {
+    const customer_information=await UserModel.findById({_id:req.params.id});
+    res.send({success:true,data:customer_information})
   } catch (error) {
     console.log(error)
   }
