@@ -15,7 +15,7 @@ const Deposits = () => {
   const [filter, setFilter] = useState('');
   const [deposits, setDeposits] = useState([]);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","completed", "suspended"]);
+const [orderstatus,setorderstatus]=useState(["Pending", "Approved", "Rejected"]);
   useEffect(() => {
     window.addEventListener('scroll', () => {
       setactivetopbar(window.scrollY > 100);
@@ -180,9 +180,9 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
                       <td className="py-3 px-4">
                   <select
                     className={`border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm ${
-                        deposit.status === "completed"
+                        deposit.status === "Approved"
                         ? "bg-green-100 text-green-700"
-                        : deposit.status === "pending"
+                        : deposit.status === "Pending"
                         ? "bg-yellow-100 text-yellow-700"
                         : "bg-red-100 text-red-700"
                     }`}
@@ -199,7 +199,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
                   </select>
                 </td>
                       <td className="py-3 px-4 flex justify-center items-center gap-[5px]">
-                        <NavLink to={`/order-invoice/${deposit._id}`}>
+                        <NavLink to={`/admin-deposit-invoice/${deposit._id}`}>
                           <button className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none">
                             Details
                           </button>
