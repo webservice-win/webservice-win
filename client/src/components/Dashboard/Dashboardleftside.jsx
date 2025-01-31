@@ -550,13 +550,15 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
-                    <span>{pending_order?.length}</span>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_order?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_deposit?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_customer?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>
