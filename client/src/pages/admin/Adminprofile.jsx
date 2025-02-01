@@ -58,9 +58,9 @@ const admin_infomation = () => {
       if (res.data.success) {
         set_admin_details(res.data.data);
         console.log(res.data.data);
-        set_name(admin_details.name);
-        set_email(admin_details.email)
-        set_password(admin_details.password)
+        set_name(res.data.data.name);
+        set_email(res.data.data.email)
+        set_password(res.data.data.password)
       }
     })
     .catch((err) => {
