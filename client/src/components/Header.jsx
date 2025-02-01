@@ -12,7 +12,7 @@ import { GoArrowUpRight } from 'react-icons/go';
 import { FaHome, FaStream, FaUsers,FaComments,FaPhone, FaSignInAlt,FaDrumstickBite, FaGamepad, FaCogs, FaAward } from "react-icons/fa";
 import { GiCricketBat, GiCardAceHearts, GiGameConsole, GiModernCity } from "react-icons/gi";
 import { RiDashboardFill, RiChatSmile2Fill } from "react-icons/ri";
-
+import { FaTelegramPlane } from "react-icons/fa"; // Import both icons
 import { RiSendPlaneFill } from "react-icons/ri";
 const Header = () => {
       const [active_header,set_header]=useState(false);
@@ -52,13 +52,23 @@ const Header = () => {
       }
    }
   return (
-    <section className='font-poppins h-[11vh] lg:h-[18vh]'>
-        <NavLink to={`https://wa.me/${whatsapp_number}`}target="_blank">
-    <span className="group px-[20px] lg:px-[25px] py-[12px] lg:py-[14px] rounded-full bg-[#ff3f34] fixed bottom-[2%] right-[2%] z-[100] text-white cursor-pointer flex justify-center items-center gap-[10px] text-[14px] lg:text-[16px] transition-transform transform hover:scale-110 hover:shadow-lg">
-      <FaWhatsapp className="text-[25px] lg:text-[30px] group-hover:animate-pulse" />
-      <span className="group-hover:animate-bounce">LiveChat</span>
-    </span>
+    <section className='font-poppins h-[11vh] lg:h-[16vh] bg-[#161b4c]'>
+       <div className="fixed bottom-[2%] right-[2%] z-[100]">
+      <div className="group px-[20px] lg:px-[25px] py-[12px] lg:py-[14px] rounded-full bg-red-500 text-white cursor-pointer flex justify-center items-center gap-[10px] text-[14px] lg:text-[16px] transition-transform transform hover:scale-110 hover:shadow-lg">
+        {/* WhatsApp Icon */}
+        <NavLink to={`https://wa.me/${whatsapp_number}`} target="_blank">
+          <FaWhatsapp className="text-[25px] lg:text-[30px]  text-[#25D366] group-hover:animate-pulse" />
         </NavLink>
+
+        {/* Telegram Icon */}
+        <NavLink to="https://t.me/+fHC2LQO4BAg2MmRk" target="_blank">
+          <FaTelegramPlane className="text-[25px] text-[#45aaf2] lg:text-[30px] group-hover:animate-pulse" />
+        </NavLink>
+
+        {/* Live Chat Text */}
+        <span className="group-hover:animate-bounce">Live Chat</span>
+      </div>
+    </div>
 
         {/* ----------------------subheader--------------------- */}
         <div className='hidden w-full h-auto bg-gray-600 px-[100px] py-[15px] lg:flex justify-between items-center'>

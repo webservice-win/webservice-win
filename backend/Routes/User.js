@@ -13,8 +13,6 @@ const storage=multer.diskStorage({
     filename:function(req,file,cb){
         cb(null,`${Date.now()}_${file.originalname}`)
     }
-
-
 });
 const uploadimage=multer({storage:storage});
 // -----------------------user dashboard--------------------
@@ -32,7 +30,7 @@ const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 
 user_route.post("/product-order", async (req, res) => {
-  console.log("hello")
+  console.log("hello");
   try {
     const { 
       product_id, 
@@ -65,8 +63,17 @@ user_route.post("/product-order", async (req, res) => {
 
     const invoiceId = generateInvoiceId();
 
+    // Fetch customer
+    const customer = await UserModel.findById(customer_id);
+
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: "Customer not found.",
+      });
+    }
+
     // Create new order object
-    const customer = await UserModel.findById({ _id: customer_id });
     const order = new order_model({
       product_id,
       product_price,
@@ -76,79 +83,20 @@ user_route.post("/product-order", async (req, res) => {
       due_payment,
       package_name,
       paid,
-      invoice_id: invoiceId,  // Store generated invoice ID
-      payeer_number: payeer_number,  // Optional field
-      transaction: transaction,  // Optional field
-      image: image,  // Optional field (you might store image URLs)
+      invoice_id: invoiceId, // Store generated invoice ID
+      payeer_number, // Optional field
+      transaction, // Optional field
+      image, // Optional field
     });
-   
-    // Save order to database
+
+    // Update customer's financial details
+    customer.paid_amount += paid || 0;
+    customer.due_balance += due_payment || 0;
+    customer.total_order += 1;
+
+    // Save order and update customer details
     await order.save();
-    customer.paid_amount+=paid;
-    customer.due_balance+=due_payment;
-    customer.total_order+=1;
-
-    // Email sending logic
-    // const transporter = nodemailer.createTransport({
-    //   service: 'gmail', // Or any other email provider
-    //   auth: {
-    //     user: 'your-email@gmail.com',
-    //     pass: 'your-email-password',
-    //   },
-    // });
-
-    // const mailOptions = {
-    //   from: 'your-email@gmail.com',
-    //   to: customer.email, // Assuming customer has an email field
-    //   subject: `Invoice for your Order #${invoiceId}`,
-    //   html: `
-    //     <h2>Thank you for your order!</h2>
-    //     <p>Your order has been successfully placed. Below is the invoice for your records:</p>
-    //     <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-top: 20px;">
-    //       <tr>
-    //         <th style="background-color: #f2f2f2;">Item</th>
-    //         <th style="background-color: #f2f2f2;">Details</th>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Invoice ID</strong></td>
-    //         <td>${invoiceId}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Product</strong></td>
-    //         <td>${product_name}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Provider</strong></td>
-    //         <td>${provider_name}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Price</strong></td>
-    //         <td>${product_price}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Due Payment</strong></td>
-    //         <td>${due_payment}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Paid</strong></td>
-    //         <td>${paid}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Payeer Number</strong></td>
-    //         <td>${payeer_number || 'N/A'}</td>
-    //       </tr>
-    //       <tr>
-    //         <td><strong>Transaction</strong></td>
-    //         <td>${transaction || 'N/A'}</td>
-    //       </tr>
-    //     </table>
-    //     <p>If you have any questions, feel free to reach out to us.</p>
-    //     <p>Best regards,<br>Your Company Name</p>
-    //   `,
-    // };
-
-    // // Send email
-    // await transporter.sendMail(mailOptions);
+    await customer.save(); // <-- Important: Save the updated customer details
 
     // Respond with success
     res.status(201).send({
@@ -166,6 +114,7 @@ user_route.post("/product-order", async (req, res) => {
   }
 });
 
+
 user_route.get("/user-order/:id",async(req,res)=>{
     try {
         const order_data=await order_model.find({customer_id:req.params.id});
@@ -175,7 +124,8 @@ user_route.get("/user-order/:id",async(req,res)=>{
     } catch (error) {
         console.log(error)
     }
-})
+});
+
 user_route.get("/all-tutorials",async(req,res)=>{
   try {
      const tutorial=await tutorial_model.find({category:"dashboard"});
@@ -184,6 +134,7 @@ user_route.get("/all-tutorials",async(req,res)=>{
       console.log(error)
   }
 });
+
 // ------------------------------
 // Route to create a deposit
 // Get all deposits or filter by userId or gatewayName
@@ -256,6 +207,7 @@ user_route.get("/deposits", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error", error });
   }
 });
+
 user_route.get("/deposit/:id", async (req, res) => {
   try {
     const { id } = req.params; // Get the invoiceId from URL params
@@ -269,12 +221,13 @@ user_route.get("/deposit/:id", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
 user_route.get("/deposit-invoice/:id", async (req, res) => {
   try {
     const { id } = req.params; // Get the invoiceId from URL params
     console.log(id)
     // Find the deposit using the provided invoiceId
-    const deposit = await deposit_model.find({ _id:id });
+    const deposit = await deposit_model.findById({ _id:id });
     console.log(deposit)
    res.send({message:"ok",data:deposit})
   } catch (error) {
@@ -290,7 +243,8 @@ user_route.get("/user/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
-})
+});
+
 user_route.get("/my-order-invoice/:id",async(req,res)=>{
   try {
     const order_invoice=await order_model.findById({_id:req.params.id});
@@ -299,6 +253,16 @@ user_route.get("/my-order-invoice/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
-})
+});
+// ----------------update-order---------------------
+// Get all deposits or filter by userId or gatewayName
+user_route.get("/update-order/:id", async (req, res) => {
+  try {
+       const update_order=await order_model.findById({_id:req.params.id});
 
+  } catch (error) {
+    console.error("Error retrieving deposits:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error });
+  }
+});
 module.exports=user_route;

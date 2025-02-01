@@ -6,8 +6,8 @@ import Swal from 'sweetalert2';
 import Dashboardleftside from '../../components/Dashboard/Dashboardleftside';
 import Dashboradheader from '../../components/Dashboard/Dashboardheader';
 import { Contextapi } from '../../context/Appcontext';
-import { useNavigate } from 'react-router-dom';
-
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FaRegEye } from "react-icons/fa";
 const Customers = () => {
   const navigate = useNavigate();
   const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
@@ -138,7 +138,7 @@ const Customers = () => {
                       <td className="py-3 px-4">{data?.deposit_balance}</td>
                       <td className="py-3 px-4">{data?.createdAt?.slice(0, 10)}</td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-3 px-4 flex justify-start items-center gap-[5px] ">
                         <button
                           onClick={() => {
                             delete_order(data._id);
@@ -147,6 +147,9 @@ const Customers = () => {
                         >
                           <MdOutlineDelete />
                         </button>
+                               <NavLink to={`/customer/${data._id}`}  className="p-[10px] bg-indigo-500 rounded-[5px] text-[18px] text-white">
+                                                    <FaRegEye/>
+                                                  </NavLink>
                       </td>
                     </tr>
                   ))}

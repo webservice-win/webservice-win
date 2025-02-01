@@ -87,7 +87,10 @@ const Myinvoice = () => {
       <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Date</th>
       <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Invoice ID</th>
       <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Product Name</th>
-      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Amount</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Price</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Paid</th>
+      <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Due</th>
+
       <th className="px-6 py-[15px] text-left text-[17px] font-semibold border-r border-gray-200 dark:border-gray-700">Status</th>
       <th className="px-6 py-[15px] text-left text-[17px] font-semibold">Action</th>
     </tr>
@@ -101,19 +104,36 @@ const Myinvoice = () => {
             index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900"
           } border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors`}
         >
-          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+          <td className="px-6 py-2 text-[16px] text-nowrap font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
             {invoice.createdAt.slice(0, 10)}
           </td>
-          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+          <td className="px-6 py-2 text-[16px] text-nowrap font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
             {invoice.invoice_id}
           </td>
-          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+          <td className="px-6 py-2 text-[16px] text-nowrap font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
             {invoice.product_name}
           </td>
-          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
+          <td className="px-6 py-2 text-[16px] text-nowrap font-medium text-gray-700 dark:text-white border-r border-gray-200 dark:border-gray-700">
             ${invoice.product_price}
           </td>
-          <td className="px-6 py-2 text-[16px] font-medium border-r border-gray-200 dark:border-gray-700">
+          <td
+          className={`px-6 py-2 text-[16px] text-nowrap font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
+            invoice.paid > 0 ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          ${invoice?.paid}
+        </td>
+        <td
+          className={`px-6 py-2 text-[16px]  text-nowrap font-medium whitespace-nowrap border-r border-gray-200 dark:border-gray-700 ${
+            invoice.due_payment > 0 ? "text-red-600" : "text-red-600"
+          }`}
+        >
+          ${invoice?.due_payment}
+          {
+            invoice.due_payment > 0 ? <button className='bg-red-500 text-nowrap ml-[6px] text-white rounded-[5px] px-[12px] py-[6px] text-[15px]'>Pay</button>:""
+          }
+        </td>
+          <td className="px-6 py-2 text-[16px] font-medium text-nowrap border-r border-gray-200 dark:border-gray-700">
             <span
               className={`px-3 py-1 rounded-full text-xs font-medium ${
                 statusColors[invoice.status] || 'bg-gray-100 text-gray-700'
@@ -122,9 +142,9 @@ const Myinvoice = () => {
               {invoice.status}
             </span>
           </td>
-          <td className="px-6 py-2 text-[16px] font-medium text-gray-700 dark:text-white">
+          <td className="px-6 py-2 text-[16px text-nowrap] font-medium text-gray-700 dark:text-white">
             <NavLink to={`/user-order-invoice/${invoice._id}`}>
-            <button className="px-4 py-2 bg-indigo-600 text-white text-[16px] font-medium rounded-lg hover:bg-indigo-700 transition">
+            <button className="px-4 py-2 bg-indigo-600 text-nowrap text-white text-[16px] font-medium rounded-lg hover:bg-indigo-700 transition">
               View Details
             </button>
             </NavLink>

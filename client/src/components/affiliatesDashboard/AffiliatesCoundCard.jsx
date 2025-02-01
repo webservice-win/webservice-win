@@ -76,7 +76,7 @@ useEffect(()=>{
              className={`flex items-center justify-between p-4 rounded-md shadow-md bg-gradient-to-t from-red-600 to-black text-white`}
            >
              <div className="flex flex-col gap-3">
-               <p className="text-2xl font-[500]">{user_information.total_order} $</p>
+               <p className="text-2xl font-[500]">{user_information.total_order}</p>
                <h3 className="text-sm">Total Order</h3>
              </div>
              <PiHandDepositBold className="text-6xl text-white opacity-15" />
