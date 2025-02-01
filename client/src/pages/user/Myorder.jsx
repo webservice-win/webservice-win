@@ -221,7 +221,7 @@ useEffect(()=>{
           {data?.payeer_number}
         </td>
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
-          {data?.transiction}
+          {data?.transaction}
         </td>
         
         <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">
@@ -253,6 +253,9 @@ useEffect(()=>{
           }`}
         >
           ${data?.due_payment}
+          {
+            data.due_payment > 0 ? <button className='bg-red-500 ml-[6px] text-white rounded-[5px] px-[12px] py-[6px] text-[15px]'>Pay</button>:""
+          }
         </td>
         {data.status === "completed" ? (
           <td className="px-6 py-2 text-[16px] font-medium whitespace-nowrap dark:text-white border-r border-gray-200 dark:border-gray-700">

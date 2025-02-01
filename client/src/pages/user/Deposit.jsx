@@ -174,7 +174,7 @@ const Deposit = () => {
         <td className="px-6 py-2 text-[16px] font-medium border-r border-gray-200 dark:border-gray-700">
           <span
             className={`px-3 py-1 rounded-full text-xs font-medium ${
-              deposit.status === "pending"
+              deposit.status === "Pending"
                 ? "bg-yellow-200 text-yellow-800"
                 : deposit.status === "completed"
                 ? "bg-green-200 text-green-800"

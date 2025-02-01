@@ -15,6 +15,14 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    whatsapp:{
+        type: String,
+        required: true,
+    },
+    telegram:{
+        type: String,
+        required: true,
+    },
     role:{
         type:String,
         default:"user"

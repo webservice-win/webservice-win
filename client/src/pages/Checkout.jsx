@@ -230,9 +230,9 @@ const Checkout = () => {
                     </div>
                   <div className=' mt-[10px]'>
                     <h2 className='p-[10px] text-center bg-[#004404] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
-                    <label className='text-[16px] text-white'>Upload Payment Proof</label> <br />
-                    <input type="file" onChange={(e) => setFile(e.target.files[0])} className="w-full bg-white rounded-[5px] mt-[5px] mb-3 border-[1px] p-[10px] border-[#eee]" /> <br />
-
+                    <label className='text-white'>Transaction ID</label>
+                    <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
+                  
                   </div>
                 </form>
               </>

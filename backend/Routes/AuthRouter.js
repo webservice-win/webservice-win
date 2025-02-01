@@ -21,13 +21,13 @@ const uploadimage=multer({storage:storage});
 router.post('/login', loginValidation, login);
 router.post('/signup',async(req,res)=>{
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password,whatsapp,telegram} = req.body;
         const user = await UserModel.findOne({ email });
         console.log(name,email,password)
         if (user) {
             return res.json({ message: 'User is already exist, you can login', success: false });
         }
-        const userModel = new UserModel({ name, email, password});
+        const userModel = new UserModel({ name, email, password,whatsapp,telegram});
         userModel.password = await bcrypt.hash(password, 10);
         await userModel.save();
         res.json({

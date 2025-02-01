@@ -134,7 +134,7 @@ const Details = () => {
     <section className="w-full overflow-hidden font-poppins">
       <section className="w-full h-[40vh] lg:h-[65vh] overflow-hidden">
         <Header />
-        <div className="hero w-full relative font-rubik h-[30vh] lg:h-[45vh] flex justify-center gap-[100px] items-center px-[20px] lg:px-[100px] py-[20px] overflow-hidden ">
+        <div className="hero w-full relative font-rubik h-[35vh] lg:h-[45vh] flex justify-center gap-[100px] items-center px-[20px] lg:px-[100px] py-[20px] overflow-hidden ">
           {/* -------------hero section------------ */}
           <div className="absolute top-0 left-0 w-full h-[100%] overflow-hidden">
             <img

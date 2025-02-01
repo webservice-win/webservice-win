@@ -9,7 +9,8 @@ import { FiEdit } from "react-icons/fi";
 import axios from "axios";
 import empty_img from "../../assets/empty.png";
 import Swal from "sweetalert2";
-import moment from "moment";
+import moment from "moment"
+import { FaRegEye } from "react-icons/fa";
 const Memberlist = () => {
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
   const admin_info = JSON.parse(localStorage.getItem("admin_data"));
@@ -233,6 +234,9 @@ const Memberlist = () => {
                             className="font-medium text-white p-[10px] text-[22px] cursor-pointer bg-red-500 rounded-[5px]"
                           >
                             <MdDeleteOutline />
+                          </div>
+                          <div  className="font-medium text-white p-[10px] text-[22px] cursor-pointer bg-indigo-500 rounded-[5px]">
+                            <FaRegEye/>
                           </div>
                         </td>
                       </tr>

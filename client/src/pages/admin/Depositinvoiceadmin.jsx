@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Contextapi } from '../../context/Appcontext';
-import Userdashboardleftside from "../../components/Dashboard/Userdashboardleftside";
-import Userheader from "../../components/Dashboard/Userheader";
+import Userdashboardleftside from "../../components/Dashboard/Dashboardleftside";
+import Userheader from "../../components/Dashboard/Dashboardheader";
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import red_logo from "../../assets/red-logo.png";
-const Depositinvoice = () => {
+const Depositinvoiceadmin = () => {
   const navigate = useNavigate();
   const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
   const { id } = useParams();
@@ -169,4 +169,4 @@ const Depositinvoice = () => {
   );
 };
 
-export default Depositinvoice;
+export default Depositinvoiceadmin;

@@ -8,6 +8,8 @@ import { FaTrophy } from "react-icons/fa";
 import { SiSololearn } from "react-icons/si";
 import { CgWebsite } from "react-icons/cg";
 import { FaRegAddressCard } from "react-icons/fa";
+import { FaMoneyCheck } from "react-icons/fa";
+import axios from "axios"
 const Dashboard = () => {
    const navigate=useNavigate();
      const {activesidebar,setactivesidebar,activetopbar,setactivetopbar}=useContext(Contextapi);
@@ -20,6 +22,32 @@ const Dashboard = () => {
       }
      })
    },[]);
+   const [orders, setOrders] = useState([]);
+  const base_url = import.meta.env.VITE_API_KEY_Base_URL;
+  const [pending_order,setpending_order]=useState([])
+  const admin_info = JSON.parse(localStorage.getItem("admin_data"));
+  const [pending_deposit,set_pending_deposit]=useState([]);
+  const [total_customer,set_totalcustomer]=useState([])
+  // ---------------all-feedback--------------
+  const get_orders = () => {
+    axios
+      .get(`${base_url}/admin/all-orders`)
+      .then((res) => {
+        if (res.data.success) {
+            setOrders(res.data.data);
+            setpending_order(res.data.pending_order)
+            console.log(res.data.pending_order);
+            set_pending_deposit(res.data.pending_deposit);
+            set_totalcustomer(res.data.total_customer)
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    get_orders();
+  }, []);
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -43,8 +71,8 @@ const Dashboard = () => {
     </div>
     {/* Text Content */}
     <div className="mt-4">
-      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Total Courses</h2>
-      <p className="text-2xl font-bold text-gray-800">120</p>
+      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Pending Orders</h2>
+      <p className="text-2xl font-bold text-gray-800">{pending_order?.length}</p>
     </div>
   </div>
   <div className="h-auto w-full shadow-md border-[1px] border-[#eee] rounded-[10px] overflow-hidden bg-white relative p-5">
@@ -55,13 +83,13 @@ const Dashboard = () => {
     {/* Icon */}
     <div className="w-[70px] h-[70px] bg-[#FFEEF5] rounded-full p-[9px]">
       <div className="w-full h-full  bg-[#FF5D9F] text-white rounded-full flex items-center justify-center">
-        <CgWebsite className='text-[25px]'/>
+        <FaMoneyCheck className='text-[25px]'/>
       </div>
     </div>
     {/* Text Content */}
     <div className="mt-4">
-      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Total Websites</h2>
-      <p className="text-2xl font-bold text-gray-800"><i className="fa-solid fa-bangladeshi-taka-sign mr-[5px]" /> 6000</p>
+      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Pending Deposits</h2>
+      <p className="text-2xl font-bold text-gray-800"><i className="fa-solid fa-bangladeshi-taka-sign mr-[5px]" />{pending_deposit?.length}</p>
     </div>
   </div>
   <div className="h-auto w-full shadow-md border-[1px] border-[#eee] rounded-[10px] overflow-hidden bg-white relative p-5">
@@ -77,8 +105,8 @@ const Dashboard = () => {
     </div>
     {/* Text Content */}
     <div className="mt-4">
-      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Total Admission</h2>
-      <p className="text-2xl font-bold text-gray-800">12</p>
+      <h2 className="text-gray-600 font-medium text-[18px] mb-[8px]">Customers</h2>
+      <p className="text-2xl font-bold text-gray-800">{total_customer?.length}</p>
     </div>
   </div>
 </section>
