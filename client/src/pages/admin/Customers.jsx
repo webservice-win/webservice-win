@@ -8,6 +8,38 @@ import Dashboradheader from '../../components/Dashboard/Dashboardheader';
 import { Contextapi } from '../../context/Appcontext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaRegEye } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
+function StatusSwitch({ status, onChange }) {
+  const [isActive, setIsActive] = useState(status === "Active");
+
+  const handleToggle = () => {
+    const newStatus = isActive ? "Inactive" : "Active";
+    setIsActive(!isActive);
+    onChange(newStatus);
+  };
+
+  return (
+    <div className="flex items-center space-x-3 w-[130px]">
+      {/* Status Text */}
+      {/* Square Toggle Switch */}
+      <label className="inline-flex relative items-center cursor-pointer">
+        <input type="checkbox" className="sr-only peer" checked={isActive} onChange={handleToggle} />
+        <div
+          className={`w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-[2px] flex items-center px-1 transition-all duration-300 cursor-pointer peer-checked:bg-green-500`}
+        >
+          <div
+            className={`w-5 h-5 bg-white rounded-[2px] shadow-md transform transition-all duration-300 ${
+              isActive ? "translate-x-[20px]" : "translate-x-0"
+            }`}
+          ></div>
+        </div>
+      </label>
+            <span className={`text-sm font-medium ${isActive ? "text-green-600" : "text-gray-500"}`}>
+        {isActive ? "Active" : "Inactive"}
+      </span>
+    </div>
+  );
+}
 const Customers = () => {
   const navigate = useNavigate();
   const { activesidebar, setactivesidebar, activetopbar, setactivetopbar } = useContext(Contextapi);
@@ -83,6 +115,18 @@ const Customers = () => {
     setCurrentPage(page);
   };
 
+  // ---------------handleStatusChange----------------------
+  const handleStatusChange=(e,status)=>{
+    console.log(status)
+    axios.put(`${base_url}/admin/user-status-update/${e._id}`,{status:status})
+    .then((res)=>{
+      if(res){
+        toast.success(`You have updated acocunt stutus to ${status}`)
+      }
+    }).catch((err)=>{
+      Swal.fire("Error", `${err.message}`, "error");
+    })
+  }
   return (
     <section className="w-full h-[100vh] flex font-poppins">
       <section className={
@@ -116,6 +160,7 @@ const Customers = () => {
                   />
                   <FiSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
                 </div>
+                <Toaster />
 
          
               </div>
@@ -126,6 +171,7 @@ const Customers = () => {
                     <th className="py-3 px-4 text-left">Name</th>
                     <th className="py-3 px-4 text-left">Email</th>
                     <th className="py-3 px-4 text-left">Balance</th>
+                    <th className="py-3 px-4 text-left">Status</th>
                     <th className="py-3 px-4 text-left">Date</th>
                     <th className="py-3 px-4 text-left">Action</th>
                   </tr>
@@ -137,7 +183,12 @@ const Customers = () => {
                       <td className="py-3 px-4">{data?.email}</td>
                       <td className="py-3 px-4">{data?.deposit_balance}</td>
                       <td className="py-3 px-4">{data?.createdAt?.slice(0, 10)}</td>
-
+                      <td>
+                      <StatusSwitch
+                      status={data.status}
+                      onChange={(newStatus) => handleStatusChange(data, newStatus)}
+                    />
+                      </td>
                       <td className="py-3 px-4 flex justify-start items-center gap-[5px] ">
                         <button
                           onClick={() => {

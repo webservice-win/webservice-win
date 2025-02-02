@@ -4,6 +4,12 @@ const order_schema=new mongoose.Schema({
   invoice_id:{
     type:String,
   },
+  customer_name:{
+    type:String,
+  },
+  customer_email:{
+   type:String
+  },
   product_name:{
     type:String,
   },

@@ -99,6 +99,8 @@ const Checkout = () => {
         product_id: product_Id,
         product_price: price,
         customer_id: user_info._id,
+        customer_name:user_info.name,
+        customer_email:user_info.email,
         provider_name: selectedTab,
         product_name:product.title,
         due_payment: finalPayment,

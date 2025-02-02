@@ -42,6 +42,10 @@ const UserSchema = new Schema({
     paid_amount:{
         type:Number,
         default:0
+    },
+    status:{
+        type:String,
+        default:"Active"
     }
 },{timestamps:true});
 

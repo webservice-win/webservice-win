@@ -43,6 +43,8 @@ user_route.post("/product-order", async (req, res) => {
       paid, 
       payeer_number, 
       transaction, 
+      customer_name,
+      customer_email,
       image 
     } = req.body;
 
@@ -58,9 +60,9 @@ user_route.post("/product-order", async (req, res) => {
 
     // Generate unique invoice ID
     const generateInvoiceId = () => {
-      return `INV-2025-${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
+      return `INV-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
     };
-
+    
     const invoiceId = generateInvoiceId();
 
     // Fetch customer
@@ -82,6 +84,8 @@ user_route.post("/product-order", async (req, res) => {
       product_name,
       due_payment,
       package_name,
+      customer_name,
+      customer_email,
       paid,
       invoice_id: invoiceId, // Store generated invoice ID
       payeer_number, // Optional field

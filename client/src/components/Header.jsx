@@ -56,20 +56,24 @@ const Header = () => {
        <div className="fixed bottom-[2%] right-[2%] z-[100]">
       <div className="group px-[20px] lg:px-[25px] py-[12px] lg:py-[14px] rounded-full bg-red-500 text-white cursor-pointer flex justify-center items-center gap-[10px] text-[14px] lg:text-[16px] transition-transform transform hover:scale-110 hover:shadow-lg">
         {/* WhatsApp Icon */}
-        <NavLink to={`https://wa.me/${whatsapp_number}`} target="_blank">
+        <NavLink to={`https://wa.me/${whatsapp_number}`} target="_blank" className="flex justify-center items-center gap-[8px]">
           <FaWhatsapp className="text-[25px] lg:text-[30px]  text-[#25D366] group-hover:animate-pulse" />
+        <span className="group-hover:animate-bounce">Live Chat</span>
         </NavLink>
-
+      </div>
+    </div>
+    <div className="fixed bottom-[2%] z-[100]">
+      <div className="group px-[20px] lg:px-[25px] py-[12px] lg:py-[14px] rounded-full bg-red-500 text-white cursor-pointer flex justify-center items-center gap-[10px] text-[14px] lg:text-[16px] transition-transform transform hover:scale-110 hover:shadow-lg">
         {/* Telegram Icon */}
-        <NavLink to="https://t.me/+fHC2LQO4BAg2MmRk" target="_blank">
+        <NavLink to="https://t.me/+fHC2LQO4BAg2MmRk" target="_blank"className="flex justify-center items-center gap-[8px]">
           <FaTelegramPlane className="text-[25px] text-[#45aaf2] lg:text-[30px] group-hover:animate-pulse" />
+          <span className="group-hover:animate-bounce">Live Chat</span>
         </NavLink>
 
         {/* Live Chat Text */}
-        <span className="group-hover:animate-bounce">Live Chat</span>
+      
       </div>
     </div>
-
         {/* ----------------------subheader--------------------- */}
         <div className='hidden w-full h-auto bg-gray-600 px-[100px] py-[15px] lg:flex justify-between items-center'>
                <div className='flex justify-center items-center gap-[20px]'>
@@ -298,10 +302,30 @@ const Header = () => {
         </li>
 
         {/* Live Chat */}
-        <li className=" px-6 py-3 w-full">
+        <li className=" px-6 py-3 w-full flex flex-col gap-[8px]">
           <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
             <button className="px-[30px] w-full py-[14px] border-[2px] border-btncolor1 hover:bg-transparent hover:text-btncolor1 transition-all duration-100 bg-btncolor1 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
               Live Chat <RiChatSmile2Fill className="text-[22px] font-bold" />
+            </button>
+          </NavLink>
+          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+            <button className="px-[30px] w-full py-[14px] border-[2px] border-red-500 hover:bg-transparent hover:text-red-500 transition-all duration-100 bg-red-500 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
+              YouTube
+            </button>
+          </NavLink>
+          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+            <button className="px-[30px] w-full py-[14px] border-[2px] border-[#45aaf2] hover:bg-transparent hover:text-[#45aaf2] transition-all duration-100 bg-[#45aaf2] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
+              Facebook
+            </button>
+          </NavLink>
+          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+            <button className="px-[30px] w-full py-[14px] border-[2px] border-[#3867d6] hover:bg-transparent hover:text-[#3867d6] transition-all duration-100 bg-[#3867d6] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
+             Teligram 
+            </button>
+          </NavLink>
+          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+            <button className="px-[30px] w-full py-[14px] border-[2px] border-green-500 hover:bg-transparent hover:text-green-500 transition-all duration-100 bg-green-500 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
+             Whatsapp 
             </button>
           </NavLink>
         </li>
