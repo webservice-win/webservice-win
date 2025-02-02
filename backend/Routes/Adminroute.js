@@ -1022,5 +1022,17 @@ admin_route.get("/customer-details/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
+});
+
+admin_route.put("/user-status-update/:id",async(req,res)=>{
+  try {
+     const {status}=req.body;
+     const update_status=await UserModel.findByIdAndUpdate({_id:req.params.id},{$set:{status:status}});
+     if(update_status){
+       res.send({success:true,message:"User Stauts Updated Successfully!"})
+     }
+  } catch (error) {
+    console.log(error)
+  }
 })
 module.exports=admin_route;
