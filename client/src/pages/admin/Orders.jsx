@@ -123,6 +123,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
      console.log(error);
    }
 }
+// --------------inoive sent-------------------------
   return (
     <section className='w-full h-[100vh] flex font-poppins'>
   <section className='w-full h-[100vh] flex font-poppins'>
@@ -167,10 +168,10 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
             <tr className="bg-indigo-500 text-white">
               <th className="py-3 px-4 text-left">Invoice</th>
               <th className="py-3 px-4 text-left">Date</th>
-              <th className="py-3 px-4 text-left">Amount</th>
-              <th className="py-3 px-4 text-left">Payment Method</th>
-              <th className="py-3 px-4 text-left">Payer Number</th>
-              <th className="py-3 px-4 text-left">Transaction</th>
+              <th className="py-3 px-4 text-left text-nowrap">Amount</th>
+              <th className="py-3 px-4 text-left text-nowrap">Payment Method</th>
+              <th className="py-3 px-4 text-left text-nowrap">Payer Number</th>
+              <th className="py-3 px-4 text-left text-nowrap">Transaction</th>
               <th className="py-3 px-4 text-left">Status</th>
               <th className="py-3 px-4 text-left">Details</th>
             </tr>
@@ -178,7 +179,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
           <tbody>
             {filteredOrders.map((order) => (
               <tr key={order.id} className="border-b">
-                <td className="py-3 px-4 text-orange-500 font-[500]">{order.invoice_id}</td>
+                <td className="py-3 px-4 text-orange-500 font-[500] text-nowrap">{order.invoice_id}</td>
                 <td className="py-3 px-4">{order?.createdAt.slice(0,10)}</td>
                 <td className="py-3 px-4">{order?.product_price}</td>
                 <td className="py-3 px-4">{order?.provider_name}</td>
@@ -206,6 +207,10 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
                   </select>
                 </td>
                 <td className="py-3 px-4 flex justify-center items-center gap-[5px]">
+                    <button                     className="bg-indigo-500 text-nowrap text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none"
+                    >
+                    Invoice Sent
+                  </button>
                     <NavLink to={`/order-invoice/${order._id}`}>
                     <button
                     className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none"
