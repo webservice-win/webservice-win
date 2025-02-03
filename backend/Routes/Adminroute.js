@@ -12,6 +12,7 @@ const brand_model = require("../Models/Brandmodel");
 const admission_model = require("../Models/Admissionmodel");
 const website_model = require("../Models/Websitemodel");
 const payment_proof_model = require("../Models/Paymentproof");
+const nodemailer=require("nodemailer")
 const site_model = require("../Models/Sitemodel");
 const video_model = require("../Models/Videomodel");
 const accordion_model = require("../Models/Accordion");
@@ -24,7 +25,8 @@ const order_model = require("../Models/Ordermodel");
 const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 const ads_model = require("../Models/Adsmodel");
-const bcrypt=require("bcryptjs")
+const bcrypt=require("bcryptjs");
+const invoice_model = require("../Models/Inoicemodel");
 
 
 
@@ -1034,5 +1036,138 @@ admin_route.put("/user-status-update/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
-})
+});
+
+// ----------------------create-invoice-----------------------------
+const sendInvoiceEmail = async (customerEmail, customerName, invoiceData) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "shihabmoni15@gmail.com",
+        pass: "kxyb btad rldf fpsn", // Use App Password if using Gmail
+      },
+    });
+
+    const paymentUrl = `http://localhost:5173/pay?invoiceId=${invoiceData.invoiceId}&amount=${invoiceData.dueAmount}`;
+    
+    const mailOptions = {
+      from: '"Oracle Technology LLC"shihabmoni15@gmail.com',
+      to: "programmingperson1@gmail.com",
+      subject: `Invoice Notification - ${invoiceData.invoiceId}`,
+      html: `
+        <div style="font-family: 'Poppins', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://i.ibb.co.com/JFSq6qmN/update-logo-tm.png" alt="Company Logo" style="max-width: 150px;">
+          </div>
+          <h2 style="color: #333; text-align: center;">Invoice Details</h2>
+          <p><strong>Invoice ID:</strong> ${invoiceData.invoiceId}</p>
+          <p><strong>Customer Name:</strong> ${customerName}</p>
+          <p><strong>Customer ID:</strong> ${invoiceData.customerId}</p>
+          <p><strong>Provider Name:</strong> Binance</p>
+
+          <h3 style="color: #444;">Transaction Details</h3>
+          <p><strong>Transaction ID:</strong> ${invoiceData.transactionId}</p>
+          <p><strong>Product Name:</strong> ${invoiceData.productName}</p>
+          <p><strong>Product Price:</strong> ${invoiceData.productPrice} USDT</p>
+          <p><strong>Paid:</strong> ${invoiceData.paid} USDT</p>
+          <p><strong>Due Payment:</strong> <span style="color: red;">${invoiceData.dueAmount} USDT</span></p>
+          <p><strong>Created At:</strong> ${invoiceData.createdAt}</p>
+
+          <h3 style="color: #444;">Items</h3>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <tr style="background-color: #28a745; color: white;">
+              <th style="padding: 10px; border: 1px solid #ddd;">Product</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Unit Price</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Quantity</th>
+              <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border: 1px solid #ddd;">${invoiceData.productName}</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${invoiceData.productPrice} USDT</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">1</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${invoiceData.productPrice} USDT</td>
+            </tr>
+          </table>
+
+          <h3 style="color: #444;">Total</h3>
+          <p><strong>Sub Total:</strong> ${invoiceData.productPrice} USDT</p>
+          <p><strong>Total Paid:</strong> ${invoiceData.paid} USDT</p>
+          <p><strong>Total Due:</strong> <span style="color: red;">${invoiceData.dueAmount} USDT</span></p>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="${paymentUrl}" target="_blank" style="display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 5px;">Pay Now</a>
+          </div>
+          
+          <p style="text-align: center; margin-top: 20px;">Thank you for your business!</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Invoice email sent successfully.");
+  } catch (error) {
+    console.error("Error sending invoice email:", error);
+  }
+};
+
+
+// API Route to send invoice
+admin_route.post("/sent-invoice", async (req, res) => {
+  try {
+    const { customer_id, amount, orderId } = req.body;
+
+    // Validate input
+    if (!customer_id || !amount || !orderId) {
+      return res.send({ success: false, message: "All Fields are required!" });
+    }
+
+    // Find user and order details
+    const find_user = await UserModel.findById(customer_id);
+    if (!find_user) {
+      return res.send({ success: false, message: "User not found!" });
+    }
+
+    const find_order = await order_model.findOne({ _id:orderId });
+    if (!find_order) {
+      return res.send({ success: false, message: "Order not found!" });
+    }
+
+    // Create and save invoice
+    const create_invoice = new invoice_model({
+      name: find_user.name,
+      email: find_user.email,
+      customer_id: find_user._id,
+      product_name: find_order.product_name,
+      product_price: find_order.product_price,
+      due_amount: find_order.due_payment,
+      paid: find_order.paid,
+      status: find_order.status,
+    });
+
+    await create_invoice.save();
+
+    // Prepare invoice data
+    const invoiceData = {
+      invoiceId: find_order.invoice_id,
+      customerId: find_user._id,
+      transactionId: find_order.transaction || "N/A",
+      productName: find_order.product_name,
+      productPrice: find_order.product_price,
+      paid: find_order.paid,
+      dueAmount: find_order.due_payment,
+      createdAt: new Date().toLocaleString(),
+    };
+
+    // Send email with invoice details
+    await sendInvoiceEmail(find_user.email, find_user.name, invoiceData);
+
+    res.send({ success: true, message: "Invoice created and email sent!" });
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ success: false, message: "Internal Server Error" });
+  }
+});
+
 module.exports=admin_route;

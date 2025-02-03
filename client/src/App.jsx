@@ -69,6 +69,7 @@ import Orderinvoice from './pages/user/Orderinvoice'
 import Adminprofile from './pages/admin/Adminprofile'
 import Viewcustomer from './pages/admin/Viewcustomer'
 import Depositinvoiceadmin from './pages/admin/Depositinvoiceadmin'
+import Pay from './pages/Pay'
 const App = () => {
   return (
     <BrowserRouter>
@@ -96,6 +97,8 @@ const App = () => {
         <Route exact path="/customer/:id"element={<Viewcustomer/>}/>
         <Route exact path="/order-invoice/:id"element={<Invoice/>}/>
         <Route exact path="/admin-deposit-invoice/:id"element={<Depositinvoiceadmin/>}/>
+        <Route exact path="/pay"element={<Pay/>}/>
+      
 
         {/* ----------------admin pages------------------- */}
         <Route exact path="/dashboard"element={<Dashboard/>}/>
