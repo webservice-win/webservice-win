@@ -39,7 +39,7 @@ const order_schema=new mongoose.Schema({
    paid:Number,
    status:{
     type:String,
-    default:"processing",
+    default:"অডার পেন্ডিং আছে",
    }
 },{timestamps:true});
 

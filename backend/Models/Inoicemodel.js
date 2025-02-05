@@ -7,26 +7,22 @@ const invoice_schema=new mongoose.Schema({
     email:{
         type:String
     },
-    product_name:{
-        type:String
-    },
-    product_price:{
-        type:String
-    },
-    due_amount:{
+    amount:{
         type:String
     },
     customer_id:{
         type:String
     },
-    paid:{
+    due_amount:{
         type:String
     },
+    invoice_id:String,
+    message:String,
     status:{
-        type:String
+        type:String,
+        default:"sent"
     }
-
-});
+},{timestamps:true});
 
 const invoice_model=mongoose.model("Invoice",invoice_schema);
 

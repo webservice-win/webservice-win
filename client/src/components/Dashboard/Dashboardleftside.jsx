@@ -24,6 +24,8 @@ import { MdOutlinePayments } from "react-icons/md";
 import { RiLuggageDepositLine } from "react-icons/ri";
 import { SiGoogleadsense } from "react-icons/si";
 import { CgProfile } from "react-icons/cg";
+import { BsFillSendCheckFill } from "react-icons/bs";
+import { MdOutlineSwitchAccessShortcut } from "react-icons/md";
 import axios from "axios";
 const Dashboardleftside = () => {
   const { activesidebar, setactivesidebar } = useContext(Contextapi);
@@ -38,7 +40,8 @@ const Dashboardleftside = () => {
   const [pending_order,setpending_order]=useState([])
   const admin_info = JSON.parse(localStorage.getItem("admin_data"));
   const [pending_deposit,set_pending_deposit]=useState([]);
-  const [total_customer,set_totalcustomer]=useState([])
+  const [total_customer,set_totalcustomer]=useState([]);
+  const [total_invoice,set_invoice]=useState()
   // ---------------all-feedback--------------
   const get_orders = () => {
     axios
@@ -49,7 +52,8 @@ const Dashboardleftside = () => {
             setpending_order(res.data.pending_order)
             console.log(res.data.pending_order);
             set_pending_deposit(res.data.pending_deposit);
-            set_totalcustomer(res.data.total_customer)
+            set_totalcustomer(res.data.total_customer);
+            set_invoice(res.data.total_invoice)
         }
       })
       .catch((err) => {
@@ -139,6 +143,14 @@ const Dashboardleftside = () => {
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
                     <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_customer?.length}</span>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <BsFillSendCheckFill className="text-[22px]"/>  <NavLink to="/sent-invoice">Sent Invoice</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_invoice?.length}</span>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <BsFillSendCheckFill className="text-[22px]"/>  <NavLink to="/accepted-invoice">Accepted Invoice</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_invoice?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>
@@ -559,6 +571,10 @@ const Dashboardleftside = () => {
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <FaUserAlt className="text-[22px]"/>  <NavLink to="/customers">Customer</NavLink>
                     <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_customer?.length}</span>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <BsFillSendCheckFill className="text-[22px]"/>  <NavLink to="/sent-invoice">Sent Invoice</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {total_invoice?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <SiGoogleadsense className="text-[22px]"/>  <NavLink to="/ads">Ads</NavLink>

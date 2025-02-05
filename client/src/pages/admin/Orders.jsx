@@ -95,7 +95,7 @@ const Orders = () => {
      })
    },[]);
    const [searchQuery, setSearchQuery] = useState("");
-const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","completed", "suspended"]);
+const [orderstatus,setorderstatus]=useState(["অডার পেন্ডিং আছে", "এডমিন চেক করছেন", "অডার টি গ্রহন করা হয়েছে", "অডার টি রিজেক্ট করা হয়েছে", "ডাউলোড করুন স্ক্রিপ্ট","ডোমেইন হোস্ট ক্রয় হয়েছে","ডিজাইন ডেভেলপমেন্ট চলছে","ডিজাইন সম্পূর্ন","ডেভেলপমেন্ট হয়েছে","ভিজিট করুন সাইট","এ পি আই অডার হয়েছে","এ পি আই সেটআপ চলছে","ডেলিভারী করা হয়েছে","প্রজেক্ট সম্পূ"]);
   const [filter, setFilter] = useState("");
   const [orders, setOrders] = useState([]);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
@@ -138,7 +138,7 @@ const [orderstatus,setorderstatus]=useState(["pending", "processing", "hold","co
         });
     }
   };
-  const statuses = ["Pending", "Completed", "Failed", "Shipped", "Cancelled"];
+  const statuses = ["অডার পেন্ডিং আছে", "এডমিন চেক করছেন", "অডার টি গ্রহন করা হয়েছে", "অডার টি রিজেক্ট করা হয়েছে", "ডাউলোড করুন স্ক্রিপ্ট","ডোমেইন হোস্ট ক্রয় হয়েছে","ডিজাইন ডেভেলপমেন্ট চলছে","ডিজাইন সম্পূর্ন","ডেভেলপমেন্ট হয়েছে","ভিজিট করুন সাইট","এ পি আই অডার হয়েছে","এ পি আই সেটআপ চলছে","ডেলিভারী করা হয়েছে","প্রজেক্ট সম্পূ"];
 
   const handleStatusChange = (id, newStatus) => {
     setOrders((prevOrders) =>
@@ -238,37 +238,44 @@ const [selectedOrder, setSelectedOrder] = useState(null);
         <table className="w-full border-collapse border-[1px] border-[#eee]">
           <thead>
             <tr className="bg-indigo-500 text-white">
-              <th className="py-3 px-4 text-left">Invoice</th>
-              <th className="py-3 px-4 text-left">Date</th>
-              <th className="py-3 px-4 text-left text-nowrap">Amount</th>
-              <th className="py-3 px-4 text-left text-nowrap">Payment Method</th>
-              <th className="py-3 px-4 text-left text-nowrap">Payer Number</th>
-              <th className="py-3 px-4 text-left text-nowrap">Transaction</th>
-              <th className="py-3 px-4 text-left text-nowrap">Paid</th>
-              <th className="py-3 px-4 text-left text-nowrap">Due</th>
-              <th className="py-3 px-4 text-left">Status</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Invoice</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Customer</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Date</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Amount</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Payment Method</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Payer Number</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Transaction</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Paid</th>
+              <th className="py-3 px-4 text-left text-nowrap border-r-[1px]">Due</th>
+              <th className="py-3 px-4 text-left border-r-[1px]">Status</th>
               <th className="py-3 px-4 text-left">Details</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrders.map((order) => (
               <tr key={order.id} className="border-b">
-                <td className="py-3 px-4 text-orange-500 font-[500] text-nowrap">{order.invoice_id}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.createdAt.slice(0,10)}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.product_price}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.provider_name}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.payeer_number}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.transaction}</td>
-                <td className="py-3 px-4 text-nowrap">{order?.paid}$</td>
-                <td className="py-3 px-4 text-nowrap text-red-500">{order?.due_payment}$</td>
+                <td className="py-3 px-4 text-orange-500 border-r-[1px] font-[500] text-nowrap">{order.invoice_id}</td>
+                <td className="py-3 px-4 text-orange-500 font-[500] text-nowrap border-r-[1px]">
+                  <h2 className='text-[13px] text-black'>{order.customer_name}</h2>
+                  <p className='text-[15px] text-indigo-600 mt-[4px] underline cursor-pointer'><NavLink to={`/customer-profile/${order.customer_email}`}>
+                  {order.customer_email}
+                    </NavLink></p>
+                </td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.createdAt.slice(0,10)}</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.product_price}</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.provider_name}</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.payeer_number}</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.transaction}</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px]">{order?.paid}$</td>
+                <td className="py-3 px-4 text-nowrap border-r-[1px] text-red-500">{order?.due_payment}$</td>
                 <td className="py-3 px-4 text-nowrap">
                   <select
                     className={`border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm ${
-                      order.status === "completed"
-                        ? "bg-green-100 text-green-700"
+                      order.status === "অডার পেন্ডিং আছে"
+                        ? "bg-red-100 text-red-700"
                         : order.status === "pending"
                         ? "bg-yellow-100 text-yellow-700"
-                        : "bg-red-100 text-red-700"
+                        : "bg-green-100 text-green-700"
                     }`}
 
                     defaultValue={order.status} onChange={(e)=>{handlestatus(order._id,e.target.value)}}

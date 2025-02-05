@@ -22,7 +22,12 @@ const Pay = () => {
   const [loading, setLoading] = useState(false);
   const user_info = JSON.parse(localStorage.getItem("user_data"));
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-
+  useEffect(()=>{
+     if(user_info){}
+     else{
+      navigate("/login")
+     }
+  },[])
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const conversionRate = 125;
