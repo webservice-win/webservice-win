@@ -5,6 +5,7 @@ const technology_model = require("../Models/Technology");
 const review_model = require("../Models/Reviewmodel");
 const video_review_model = require("../Models/Videoreviewmodel");
 const course_model = require("../Models/Coursemodel");
+const crypto=require("crypto")
 const path = require('path'); 
 const admin_route=express();
 const multer = require("multer");
@@ -12,6 +13,7 @@ const brand_model = require("../Models/Brandmodel");
 const admission_model = require("../Models/Admissionmodel");
 const website_model = require("../Models/Websitemodel");
 const payment_proof_model = require("../Models/Paymentproof");
+const nodemailer=require("nodemailer")
 const site_model = require("../Models/Sitemodel");
 const video_model = require("../Models/Videomodel");
 const accordion_model = require("../Models/Accordion");
@@ -24,7 +26,8 @@ const order_model = require("../Models/Ordermodel");
 const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 const ads_model = require("../Models/Adsmodel");
-const bcrypt=require("bcryptjs")
+const bcrypt=require("bcryptjs");
+const invoice_model = require("../Models/Inoicemodel");
 
 
 
@@ -834,24 +837,90 @@ admin_route.get("/all-orders",async(req,res)=>{
         const pending_order=await order_model.find({status:"processing"});
         const pending_deposit=await deposit_model.find({status:"Pending"});
         const total_customer=await UserModel.find();
+        const total_invoice=await invoice_model.find();
         if(order_data){
-               res.send({success:true,data:order_data,pending_order,pending_deposit,total_customer})
+               res.send({success:true,data:order_data,pending_order,pending_deposit,total_customer,total_invoice})
         }
     } catch (error) {
         console.log(error)
     }
 });
-admin_route.put("/update-order-status/:id",async(req,res)=>{
-    try {
-        console.log(req.body.status)
-        const order_data=await order_model.findByIdAndUpdate({_id:req.params.id},{$set:{status:req.body.status}});
-        if(order_data){
-               res.send({success:true,message:"Status has been updated",data:order_data})
-        }
-    } catch (error) {
-        console.log(error)
+admin_route.put("/update-order-status/:id", async (req, res) => {
+  try {
+      const status = req.body.status;
+      console.log(status);
+      const order_data = await order_model.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { status: status } },
+        { new: true } // Ensure the updated document is returned
+    );
+
+    if (!order_data) {
+        return res.status(404).send({ success: false, message: "Order not found" });
     }
-})
+      // Define the statuses that require updates
+      const statusesToUpdate = [
+          "এডমিন চেক করছেন", 
+          "অডার টি গ্রহন করা হয়েছে", 
+          "ডাউলোড করুন স্ক্রিপ্ট", 
+          "ডোমেইন হোস্ট ক্রয় হয়েছে", 
+          "ডিজাইন ডেভেলপমেন্ট চলছে", 
+          "ডিজাইন সম্পূর্ন", 
+          "ডেভেলপমেন্ট হয়েছে", 
+          "ভিজিট করুন সাইট", 
+          "এ পি আই অডার হয়েছে", 
+          "এ পি আই সেটআপ চলছে", 
+          "ডেলিভারী করা হয়েছে", 
+          "প্রজেক্ট সম্পূর্ণ"
+      ];
+
+      // Only proceed if status is in the allowed list
+      if (statusesToUpdate.includes(status)) {
+          // Find customer details
+          const find_customer = await UserModel.findById({ _id: order_data.customer_id });
+
+          if (!find_customer) {
+              return res.status(404).send({ success: false, message: "Customer not found" });
+          }
+
+          // Update customer's financial details
+          find_customer.paid_amount += order_data.paid || 0;
+          find_customer.due_balance += order_data.due_payment || 0;
+          find_customer.total_order += 1;
+
+          // Save customer updates
+          await find_customer.save();
+
+          // Respond with success
+          res.send({
+              success: true,
+              message: "Status has been updated and financial details adjusted",
+              data: order_data
+          });
+      } else {
+          // If status is not in the list, just update the order without affecting financials
+          const order_data = await order_model.findByIdAndUpdate(
+              { _id: req.params.id },
+              { $set: { status: status } },
+              { new: true }
+          );
+
+          if (!order_data) {
+              return res.status(404).send({ success: false, message: "Order not found" });
+          }
+
+          res.send({
+              success: true,
+              message: "Status has been updated without affecting financial details",
+              data: order_data
+          });
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: "Something went wrong" });
+  }
+});
+
 admin_route.delete('/delete-order/:id', async (req, res) => {
     try {
       const { id } = req.params;
@@ -860,8 +929,8 @@ admin_route.delete('/delete-order/:id', async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error deleting payment method', error });
     }
-  });
-  admin_route.get("/single-order/:id",async(req,res)=>{
+});
+admin_route.get("/single-order/:id",async(req,res)=>{
     try {
         const order_data=await order_model.findById({_id:req.params.id});
         if(order_data){
@@ -890,7 +959,7 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error deleting payment method', error });
     }
-  });
+});
   admin_route.put("/update-deposit-status/:id", async (req, res) => {
     try {
       const { status } = req.body;
@@ -936,7 +1005,7 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
       console.error(error);
       res.status(500).send({ success: false, message: "An error occurred", error });
     }
-  });
+});
   // --------------add-ads-----------------
 admin_route.post("/add-ads",uploadimage.single("file"),async(req,res)=>{
   try {
@@ -1023,7 +1092,14 @@ admin_route.get("/customer-details/:id",async(req,res)=>{
     console.log(error)
   }
 });
-
+admin_route.get("/customer-profile/:email",async(req,res)=>{
+  try {
+    const customer_information=await UserModel.findOne({email:req.params.email});
+    res.send({success:true,data:customer_information})
+  } catch (error) {
+    console.log(error)
+  }
+});
 admin_route.put("/user-status-update/:id",async(req,res)=>{
   try {
      const {status}=req.body;
@@ -1034,5 +1110,120 @@ admin_route.put("/user-status-update/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
-})
+});
+// ----------------------create-invoice-----------------------------
+const sendInvoiceEmail = async (customerEmail, customerName, invoiceData) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "shihabmoni15@gmail.com",
+        pass: "kxyb btad rldf fpsn",
+      },
+    });
+
+    const paymentUrl = `${process.env.site_url}/pay?invoiceId=${invoiceData.invoiceId}&amount=${invoiceData.Due}&customer_id=${invoiceData.customerId}`;
+    
+    const mailOptions = {
+      from: '"Oracle Technology LLC"shihabmoni15@gmail.com',
+      to: "programmingperson1@gmail.com",
+      subject: `Invoice Notification - ${invoiceData.invoiceId}`,
+      html: `
+        <div style="font-family: 'Poppins', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <img src="https://i.ibb.co.com/JFSq6qmN/update-logo-tm.png" alt="Company Logo" style="max-width: 150px;">
+          </div>
+          <h2 style="color: #333; text-align: center;">Invoice Details</h2>
+          <p><strong>Invoice ID:</strong> ${invoiceData.invoiceId}</p>
+          <p><strong>Customer Name:</strong> ${customerName}</p>
+          <p><strong>Customer ID:</strong> ${invoiceData.customerId}</p>
+          <p>${invoiceData.message}</p>
+          <p><strong>Invoice Date:</strong> ${invoiceData.createdAt}</p>
+          <p><strong>Total Amount:</strong> ${invoiceData.Amount} USDT</p>
+          <p><strong>Due Payment:</strong> <span style="color: red;">${invoiceData.Due} USDT</span></p>
+
+          <div style="text-align: center; margin-top: 20px;">
+            <a href="${paymentUrl}" target="_blank" style="display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 5px;">Pay Now</a>
+          </div>
+          
+          <p style="text-align: center; margin-top: 20px;">Thank you for your business!</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Invoice email sent successfully.");
+  } catch (error) {
+    console.error("Error sending invoice email:", error);
+  }
+};
+// API Route to send invoice
+admin_route.post("/sent-invoice", async (req, res) => {
+  try {
+    const { customer_id, amount,message} = req.body;
+
+    if (!customer_id || !amount) {
+      return res.send({ success: false, message: "All Fields are required!" });
+    }
+
+    const find_user = await UserModel.findById(customer_id);
+    if (!find_user) {
+      return res.send({ success: false, message: "User not found!" });
+    }
+
+    const generateInvoiceId = () => {
+      return `INV-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
+    };
+    
+    const invoiceId = generateInvoiceId();
+
+    // Create and save invoice
+    const create_invoice = new invoice_model({
+      invoice_id: invoiceId,
+      name: find_user.name,
+      email: find_user.email,
+      customer_id: find_user._id,
+      amount:amount,
+      due_amount: find_user.due_balance,
+      message:message,
+    });
+
+    await create_invoice.save();
+
+    // Prepare invoice data from created invoice
+    const invoiceData = {
+      invoiceId:invoiceId,
+      customerId:customer_id,
+      Due: find_user.due_balance,
+      Amount:amount,
+      createdAt: create_invoice.createdAt,
+      message:message
+    };
+
+    await sendInvoiceEmail(find_user.email, find_user.name, invoiceData);
+    res.send({ success: true, message: "Invoice created and email sent!" });
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ success: false, message: "Internal Server Error" });
+  }
+});
+admin_route.get("/all-invoice",async(req,res)=>{
+  try {
+    const all_invoice=await invoice_model.find();
+    res.send({success:true,message:"Ok",data:all_invoice})
+  } catch (error) {
+    console.log(error)
+  }
+});
+admin_route.delete("/delete-invoice/:id",async(req,res)=>{
+  try {
+    const delete_invoice=await invoice_model.findByIdAndDelete({_id:req.params.id});
+    if(delete_invoice){
+      res.send({success:true,message:"Ok"})
+    }
+  } catch (error) {
+    console.log(error)
+  }
+});
 module.exports=admin_route;

@@ -69,6 +69,12 @@ import Orderinvoice from './pages/user/Orderinvoice'
 import Adminprofile from './pages/admin/Adminprofile'
 import Viewcustomer from './pages/admin/Viewcustomer'
 import Depositinvoiceadmin from './pages/admin/Depositinvoiceadmin'
+import Pay from './pages/Pay'
+import Customerprofile from './pages/admin/Customerprofile'
+import Sentinvoice from './pages/admin/Sentinvoice'
+import Acceptedinvoice from './pages/admin/Acceptedinvoice'
+import Forgetpassword from './pages/Forgetpassword'
+import Newpassword from './pages/Newpassword'
 const App = () => {
   return (
     <BrowserRouter>
@@ -85,6 +91,8 @@ const App = () => {
         <Route exact path="/single-website-details/:id"element={<Details/>}/>
         <Route exact path="/registration"element={<Register/>}/>
         <Route exact path="/login"element={<Login/>}/>
+        <Route exact path="/forget-password"element={<Forgetpassword/>}/>
+        <Route exact path="/reset-password/:email"element={<Newpassword/>}/>
         <Route exact path="/admin-login"element={<Adminlogin/>}/>
         {/* -----------------about us--------------- */}
         <Route exact path="/api-provider"element={<Apiprovider/>}/>
@@ -94,8 +102,13 @@ const App = () => {
         <Route exact path="/ads"element={<Addads/>}/>
         <Route exact path="/customers"element={<Customers/>}/>
         <Route exact path="/customer/:id"element={<Viewcustomer/>}/>
+        <Route exact path="/customer-profile/:email"element={<Customerprofile/>}/>
         <Route exact path="/order-invoice/:id"element={<Invoice/>}/>
         <Route exact path="/admin-deposit-invoice/:id"element={<Depositinvoiceadmin/>}/>
+        <Route exact path="/sent-invoice"element={<Sentinvoice/>}/>
+        <Route exact path="/accepted-invoice"element={<Acceptedinvoice/>}/>
+        <Route exact path="/pay"element={<Pay/>}/>
+      
 
         {/* ----------------admin pages------------------- */}
         <Route exact path="/dashboard"element={<Dashboard/>}/>

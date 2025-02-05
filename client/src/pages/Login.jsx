@@ -99,8 +99,14 @@ const Login = () => {
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </span>
+          </div>    
+          <div className="mt-[10px] flex justify-end items-center">
+          <NavLink to="/forget-password" className="text-indigo-400 text-right">
+            Forget Password?
+          </NavLink>
           </div>
           <button type="submit" className="w-full bg-[#4a3aff] py-3 rounded-md font-semibold">LOGIN</button>
+      
         </form>
         <div className="mt-4">
           <p className="text-sm">Don't Have An Account? <NavLink to="/registration" className="text-blue-400">Sign Up</NavLink></p>

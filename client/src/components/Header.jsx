@@ -308,22 +308,22 @@ const Header = () => {
               Live Chat <RiChatSmile2Fill className="text-[22px] font-bold" />
             </button>
           </NavLink>
-          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+          <NavLink to="https://youtube.com/@oracletechnologyllc" target="_blank">
             <button className="px-[30px] w-full py-[14px] border-[2px] border-red-500 hover:bg-transparent hover:text-red-500 transition-all duration-100 bg-red-500 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
               YouTube
             </button>
           </NavLink>
-          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+          <NavLink to="https://www.facebook.com/share/1B98yPTPVr/" target="_blank">
             <button className="px-[30px] w-full py-[14px] border-[2px] border-[#45aaf2] hover:bg-transparent hover:text-[#45aaf2] transition-all duration-100 bg-[#45aaf2] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
               Facebook
             </button>
           </NavLink>
-          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+          <NavLink to="https://t.me/+fHC2LQO4BAg2MmRk" target="_blank">
             <button className="px-[30px] w-full py-[14px] border-[2px] border-[#3867d6] hover:bg-transparent hover:text-[#3867d6] transition-all duration-100 bg-[#3867d6] text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
              Teligram 
             </button>
           </NavLink>
-          <NavLink to="https://tawk.to/chat/6782d72b49e2fd8dfe062cfa/1ihbhh195" target="_blank">
+          <NavLink to="https://wa.me/+33756757364" target="_blank">
             <button className="px-[30px] w-full py-[14px] border-[2px] border-green-500 hover:bg-transparent hover:text-green-500 transition-all duration-100 bg-green-500 text-white cursor-pointer rounded-full font-[500] text-[15px] flex justify-center items-center gap-[5px]">
              Whatsapp 
             </button>
