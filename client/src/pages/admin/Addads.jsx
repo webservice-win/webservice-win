@@ -98,13 +98,14 @@ const Addads = () => {
       reader.readAsDataURL(file);
     }
   };
+  const [url,set_url]=useState("")
   const handle_form = (e) => {
     e.preventDefault();
 
     // Prepare form data for submission
     const formdata = new FormData();
     formdata.append("file", file);
-
+    formdata.append("url",url)
     // Show progress bar while the request is processing
     Swal.fire({
       title: "Submitting...",
@@ -205,6 +206,23 @@ const Addads = () => {
                   onChange={handleImageUpload}
                 />
               </div>
+              <div className="w-[100%]">
+                  <label
+                    htmlFor="value"
+                    className="text-[15px] font-[500] text-gray-600"
+                  >
+                    URL <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="value"
+                    placeholder="Link"
+                    onChange={(e) => {
+                      set_url(e.target.value);
+                    }}
+                    className="w-full mt-[8px] rounded-[5px] placeholder-gray-500 outline-brand_color text-[14px] h-[45px] border-[1px] border-[#eee] p-[15px]"
+                  />
+                </div>
               <div className="flex justify-end items-center gap-[10px]">
                 <button
                   type="submit"

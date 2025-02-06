@@ -61,6 +61,7 @@ const admin_infomation = () => {
         set_name(res.data.data.name);
         set_email(res.data.data.email)
         set_password(res.data.data.password)
+ 
       }
     })
     .catch((err) => {
@@ -91,6 +92,9 @@ const update_details=(e)=>{
                     title:"Updated Successfully!",
                     text:"You have changed your details!"
                  })
+                 localStorage.removeItem("user_data");
+                 localStorage.removeItem("token");
+                 navigate("/login");
             }
         }).catch((err)=>{
             Swal.fire({

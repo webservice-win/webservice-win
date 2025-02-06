@@ -141,11 +141,7 @@ const Pay = () => {
           <div className="w-full md:w-1/2  shadow  p-[10px] bg-[#3D2BFB]">
             <div className='p-6 bg-[#010053]'>
               <h1 className='text-center text-white font-[500] text-[22px] p-[10px] bg-indigo-800'>Order Details</h1>
-              <h1 className='text-[20px] text-white mt-[20px]'>{product.title}</h1>
-              <div className='flex justify-between items-center py-[10px]'>
-                <h2 className='text-[18px] font-[500] text-white'>{site}</h2>
-                <h2 className='text-[20px] font-[600] text-white'>${price}</h2>
-              </div>
+              <h1 className='text-[20px] text-white mt-[20px]'>Invoice ID:{product.title}</h1>
             </div>
             <div className='bg-[#010053] mt-[10px] p-[10px]'>
   <h1 className="text-[22px] font-semibold mb-3 text-white">Payment Method</h1>

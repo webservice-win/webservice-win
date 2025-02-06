@@ -30,11 +30,11 @@ const Userads = () => {
               {
                 category?.map((data)=>{
                   return(
-                    <NavLink to=""className="w-full bg-[#AB1E1E] p-[5px] rounded-[10px]">
+                    <a href={`${data.url}`} target='_blank' className="w-full bg-[#AB1E1E] p-[5px] rounded-[10px]">
                     <div className="w-full bg-[#AB1E1E] rounded-[10px]">
                       <img className='w-full rounded-[10px] h-[200px] lg:h-[250px]'     src={`${base_url}/images/${data.image}`} alt="" />
                     </div>
-                    </NavLink>
+                    </a>
                   )
                 })
               }

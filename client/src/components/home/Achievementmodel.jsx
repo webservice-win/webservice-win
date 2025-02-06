@@ -20,8 +20,7 @@ const Achievementmodel = ({data}) => {
               <FaTrophy />
             </span>
             <div className="space-y-2">
-              <h3 className="font-bold text-[20px] lg:text-[25px] text-white mt-[15px]">{data.title}</h3>
-              <p className="text-sm text-muted-foreground text-white">{data.description}</p>
+              <h3 className="font-[600] text-[20px] lg:text-[22px] text-white mt-[15px]">{data.title}</h3>
               <button
                 onClick={handleViewClick}
                 className="px-[30px] py-[12px] bg-[#2563EB] mt-[30px] text-white rounded-[5px]"
@@ -33,18 +32,23 @@ const Achievementmodel = ({data}) => {
           {isPopupVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-[#010053] border-white border-[3px] p-6 rounded-lg h-auto shadow-lg w-[90%] md:w-[80%] lg:w-[60%] xl:w-[50%]">  
-            <h3 className="text-lg font-bold mb-4 text-white">{data.title}</h3>
+      <div className='flex justify-between items-center'>
+      <h3 className="text-lg font-bold mb-4 text-white">{data.title}</h3>
+            <button
+              onClick={handleCloseClick}
+              className="text-[25px]  text-red-500"
+            >
+              <IoCloseOutline/>
+            </button>
+      </div>
             <img
               src={`${base_url}/images/${data.image}`}
               alt="Gallery"
               className="w-[100%] h-[500px] m-auto border-[3px] border-white rounded-md"
             />
-            <button
-              onClick={handleCloseClick}
-              className="mt-4 px-[20px] text-[22px] absolute top-[10%] right-[20%] py-[10px] bg-indigo-700 text-white rounded-md"
-            >
-              <IoCloseOutline/>
-            </button>
+              <p className="text-sm text-muted-foreground mt-[10px] text-white">{data.description}</p>
+         
+  
           </div>
         </div>
       )}

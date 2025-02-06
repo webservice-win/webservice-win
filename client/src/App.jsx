@@ -75,6 +75,8 @@ import Sentinvoice from './pages/admin/Sentinvoice'
 import Acceptedinvoice from './pages/admin/Acceptedinvoice'
 import Forgetpassword from './pages/Forgetpassword'
 import Newpassword from './pages/Newpassword'
+import Pastorderpaymnet from './pages/Pastorderpaymnet'
+import Dueorder from './pages/admin/Dueorder'
 const App = () => {
   return (
     <BrowserRouter>
@@ -108,7 +110,8 @@ const App = () => {
         <Route exact path="/sent-invoice"element={<Sentinvoice/>}/>
         <Route exact path="/accepted-invoice"element={<Acceptedinvoice/>}/>
         <Route exact path="/pay"element={<Pay/>}/>
-      
+        <Route exact path="/proceed-order/:id"element={<Pastorderpaymnet/>}/>
+        <Route exact path="/due-orders"element={<Dueorder/>}/>
 
         {/* ----------------admin pages------------------- */}
         <Route exact path="/dashboard"element={<Dashboard/>}/>
