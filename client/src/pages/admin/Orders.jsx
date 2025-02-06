@@ -290,12 +290,12 @@ const [selectedOrder, setSelectedOrder] = useState(null);
                   </select>
                 </td>
                 <td className="py-3 px-4 flex justify-center items-center gap-[5px]">
-                <button
+                {/* <button
                   onClick={() => setSelectedOrder(order)}
                   className="bg-green-500 text-white px-4 text-nowrap py-2 rounded-md hover:bg-green-600"
                 >
                   Invoice Sent
-                </button>
+                </button> */}
                     <NavLink to={`/order-invoice/${order._id}`}>
                     <button
                     className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none"

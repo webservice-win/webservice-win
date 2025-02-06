@@ -10,6 +10,7 @@ import nagadLogo from '../assets/nagad-logo.png';
 import rocketLogo from '../assets/rocket-logo.png';
 import binanceLogo from '../assets/binance-logo.png';
 import { FaWhatsapp } from "react-icons/fa";
+import wallet_img from "../assets/wallet.gif"
 const Checkout = () => {
   const [selectedTab, setSelectedTab] = useState("");
   const [amount, setAmount] = useState(0);
@@ -17,19 +18,22 @@ const Checkout = () => {
   const [site, setSiteName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [senderNumber, setSenderNumber] = useState('');
+  const [totalprice_inbdt,set_totalpriceinbdt]=useState(0)
   const [trxId, setTrxId] = useState('');
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [holdername,setholdername]=useState("");
   const user_info = JSON.parse(localStorage.getItem("user_data"));
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
 
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const conversionRate = 125;
+  const conversionRate = 126;
   const [product, set_product] = useState([]);
   const product_Id = searchParams.get("product_id");
   const navigate = useNavigate();
   const whatsapp_number = import.meta.env.VITE_WHATSAPP_NUMBER;
+  const [user_details,set_userdetails]=useState([])
   const payment_method = [
     {
       tab_name: "Binance",
@@ -51,6 +55,10 @@ const Checkout = () => {
       tab_name: "Rocket",
       image: rocketLogo
     },
+    {
+      tab_name:"Buy from my wallet",
+      image:wallet_img
+    }
   ]
   useEffect(() => {
     axios.get(`${base_url}/admin/single-website/${product_Id}`)
@@ -60,7 +68,13 @@ const Checkout = () => {
         }
       })
       .catch((err) => console.log(err.name));
+      
   }, []);
+  useEffect(()=>{
+    axios.get(`${base_url}/user/${user_info._id}`)
+    .then((res) => set_userdetails(res.data.data))
+    .catch((err) => console.log(err.name));
+  },[])
 
   useEffect(() => {
     if (id == 1) setSiteName("Single License Script"), setPrice(product.singleLicense);
@@ -75,10 +89,15 @@ const Checkout = () => {
 
     if (!selectedTab) return Swal.fire('Error', 'Please select a payment method.', 'error');
     if (amount > price) return Swal.fire('Error', 'Amount cannot exceed total price.', 'error');
-    if (selectedTab !== "Bank Transfer" && (!trxId)) return Swal.fire('Error', 'Please fill all required fields.', 'error');
-
+    if (selectedTab !== "Bank Transfer" && selectedTab !=="Buy from my wallet" && (!trxId)) return Swal.fire('Error', 'Please fill all required fields.', 'error');
+     if(selectedTab=="Buy from my wallet"){
+         if(amount > user_details.deposit_balance){
+          return  Swal.fire('Warning', 'You do not have sufficent balance', 'warning'); 
+         }
+     }
     setLoading(true);
 
+    
     try {
       // const formData = new FormData();
       // formData.append("product_id", product_Id);
@@ -105,6 +124,7 @@ const Checkout = () => {
         product_name:product.title,
         due_payment: finalPayment,
         package_name:site,
+        holder_name:holdername,
         paid:amount ,
         payeer_number: senderNumber || "",
         transaction: trxId || ""
@@ -115,7 +135,6 @@ const Checkout = () => {
         }).catch((err) => {
           console.log(err)
         })
-
       Swal.fire('Success', 'Order confirmed successfully!', 'success');
       navigate("/my-order")
     } catch (error) {
@@ -124,14 +143,15 @@ const Checkout = () => {
       setLoading(false);
     }
   };
-
+useEffect(()=>{
+  set_totalpriceinbdt(price*126)
+},[])
 
   return (
     <section className="font-poppins">
       <Header />
       <section className="w-full flex bg-[#F9FBFC] justify-center items-center py-[80px] gap-[20px] lg:flex-row ">
         <div className="w-[97%] lg:w-[70%] flex md:flex-row gap-6 flex-col">
-
           {/* Left Section */}
           <div className="w-full md:w-1/2  shadow  p-[10px] bg-[#3D2BFB]">
             <div className='p-6 bg-[#010053]'>
@@ -150,7 +170,8 @@ const Checkout = () => {
       "Bank Transfer": "bg-[#004404]",
       "Bkash": "bg-[#F0047F]",
       "Nagad": "bg-[#ED1C24]",
-      "Rocket": "bg-[#8F2A85]"
+      "Rocket": "bg-[#8F2A85]",
+      "Buy from my wallet":"bg-[#FDCB50]"
     };
 
     return (
@@ -232,6 +253,8 @@ const Checkout = () => {
                     </div>
                   <div className=' mt-[10px]'>
                     <h2 className='p-[10px] text-center bg-[#004404] text-[20px] text-white mb-[10px]'>Payment Summery</h2>
+                    <label className='text-white'>Account Holder Name</label>
+                    <input type="text" value={holdername} onChange={(e) => setholdername(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
                     <label className='text-white'>Transaction ID</label>
                     <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
                   
@@ -337,6 +360,11 @@ const Checkout = () => {
                 </form>
               </>
             )}
+            {(selectedTab === "Buy from my wallet") && (
+              <>
+                 <h2 className='text-center py-[10px] fonr-[500] text-white text-[20px]'>My Balance : ${user_details.deposit_balance}</h2>
+              </>
+            )}
             <label className='text-white'>Amount</label>
             <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full border rounded-lg p-3 mb-3" />
             <div className="border-t mt-4 pt-4">
@@ -355,6 +383,10 @@ const Checkout = () => {
               <div className="flex justify-between text-sm font-bold text-blue-600">
                 <span className='text-[18px] text-yellow-500 mt-[10px]'>DUE BDT AMOUNT </span>
                 <span className='text-[18px] text-yellow-500 mt-[10px]'>{(finalPayment * conversionRate).toFixed(2)} BDT</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold text-blue-600">
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>Total Price In BDT</span>
+                <span className='text-[18px] text-yellow-500 mt-[10px]'>{totalprice_inbdt} BDT</span>
               </div>
             </div>
             <button className={`w-[40%] m-auto block mt-4 text-white py-3 rounded-lg ${!selectedTab ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`} onClick={handlePayNow} disabled={!selectedTab}>

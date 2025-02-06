@@ -28,6 +28,7 @@ const UserModel = require("../Models/User");
 const ads_model = require("../Models/Adsmodel");
 const bcrypt=require("bcryptjs");
 const invoice_model = require("../Models/Inoicemodel");
+const due_model = require("../Models/Duemodel");
 
 
 
@@ -838,8 +839,9 @@ admin_route.get("/all-orders",async(req,res)=>{
         const pending_deposit=await deposit_model.find({status:"Pending"});
         const total_customer=await UserModel.find();
         const total_invoice=await invoice_model.find();
+        const pending_orders=await order_model.find({status:"অডার পেন্ডিং আছে"});
         if(order_data){
-               res.send({success:true,data:order_data,pending_order,pending_deposit,total_customer,total_invoice})
+               res.send({success:true,data:order_data,pending_order,pending_deposit,pending_orders,total_customer,total_invoice})
         }
     } catch (error) {
         console.log(error)
@@ -976,7 +978,7 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
       }
   
       // If status is "completed", update the user's deposit balance
-      if (status.toLowerCase() === "completed") {
+      if (status === "Approved") {
         const userId = deposit_data.userId;
         userId.dposit_balance+=deposit_data.amount;
         // Find the user and update the deposit balance
@@ -991,7 +993,6 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
             .status(404)
             .send({ success: false, message: "User not found, balance not updated" });
         }
-  
         return res.send({
           success: true,
           message: "Status and user deposit balance have been updated",
@@ -1010,7 +1011,8 @@ admin_route.delete('/delete-deposit/:id', async (req, res) => {
 admin_route.post("/add-ads",uploadimage.single("file"),async(req,res)=>{
   try {
          const create_payment=new ads_model({
-          image:req.file.filename
+          image:req.file.filename,
+          url:req.body.url
          });
          create_payment.save();
          res.send({success:true,message:"Ads created successfully!"})
@@ -1126,7 +1128,7 @@ const sendInvoiceEmail = async (customerEmail, customerName, invoiceData) => {
     
     const mailOptions = {
       from: '"Oracle Technology LLC"shihabmoni15@gmail.com',
-      to: "programmingperson1@gmail.com",
+      to: customerEmail,
       subject: `Invoice Notification - ${invoiceData.invoiceId}`,
       html: `
         <div style="font-family: 'Poppins', Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
@@ -1170,7 +1172,7 @@ admin_route.post("/sent-invoice", async (req, res) => {
     if (!find_user) {
       return res.send({ success: false, message: "User not found!" });
     }
-
+   console.log(find_user)
     const generateInvoiceId = () => {
       return `INV-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
     };
@@ -1224,6 +1226,94 @@ admin_route.delete("/delete-invoice/:id",async(req,res)=>{
     }
   } catch (error) {
     console.log(error)
+  }
+});
+
+admin_route.get("/due-orders",async(req,res)=>{
+  try {
+    const due_orders=await due_model.find();
+    res.send({success:true,message:"Ok",data:due_orders})
+  } catch (error) {
+    console.log(error)
+  }
+});
+admin_route.delete('/delete-due-order/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await due_model.findByIdAndDelete(id);
+    res.status(200).json({ success:true,message: 'Due Order deleted successfully!' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting payment method', error });
+  }
+});
+
+admin_route.put("/update-due-order-status/:id", async (req, res) => {
+  try {
+      const status = req.body.status;
+      console.log(status);
+      const order_data = await due_model.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { status: status } },
+        { new: true } // Ensure the updated document is returned
+    );
+
+    if (!order_data) {
+        return res.status(404).send({ success: false, message: "Order not found" });
+    }
+      // Define the statuses that require updates
+      const statusesToUpdate = [
+         "Approved"
+      ];
+
+      // Only proceed if status is in the allowed list
+      const find_due_order=await due_model.findById({_id:req.params.id})
+      const update_order=await order_model.findOne({invoice_id:order_data.invoice_id});
+      console.log(find_due_order)
+      if (statusesToUpdate.includes(status)) {
+          // Find customer details
+          update_order.paid+=order_data.paid;
+          update_order.due_payment-=order_data.paid;
+          update_order.save();
+          const find_customer = await UserModel.findById({ _id: order_data.customer_id });
+          if (!find_customer) {
+              return res.status(404).send({ success: false, message: "Customer not found" });
+          }
+
+          // Update customer's financial details
+          find_customer.paid_amount += order_data.paid || 0;
+          find_customer.due_balance -= order_data.due_payment || 0;
+          find_customer.total_order += 1;
+
+          // Save customer updates
+          await find_customer.save();
+
+          // Respond with success
+          res.send({
+              success: true,
+              message: "Status has been updated and financial details adjusted",
+              data: order_data
+          });
+      } else {
+          // If status is not in the list, just update the order without affecting financials
+          const order_data = await order_model.findByIdAndUpdate(
+              { _id: req.params.id },
+              { $set: { status: status } },
+              { new: true }
+          );
+
+          if (!order_data) {
+              return res.status(404).send({ success: false, message: "Order not found" });
+          }
+
+          res.send({
+              success: true,
+              message: "Status has been updated without affecting financial details",
+              data: order_data
+          });
+      }
+  } catch (error) {
+      console.log(error);
+      res.status(500).send({ success: false, message: "Something went wrong" });
   }
 });
 module.exports=admin_route;
