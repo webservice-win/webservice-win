@@ -28,6 +28,9 @@ const order_schema=new mongoose.Schema({
    provider_name:{
     type:String,
    },
+   holder_name:{
+    type:String
+   },
    payeer_number:{
      type:String,
    },
@@ -40,6 +43,10 @@ const order_schema=new mongoose.Schema({
    status:{
     type:String,
     default:"অডার পেন্ডিং আছে",
+   },
+   view_status:{
+    type:String,
+    defalut:"unseen"
    }
 },{timestamps:true});
 

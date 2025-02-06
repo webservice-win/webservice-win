@@ -5,6 +5,10 @@ const ads_schema=new mongoose.Schema({
     type:String,
     required:true,
    },
+   url:{
+    type:String,
+    required:true,
+   },
 },{timestamps:true});
 
 const ads_model=mongoose.model("Ad",ads_schema);

@@ -119,7 +119,8 @@ const Header = () => {
                     )}
                 </div>
                 {openDropdown === 'about' && (
-                    <ul className="absolute bg-white z-[100] border-[1px] border-[#eee] rounded-[8px] py-2 mt-2 w-[220px] shadow-lg transform transition-all duration-300 ease-in-out scale-95 group-hover:scale-100">
+                    <div className='mt-[5px] z-[100] absolute w-[220px] shadow-lg transform transition-all duration-300 ease-in-out scale-95 group-hover:scale-100'>
+                      <ul className=" bg-white z-[100] border-[1px] border-[#eee] rounded-[8px] py-2 mt-2 ">
                          <li className="px-4 py-2 text-black hover:text-indigo-300 transition-all duration-200">
                           <NavLink to="/our-achievement">
                                 Our Achievement
@@ -137,6 +138,7 @@ const Header = () => {
                           <NavLink to="/who-are-you">Who Are You</NavLink>
                         </li> */}
                     </ul>
+                    </div>
                 )}
             </li>
 
@@ -155,7 +157,8 @@ const Header = () => {
                     )}
                 </div>
                 {openDropdown === 'reviews' && (
-                    <ul className="absolute bg-white z-[100] border-[1px] border-[#eee] rounded-[8px] py-2 mt-2 w-[220px] shadow-lg transform transition-all duration-300 ease-in-out scale-95 group-hover:scale-100">
+                  <div className='absolute w-[220px] shadow-lg transform transition-all duration-300 ease-in-out scale-95 group-hover:scale-100 z-[100]'>
+<ul className=" bg-white z-[100] border-[1px] border-[#eee] rounded-[8px] py-2 mt-2 ">
                         <li className="px-4 py-2 text-black hover:text-indigo-300 transition-all duration-200">
                             <NavLink to="/feedback">Feedback</NavLink>
                         </li>
@@ -166,6 +169,8 @@ const Header = () => {
                             <NavLink to="/all-payment">All Payment</NavLink>
                         </li>
                     </ul>
+                  </div>
+                    
                 )}
             </li>
 

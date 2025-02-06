@@ -31,6 +31,7 @@ const crypto = require('crypto');
 const deposit_model = require("../Models/Depositmodel");
 const UserModel = require("../Models/User");
 const invoice_model = require("../Models/Inoicemodel");
+const due_model = require("../Models/Duemodel");
 
 // Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -56,6 +57,7 @@ user_route.post("/product-order", async (req, res) => {
       transaction, 
       customer_name,
       customer_email,
+      holdername,
       image 
     } = req.body;
 
@@ -97,6 +99,7 @@ user_route.post("/product-order", async (req, res) => {
       package_name,
       customer_name,
       customer_email,
+      holder_name:holdername,
       paid,
       invoice_id: invoiceId, // Store generated invoice ID
       payeer_number, // Optional field
@@ -105,7 +108,11 @@ user_route.post("/product-order", async (req, res) => {
     });
 
     await order.save(); // Save the order details
-
+  console.log(provider_name)
+  if(provider_name=="Buy from my wallet"){
+    customer.deposit_balance-=paid;
+    customer.save();
+  }
     // Send invoice email
     await sendInvoiceEmail(customer_email, order, invoiceId);
 
@@ -124,7 +131,87 @@ user_route.post("/product-order", async (req, res) => {
     });
   }
 });
+user_route.post("/due-order", async (req, res) => {
+  try {
+    console.log(req.body)
+    const { 
+      invoice_id,
+      product_price, 
+      package_name,
+      customer_id, 
+      provider_name, 
+      product_name, 
+      due_payment, 
+      paid, 
+      payeer_number, 
+      transaction, 
+      customer_name,
+      customer_email,
+      holdername,
+      image 
+    } = req.body;
 
+    console.log(transaction);
+
+    // Validate required fields
+    // if ( !product_price || !customer_id || !provider_name || !product_name) {
+    //   return res.status(400).send({
+    //     success: false,
+    //     message: "Missing required fields. Please provide all necessary information.",
+    //   });
+    // }
+    // Fetch customer
+    const customer = await UserModel.findById({_id:customer_id});
+ console.log(customer)
+    if (!customer) {
+      return res.status(404).json({
+        success: false,
+        message: "Customer not found.",
+      });
+    }
+
+    // Create new order object
+    const order = new due_model({
+      product_price,
+      customer_id,
+      provider_name,
+      product_name,
+      due_payment,
+      package_name,
+      customer_name,
+      customer_email,
+      holder_name:holdername,
+      paid,
+      invoice_id, // Store generated invoice ID
+      payeer_number, // Optional field
+      transaction, // Optional field
+      image, // Optional field
+    });
+
+    await order.save(); // Save the order details
+  console.log(provider_name)
+  if(provider_name=="Buy from my wallet"){
+    customer.deposit_balance-=paid;
+    customer.save();
+  }
+    // Send invoice email
+    await sendInvoiceEmail(customer_email, order, invoice_id);
+
+    // Respond with success
+    res.status(201).send({
+      success: true,
+      message: "Order has been created successfully!",
+      invoice_id,
+    });
+
+  } catch (err) {
+    console.error("Error creating order:", err);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while creating the order.",
+    });
+  }
+});
 // Function to Send Invoice Email
 const sendInvoiceEmail = async (toEmail, order, invoiceId) => {
   const mailOptions = {
@@ -171,7 +258,7 @@ const sendInvoiceEmail = async (toEmail, order, invoiceId) => {
 
 user_route.get("/user-order/:id",async(req,res)=>{
     try {
-        const order_data=await order_model.find({customer_id:req.params.id});
+        const order_data=await order_model.find({customer_id:req.params.id}).sort({ createdAt: -1 });;
         if(order_data){
                res.send({success:true,data:order_data})
         }
@@ -337,7 +424,7 @@ user_route.post("/forgot-password", async (req, res) => {
     // Send email
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "programmingperson1@gmail.com",
+      to:email,
       subject: "Password Reset Request",
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; background-color: #f4f4f4; border-radius: 10px;">
@@ -396,6 +483,23 @@ user_route.post("/update-invoice-letter/:id",async(req,res)=>{
         return res.send({success:false,message:"Invoice not found!"})
       }
       const invoice_update=await invoice_model.findByIdAndUpdate({_id:find_invoice},{$set:{status:"accpeted"}})
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+user_route.get("/user-invoices/:id",(req,res)=>{
+  try {
+    
+  } catch (error) {
+    console.log(error )
+  }
+});
+user_route.get("/single-order-information/:id",async(req,res)=>{
+  try {
+    console.log(req.params.id)
+     const find_order=await order_model.findOne({invoice_id:req.params.id});
+     res.send({success:true,data:find_order})
   } catch (error) {
     console.log(error)
   }

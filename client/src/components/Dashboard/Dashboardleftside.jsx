@@ -41,7 +41,8 @@ const Dashboardleftside = () => {
   const admin_info = JSON.parse(localStorage.getItem("admin_data"));
   const [pending_deposit,set_pending_deposit]=useState([]);
   const [total_customer,set_totalcustomer]=useState([]);
-  const [total_invoice,set_invoice]=useState()
+  const [total_invoice,set_invoice]=useState();
+  const [pending_orders,setpending_orders]=useState([])
   // ---------------all-feedback--------------
   const get_orders = () => {
     axios
@@ -53,7 +54,8 @@ const Dashboardleftside = () => {
             console.log(res.data.pending_order);
             set_pending_deposit(res.data.pending_deposit);
             set_totalcustomer(res.data.total_customer);
-            set_invoice(res.data.total_invoice)
+            set_invoice(res.data.total_invoice);
+            setpending_orders(res.data.pending_orders)
         }
       })
       .catch((err) => {
@@ -134,7 +136,11 @@ const Dashboardleftside = () => {
               </li>
               <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/orders">Orders</NavLink>
-                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_order?.length}</span>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_orders?.length}</span>
+                    </li>
+                    <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
+                    <RiShoppingCartLine className="text-[22px]"/>  <NavLink to="/due-orders">Due Orders</NavLink>
+                    <span className="w-5 h-5 text-[15px] bg-indigo-500 text-white flex justify-center items-center"> {pending_orders?.length}</span>
                     </li>
                     <li className="flex justify-start items-center transition-all text-white duration-300 gap-[10px] p-[13px] rounded-[6px] text-[15px] font-[500] w-full hover:bg-indigo-500 group hover:text-white">
                     <RiLuggageDepositLine className="text-[22px]"/>  <NavLink to="/deposits">Deposits</NavLink>
