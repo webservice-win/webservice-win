@@ -1266,11 +1266,14 @@ admin_route.put("/update-due-order-status/:id", async (req, res) => {
       ];
 
       // Only proceed if status is in the allowed list
+      const find_due_order=await due_model.findById({_id:req.params.id})
       const update_order=await order_model.findOne({invoice_id:order_data.invoice_id});
+      console.log(find_due_order)
       if (statusesToUpdate.includes(status)) {
           // Find customer details
           update_order.paid+=order_data.paid;
-          update_order.due_payment-=order_data.due_payment;
+          update_order.due_payment-=order_data.paid;
+          update_order.save();
           const find_customer = await UserModel.findById({ _id: order_data.customer_id });
           if (!find_customer) {
               return res.status(404).send({ success: false, message: "Customer not found" });
