@@ -12,7 +12,28 @@ const Hproject2 = () => {
   const [visibleWebsites, setVisibleWebsites] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const base_url = import.meta.env.VITE_API_KEY_Base_URL;
-
+  const [category,setcategory]=useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categoryRes = await axios.get(`${base_url}/admin/all-category`, {
+          headers: { Authorization: localStorage.getItem("token") },
+        });
+        setcategory(categoryRes.data.data);
+     console.log(categoryRes.data.data)
+        const technologyRes = await axios.get(
+          `${base_url}/admin/all-technology`,
+          {
+            headers: { Authorization: localStorage.getItem("token") },
+          }
+        );
+        // setTechnology(technologyRes.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
   // Fetch websites from API
   const get_website = () => {
     axios
@@ -37,6 +58,12 @@ const Hproject2 = () => {
     setShowAll(true);
     setVisibleWebsites(websites); // Show all items
   };
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const filteredWebsites = selectedCategory === 'all' 
+    ? websites 
+    : websites.filter(site => site.category.toLowerCase() === selectedCategory);
+
 
   return (
     <>
@@ -48,8 +75,29 @@ const Hproject2 = () => {
             </h1>
           </div>
           {/* Project grid */}
+          <div>
+             {/* Category Filter */}
+   {/* Category Filter */}
+   <ul className="flex justify-center items-center gap-3 mt-5">
+        <li 
+          className={`px-5 py-2 rounded-full text-lg cursor-pointer ${selectedCategory === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} 
+          onClick={() => setSelectedCategory('all')}
+        >
+          All
+        </li>
+        {category.map((cat, index) => (
+          <li 
+            key={index}
+            className={`px-5 py-2 rounded-full text-lg cursor-pointer border-indigo-500 border-[2px] ${selectedCategory === cat.value.toLowerCase() ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} 
+            onClick={() => setSelectedCategory(cat.value.toLowerCase())}
+          >
+            {cat.label}
+          </li>
+        ))}
+      </ul>
+          </div>
           <section className="pt-[30px] lg:pt-[50px] grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-[25px]">
-            {visibleWebsites.map((data, i) => (
+            {filteredWebsites.map((data, i) => (
               <div className="p-[5px] bg-white rounded-[10px]" key={i}>
                 <div className="p-[7px] h-[100%] rounded-[10px]  font-poppins group bg-[#010053] overflow-hidden">
                   <div className="w-full h-[200px] lg:h-[300px] rounded-[10px] overflow-hidden">

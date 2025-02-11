@@ -503,5 +503,13 @@ user_route.get("/single-order-information/:id",async(req,res)=>{
   } catch (error) {
     console.log(error)
   }
+});
+user_route.get("/user-invoices/:id",async(req,res)=>{
+  try {
+     const find_order=await invoice_model.findOne({customer_id:req.params.id});
+     res.send({success:true,data:find_order})
+  } catch (error) {
+    console.log(error)
+  }
 })
 module.exports=user_route;

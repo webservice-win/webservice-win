@@ -1168,7 +1168,7 @@ admin_route.post("/sent-invoice", async (req, res) => {
       return res.send({ success: false, message: "All Fields are required!" });
     }
 
-    const find_user = await UserModel.findById(customer_id);
+    const find_user = await UserModel.findById({_id:customer_id});
     if (!find_user) {
       return res.send({ success: false, message: "User not found!" });
     }

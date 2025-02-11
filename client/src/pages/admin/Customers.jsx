@@ -64,7 +64,7 @@ const InvoicePopup = ({ order, onClose }) => {
       .post(`${base_url}/admin/sent-invoice`, {
         orderId: order._id,
         amount,
-        customer_id: "679614da19291315294e9de4",
+        customer_id: order._id,
         message,
       })
       .then((response) => {
