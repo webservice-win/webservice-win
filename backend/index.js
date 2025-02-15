@@ -18,20 +18,15 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors(
     {
-        origin:[
-            "http://localhost:5173",
-            "http://localhost:5174",
-            "https://oraclescript.net",
-            "http://oraclescript.net",
-            "www.oraclescript.net",
-            "oraclescript.net",
-            "https://oraclesoft.org",
-            "http://oraclesoft.org",
-            "http://www.oraclesoft.org",
-            "www.oraclesoft.org",
-            "oraclesoft.org",
-            "*",
-          ], // Specify the allowed origin
+        origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://webservice.win",
+    "http://webservice.win",
+    "www.webservice.win",
+    "webservice.win",
+    "*"
+], // Specify the allowed origin
         methods: ["GET", "POST", "PUT", "DELETE","PATCH","OPTIONS"], // Specify allowed methods
         allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
         credentials: true, // Allow credentials (cookies, etc.)
